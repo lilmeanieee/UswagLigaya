@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="../css/login-style.css">
+    <link rel="stylesheet" href="css/login-style.css">
 </head>
 
 <body>
@@ -32,18 +32,9 @@
                         name="password" required>
                     <label for="floatingPassword">Password</label>
                 </div>
-                <!-- forgot password link but to be remove later
-                <div class="forgot-pass">
-                    <a href="../html/change_pass.html">forgot password</a>
-                </div>
-                -->
+               
                 <button class="btn btn-login" type="submit" id="loginBtn">Login</button>
-                <!-- register link but to be remove later
-                <div class="register-link">
-                    <p>Don't have an account?</p>
-                    <a href="../html/signup.html">Register</a>
-                </div>
-                -->
+               
             </div>
         </form>
     </div>
@@ -74,7 +65,7 @@
                     return;
                 }
 
-                fetch('../php-handlers/login.php', {
+                fetch('php-handlers/login.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
@@ -87,13 +78,13 @@
                         
                         if (data.user.first_login == 1) {
                             // Redirect to change password page if it's the user's first login
-                            window.location.href = '../html/change-password.php';
+                            window.location.href = 'change-password.php';
                         } else if (data.user.first_login == 0) {
                             // Check user role for proper redirection
                             if (data.user.role === 'Admin' || data.user.role === 'SubAdmin') {
-                                window.location.href = '../html/admin/dashboard.html';
+                                window.location.href = 'admin/dashboard.html';
                             } else if (data.user.role === 'Resident') {
-                                window.location.href = '../html/home.html';
+                                window.location.href = 'home.html';
                             }
                         }
                     } else {
@@ -108,7 +99,7 @@
         });
         </script>
         
-    <script src="../js/navbar-login-script.js"></script>
+    <script src="js/navbar-login-script.js"></script>
    
 
 </body>
