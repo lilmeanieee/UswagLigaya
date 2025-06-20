@@ -1,0 +1,146 @@
+/* sidebar */
+.sidebar {
+  width: 300px;
+  transition: width 0.3s ease;
+}
+
+.logo img {
+  width: 50px;
+  height: 50px;
+}
+
+.row {
+  flex-wrap: nowrap;
+}
+
+.col-auto {
+  min-width: 250px;
+}
+
+.col {
+  flex-grow: 1;
+}
+
+.collapse {
+  background: #023047;
+}
+
+.sidebar .nav-link {
+  display: flex;
+  align-items: center;
+}
+
+.sidebar .nav-item .list {
+  padding-left: 2.5rem;
+}
+
+.sidebar .dropdown-toggle {
+  display: flex;
+  justify-items: end;
+}
+.sidebar .nav-item:hover,
+.nav-link:hover {
+  background-color: #025782;
+}
+.sidebar .nav-link-active {
+  background-color: #028226;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 992px) {
+  .sidebar {
+    width: 80px;
+    padding: 1rem 0.5rem;
+  }
+
+  .sidebar .logo {
+    text-align: center;
+    padding-bottom: 0.5rem !important;
+  }
+
+  .logo img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .sidebar .logo span,
+  .sidebar .nav-link span,
+  .sidebar .dropdown-toggle::after {
+    display: none;
+  }
+
+  .sidebar .popover {
+    position: absolute;
+    top: 0;
+    left: 10;
+    width: 100%;
+    z-index: 9999;
+    margin-left: 50px;
+  }
+  .popover-body .nav-link-active {
+    background-color: #028226;
+  }
+  .popover-body .nav-link:hover {
+    background-color: #025782;
+  }
+
+  .sidebar .nav-link {
+    justify-content: center;
+    padding: 0.75rem;
+  }
+  .sidebar .nav-item {
+    display: flex;
+    align-items: center;
+  }
+
+  .sidebar .nav-link i {
+    font-size: 1.25rem;
+  }
+
+  .sidebar .collapse {
+    display: none !important;
+  }
+
+  .popover {
+    max-width: 220px;
+    background-color: #023047;
+    color: white;
+  }
+
+  .popover ul {
+    padding-left: 0;
+    margin-bottom: 0;
+  }
+
+  .popover .nav-link {
+    color: white;
+    padding: 0.25rem 0.5rem;
+  }
+  .popover .popover-header {
+    color: #023047;
+  }
+}
+
+.container-fluid {
+  padding: 0;
+}
+.container {
+  max-width: 100%;
+}
+
+/* content */
+.content-header {
+  padding: 0;
+  width: 100%;
+}
+.main-content {
+  padding: 0;
+}
+
+.search-bar {
+  max-width: 500px;
+}
+.sort-dropdown {
+  min-width:150px;
+  max-width: 500px;
+}

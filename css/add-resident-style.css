@@ -1,0 +1,88 @@
+
+body {
+    background-color: #f8f9fa;
+}
+
+/* content */
+.content-header {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+.main-content {
+    padding: 0;
+}
+.add-search{
+    margin-bottom: 30px;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+/* end content */
+
+.otherInputBox {
+    display: none;
+}
+
+.section-title {
+    font-weight: bold;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+table {
+    font-size: 15px;
+    border: 1px solid #000;
+
+}
+
+table input {
+    font-weight: normal;
+}
+
+table .legend {
+    font-size: 15px;
+    font-weight: normal;
+}
+
+table .row4,
+.height {
+    height: 40px;
+}
+
+td,
+th {
+    border: 1px solid #000;
+    text-align: center;
+    vertical-align: middle;
+    height: 50px;
+}
+
+table .hmName,
+.width {
+    min-width: 200px;
+}
+
+table .width2 {
+    min-width: 150px;
+}
+
+table .width3 {
+    min-width: 100px;
+}
+table .quarter {
+    height: 50px;
+    min-width: 80px;
+    font-size: 12px;
+}
+
+.header-rotate {
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+}
+
+.dropdown-menu-scrollable {
+    max-height: 200px;
+    overflow-y: auto;
+}

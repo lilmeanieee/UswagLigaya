@@ -1,0 +1,321 @@
+:root {
+    --dark-blue: #003148;
+    --light-blue: #e6f0f3;
+    --gold: #ffc107;
+    --silver: #c0c0c0;
+    --bronze: #cd7f32;
+}
+
+body {
+    background-color: #e6f0f3;
+}
+
+/* leaderbord */
+.leaderboard-title {
+    color: var(--dark-blue);
+    display: flex;
+    justify-content: center;
+    font-weight: bold;
+    margin-bottom: 20px;
+
+}
+
+.top-contributors-container {
+   margin-left: 5%;
+   margin-right: 5%;
+}
+
+.top-contributors {
+    background-color: var(--gold);
+    color: var(--dark-blue);
+    font-weight: bold;
+    padding: 5px 10px;
+    display: inline-block;
+    border-radius: 5px 5px 0 0;
+}
+
+#timePeriodSelect {
+    background-color: var(--gold);
+    color: var(--dark-blue);
+    border-radius:  5px 5px 0 0;
+    font-weight: bold;
+}
+
+.podium-container {
+    background-color: var(--dark-blue);
+    border-radius: 0 0 10px 10px;
+    padding: 25px;
+    padding-inline: 60px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 20px;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.podium-place {
+    margin-top: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 25px;;
+}
+
+.podium-avatar {
+    width: 70px;
+    height: 70px;
+    background-color: white;
+    border-radius: 50%;
+    border: 3px solid var(--gold);
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.podium-avatar-decoration {
+    position: absolute;
+    top: -15px;
+    right: -10px;
+}
+.podium-avatar img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+}
+
+.gold-border {
+    border-color: var(--gold);
+    position: relative;
+}
+.silver-border {
+    border-color: var(--silver);
+    position: relative;
+}
+.bronze-border {
+    border-color: var(--bronze);
+    position: relative;
+}
+
+
+.podium-number {
+    font-size: 40px;
+    font-weight: bold;
+    color: white;
+}
+
+.podium-name-container {
+    color: white;
+    font-weight: bold;
+    margin-top: 5px;
+}
+.podium-place:nth-child(2) { 
+    transform: translateY(-15px); 
+}
+
+.podium-points {
+    margin-top: 5px;
+}
+.crown-icon-1{
+    position: absolute;
+    top: -24px;
+    color: #FFD700;
+    font-size: 30px;
+}
+  .crown-icon-2{
+    position: absolute;
+    top: -22px;
+    color: silver;
+    font-size: 27px;
+  }
+  .crown-icon-3{
+    position: absolute;
+    top: -20px;
+    color: var(--bronze);
+    font-size: 24px;
+  }
+.rank-1{
+    background-color: var(--gold);
+    padding: 5px 10px;
+    border-radius: 5px;
+    width: 100px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+.rank-2{
+    background-color: var(--silver);
+    padding: 5px 10px;
+    border-radius: 5px;
+    width: 100px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+.rank-3{
+    background-color: var(--bronze);
+    padding: 5px 10px;
+    border-radius: 5px;
+    width: 100px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.list-container {
+    background-color: white;
+    max-height: 400px;
+    overflow-y: auto;
+    border-radius: 5px;
+}
+
+.list-header {
+    background-color: var(--dark-blue);
+    color: white;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 1fr;
+    font-weight: bold;
+}
+
+.list-row {
+    padding: 10px;
+    display: grid;
+    grid-template-columns: 0.5fr 2fr 1fr;
+    border-bottom: 1px solid #eee;
+    background-color: white;
+}
+
+.rank-number {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    margin: 0 auto;
+}
+
+.medal {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    color: white;
+    font-weight: bold;
+}
+
+.gold-medal {
+    background-color: var(--gold);
+}
+
+.silver-medal {
+    background-color: var(--silver);
+}
+
+.bronze-medal {
+    background-color: var(--bronze);
+}
+
+.dropdown-filter {
+    background-color: var(--dark-blue);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+}
+
+.contributors-table {
+    background-color: var(--dark-blue);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.contributors-header {
+    background-color: var(--gold);
+    color: var(--dark-blue);
+    font-weight: bold;
+    padding: 5px 10px;
+    display: inline-block;
+    border-radius: 5px 5px 0 0;
+    margin-bottom: 10px;
+}
+
+.contributors-table-header {
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+}
+
+.contributors-table-row {
+    color: white;
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+
+/* leaderbord end */
+
+.contributor-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 120px;
+  }
+  
+  .contributor-square {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  
+  .contributor-rank-1 {
+    width: 120px;
+    height: 120px;
+    background-color: #FFD700;
+  }
+  
+  .contributor-rank-2 {
+    background-color: #C0C0C0;
+  }
+  
+  .contributor-rank-3 {
+    background-color: #CD7F32;
+  }
+  
+
+  
+  .points-box {
+    background-color: #FFDE59;
+    padding: 4px 8px;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    margin-top: 5px;
+  }
+  
+  .contributor-name {
+    margin-top: 5px;
+    font-weight: 500;
+    text-align: center;
+  }
+
+
+
+  .section-divider {
+    height: 3px;
+    width: 60px;
+    background-color: #fb8500;
+    margin: 0 auto 30px;
+}

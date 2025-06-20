@@ -1,0 +1,104 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.container {
+    background: white;
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-weight: bold;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+table {
+    font-size: 15px;
+    border: 1px solid #000;
+
+}
+
+table input {
+    font-weight: normal;
+}
+
+table .legend {
+    font-size: 15px;
+    font-weight: normal;
+}
+
+table .row4,
+.height {
+    height: 40px;
+}
+
+td,
+th {
+    border: 1px solid #000;
+    text-align: center;
+    vertical-align: middle;
+    height: 50px;
+}
+
+table .hmName,
+.width {
+    min-width: 200px;
+}
+
+table .width2 {
+    min-width: 150px;
+}
+
+table .width3 {
+    min-width: 100px;
+}
+table .quarter {
+    height: 50px;
+    min-width: 80px;
+    font-size: 12px;
+}
+
+.header-rotate {
+    writing-mode: vertical-rl;
+    transform: ro
+    tate(180deg);
+}
+@media print {
+    body * {
+      visibility: hidden;
+    }
+    .modal-content, .modal-content * {
+      visibility: visible;
+    }
+    .modal {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+  }
+
+  @keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    50% { transform: translateX(8px); }
+    75% { transform: translateX(-8px); }
+    100% { transform: translateX(0); }
+  }
+  
+  .modal.shake {
+    animation: shake 0.4s;
+    border: 2px solid red;
+  }
+
+  .is-invalid {
+    border: 2px solid red !important;
+}
+.hidden {
+    display: none;
+}

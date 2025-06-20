@@ -1,0 +1,141 @@
+.section-divider {
+    height: 3px;
+    width: 200px;
+    background-color: #fb8500;
+}
+.announcement-title {
+    display: flex;
+    justify-content: center;
+}
+
+.filter-section {
+    margin-bottom: 30px;
+}
+
+.news-card {
+    transition: transform 0.3s ease;
+    margin-bottom: 30px;
+    height: 100%;
+} 
+
+.news-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.news-date {
+    color: #6c757d;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.category-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 0.8rem;
+}
+
+.pagination-container {
+    margin: 40px 0;
+}
+
+.event-calendar {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+#calendar {
+    max-width: 100%;
+    margin: 0 auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+.card-title {
+    font-weight: bold;
+}
+
+.badge {
+    font-size: 0.85rem;
+}
+
+.card-text {
+    font-size: 0.95rem;
+}
+
+.join-confirmation {
+    width: 100%;
+    max-width: 300px;
+}
+
+/* volunteer drive section */
+
+.volunteer-title-container {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.volunteer-details{
+    width: auto;
+    height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+
+.btn-join-container {
+    width: 150px;
+}
+
+.volunteer-joins-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.volunteer-joins-container .volunteer-remaining-joins {
+    flex: 1 1 auto;
+    margin-bottom: 0;
+}
+
+.volunteer-joins-container .volunteer-button {
+    flex-shrink: 0;
+}
+
+.volunteer-button .btn {
+    width: 140px;
+}
+@media (max-width: 768px) {
+    .volunteer-title-container h5.card-title {
+        order: 2;
+        width: 100%;
+        margin-top: 5px;
+    }
+    .volunteer-title-container span.badge {
+        order: 1;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .volunteer-joins-container .volunteer-button {
+        width: 100%;
+    }
+    .volunteer-button {
+        text-align: center;
+        width: 50%;
+    }
+    .volunteer-button .btn {
+        width: 30%;
+    }
+}

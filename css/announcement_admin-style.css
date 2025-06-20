@@ -1,0 +1,60 @@
+
+
+/* content */
+.content-header {
+    padding: 0;
+    margin: 0;
+    
+    width: 100%;
+}
+.main-content {
+    padding: 0;
+}
+
+/* recent announcement content */
+
+.announcementFields {
+    display: none;
+}
+
+.announcementFields .hidden {
+    display: none;
+}
+
+.announcementFields .custom-dropdown-width {
+    width: 250px;
+}
+
+.announcementFields .locationInputOption{
+    display: none;
+}
+
+#announcementForm {
+    margin-top: 20px;
+}
+
+hr.line-color{
+    border-top: 2px solid #ffd803;
+    opacity: 1;
+}
+.announcementModal label{
+    font-weight: 500;
+    color: #023047;
+}
+.modal-header {
+    background-color: #007bff;
+    color: white;
+}
+
+.modal-body {
+    background-color: #f8f9fa;
+}
+
+.card-body:hover {
+    background-color: #bed4eb;
+}
+
+/* end content */
+
+
+

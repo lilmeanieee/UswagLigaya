@@ -1,0 +1,177 @@
+
+
+/* content */
+.content-header {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+.main-content {
+    padding: 0;
+}
+
+/* Dashboard Content */
+.dashboard-content {
+    padding: 0 20px;
+    flex-grow: 1;
+}
+
+.stats-card {
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+    max-height: 110px;
+    width: 230px;
+}
+
+.stats-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Activity Feed */
+.activity-item {
+    display: flex;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    margin-right: 15px;
+    flex-shrink: 0;
+}
+
+.activity-content {
+    flex-grow: 1;
+}
+
+.activity-content h6 {
+    margin-bottom: 5px;
+}
+
+.activity-content p {
+    margin-bottom: 3px;
+    color: #6c757d;
+}
+
+/* Event Calendar */
+.upcoming-events {
+    margin-top: 15px;
+}
+
+.event-item {
+    display: flex;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.event-item:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.event-date {
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    text-align: center;
+    padding: 5px 10px;
+    margin-right: 15px;
+    min-width: 60px;
+    flex-shrink: 0;
+}
+
+.event-day {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.event-month {
+    display: block;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #6c757d;
+}
+
+.event-content {
+    flex-grow: 1;
+}
+
+.event-content h6 {
+    margin-bottom: 5px;
+}
+
+.event-content p {
+    margin-bottom: 3px;
+    color: #6c757d;
+    font-size: 0.85rem;
+}
+
+.event-content p i {
+    margin-right: 5px;
+    width: 16px;
+}
+
+/* Footer */
+.footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #e9ecef;
+    padding: 10px 0;
+    margin-top: auto;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    
+    #content {
+        margin-left: 0;
+    }
+    
+    #content.active {
+        margin-left: 250px;
+        position: fixed;
+        width: 100%;
+    }
+    
+}
+
+/* Charts */
+canvas {
+    width: 100% !important;
+    height: 300px !important;
+}
+
+/* Table styles */
+.table {
+    font-size: 0.9rem;
+}
+
+.table .btn {
+    padding: 0.25rem 0.5rem;
+    margin-right: 0.25rem;
+}
+
+/* Custom badges */
+.badge {
+    padding: 0.35em 0.65em;
+}
+/* end content */
+
+
+

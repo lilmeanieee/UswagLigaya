@@ -1,0 +1,48 @@
+/* Admin UI CSS */
+
+/* sidebar */
+.sidebar{
+    width: 300px;
+}
+
+.row {
+    flex-wrap: nowrap; 
+}
+
+.col-auto {
+    min-width: 250px; /* minimum width for the sidebar */
+}
+
+.col {
+    flex-grow: 1; 
+}
+
+.collapse{
+    background: #023047;
+}
+.logo img {
+    width: 50px;
+    height: 50px;
+}
+/* end sidebar */
+
+/* content */
+.content-header {
+    padding: 0;
+    margin: 0;
+    
+    width: 100%;
+}
+.main-content {
+    padding: 0;
+}
+
+.list-group-item:hover{
+    background-color: #e5f1f7;
+   
+}
+
+/* end content */
+
+
+

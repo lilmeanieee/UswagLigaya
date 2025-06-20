@@ -1,0 +1,89 @@
+
+/* Sidebar styles */
+
+.main-content {
+    padding: 20px;
+    background-color: #f8f9fa;
+    min-height: 100vh;
+}
+
+/* Badge preview styles */
+.badge-preview {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.badge-preview img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.badge-preview-large {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.badge-preview-large img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* Table badge icon */
+.table-badge-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.table-badge-icon img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* Status indicators */
+.status-active {
+    color: #198754;
+}
+
+.status-inactive {
+    color: #6c757d;
+}
+
+/* Action buttons spacing */
+.action-buttons .btn {
+    margin-right: 5px;
+}
+
+/* Form constraint details */
+.constraint-details {
+    padding-left: 25px;
+}
+
+/* Table styles */
+.table > :not(caption) > * > * {
+    vertical-align: middle;
+}

@@ -1,0 +1,135 @@
+.profile_pic{
+    width: 60px;
+    height: 60px;
+}
+.nav-profile_pic{
+    width: 30px;
+    height: 30px;
+}
+
+/* Card enhancements */
+.card {
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    border: none;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+.welcome-card {
+    border-radius: 0.5rem;
+}
+/* Badge styles */
+.badge {
+    font-weight: 500;
+    padding: 0.5em 0.8em;
+    margin-right: 0.3rem;
+}
+.badge-layout{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.badge-container {
+    margin-right: 10px;
+}
+
+/* Navigation enhancements */
+.navbar {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.nav-link {
+    font-weight: 500;
+}
+
+/* Table styles */
+.table tr {
+    vertical-align: middle;
+}
+
+/* Leaderboard highlighting */
+.table-primary {
+    background-color: rgba(13, 110, 253, 0.1) !important;
+}
+
+/* Button enhancements */
+.btn {
+    border-radius: 0.3rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+}
+
+/* Footer styles */
+footer {
+    border-top: 1px solid #dee2e6;
+}
+
+/* Modal enhancements */
+.modal-content {
+    border-radius: 0.5rem;
+    border: none;
+}
+
+.modal-header {
+    border-bottom: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.modal-footer {
+    border-top: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+/* Dashboard specific styles */
+.welcome-header {
+    background-color: #e9ecef;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Events page styles */
+.event-card {
+    height: 100%;
+}
+
+.event-date {
+    color: #6c757d;
+    font-size: 0.9rem;
+}
+
+/* Rewards page styles */
+.reward-card img {
+    height: 150px;
+    object-fit: cover;
+}
+
+/* Conversion history table */
+.conversion-table th,
+.conversion-table td {
+    padding: 0.75rem;
+}
+
+/* Responsive fixes */
+@media (max-width: 767.98px) {
+    .card-title {
+        font-size: 1.1rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+    
+    .badge {
+        font-size: 0.7rem;
+    }
+}

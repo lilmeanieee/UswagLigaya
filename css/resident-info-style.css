@@ -1,0 +1,29 @@
+/* content */
+.content-header {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+.main-content {
+    padding: 0;
+}
+
+.res-table {
+    height: 400px; /* control the table scroll height */
+    overflow-x: auto; 
+    border-bottom: 2px solid #343a40;
+}
+
+.res-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+}
+#residentTableBody tr .btn{
+    text-align: center;
+}
+/* end content */
+
+.pagination{
+    margin-top: 1rem;
+}

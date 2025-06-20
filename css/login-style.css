@@ -1,0 +1,50 @@
+form{
+    max-width: 500px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100vh;
+    padding: 20px;
+}
+.bg{
+    background-color: #023047;
+    border-radius: 15px;
+    box-shadow: 5px 4px 10px rgba(0, 0, 0, 0.1);
+} 
+
+.btn{
+    color: #fff;
+    background-color: #2ECC71;
+    display: block;
+    margin: auto;
+    width: 120px;
+    margin-top: 10px;
+}
+.forgot-pass{
+    text-align: right;
+    margin-top: 10px;
+}
+.register-link {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+    justify-content: center;
+    text-align: center;
+    gap: 5px;
+}
+.register-link p{
+    margin-bottom: -0.5rem;
+    color: #fff;
+}
+a{
+    color: #2ECC71;
+    text-decoration: none;
+}
+h2{
+    color: #fff;
+}
+.form-floating input:focus::placeholder {
+    color: #aaa; 
+    opacity: 1;
+}

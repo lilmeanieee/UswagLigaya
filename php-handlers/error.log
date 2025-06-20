@@ -1,0 +1,27 @@
+[18-Apr-2025 03:54:09 Europe/Berlin] PHP Fatal error:  Uncaught mysqli_sql_exception: You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'boli')' at line 2 in C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php:33
+Stack trace:
+#0 C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php(33): mysqli->query('INSERT INTO tbl...')
+#1 {main}
+  thrown in C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php on line 33
+[18-Apr-2025 04:04:36 Europe/Berlin] PHP Warning:  Undefined array key 2 in C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php on line 92
+[18-Apr-2025 04:04:36 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php on line 92
+[18-Apr-2025 16:18:01 Europe/Berlin] PHP Warning:  Undefined array key 2 in C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php on line 92
+[18-Apr-2025 16:18:01 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php on line 92
+[19-Apr-2025 06:15:17 Europe/Berlin] PHP Warning:  Undefined array key 2 in C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php on line 92
+[19-Apr-2025 06:15:17 Europe/Berlin] PHP Warning:  Undefined array key 1 in C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php on line 92
+[19-Apr-2025 11:34:47 Europe/Berlin] PHP Warning:  Undefined array key "socioStatus" in C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php on line 37
+[19-Apr-2025 11:34:47 Europe/Berlin] PHP Warning:  Undefined array key "nhtsNo" in C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php on line 37
+[19-Apr-2025 11:34:47 Europe/Berlin] PHP Warning:  Undefined array key "waterSource" in C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php on line 39
+[19-Apr-2025 11:34:47 Europe/Berlin] PHP Warning:  Undefined array key "otherWater" in C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php on line 39
+[19-Apr-2025 11:34:47 Europe/Berlin] PHP Warning:  Undefined array key "toilet" in C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php on line 39
+[19-Apr-2025 11:34:47 Europe/Berlin] PHP Warning:  Undefined array key "philhealthId" in C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php on line 72
+[19-Apr-2025 11:34:47 Europe/Berlin] PHP Warning:  Undefined array key "membership" in C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php on line 72
+[19-Apr-2025 11:34:47 Europe/Berlin] PHP Warning:  Undefined array key "category" in C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php on line 72
+[19-Apr-2025 11:34:47 Europe/Berlin] PHP Warning:  Undefined array key "medicalHistory" in C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php on line 72
+[19-Apr-2025 11:34:47 Europe/Berlin] PHP Warning:  Undefined array key "usingFp" in C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php on line 75
+[19-Apr-2025 11:34:47 Europe/Berlin] PHP Warning:  Undefined array key "fpMethods" in C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php on line 76
+[19-Apr-2025 11:34:47 Europe/Berlin] PHP Fatal error:  Uncaught TypeError: implode(): Argument #1 ($array) must be of type array, string given in C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php:76
+Stack trace:
+#0 C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php(76): implode(', ', NULL)
+#1 {main}
+  thrown in C:\xampp\htdocs\WEBSYS-Barangay-Management-Project\php-handlers\add-residents.php on line 76

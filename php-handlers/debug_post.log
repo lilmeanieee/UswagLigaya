@@ -1,0 +1,12 @@
+Array
+(
+    [announcementCategory] => Upcoming Event
+    [target_audience] => All Residents
+    [upEvent_title] => a
+    [upEvent_details] => a
+    [upEventLocationCategory] => Barangay Hall
+    [upEventLocationInputOption] => 
+    [date] => 2025-05-03
+    [time_start] => 00:39
+    [time_end] => 00:39
+)

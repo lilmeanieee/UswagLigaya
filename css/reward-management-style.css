@@ -1,0 +1,114 @@
+
+
+/* Card styles */
+.reward-card {
+    transition: transform 0.2s;
+    margin-bottom: 1.5rem;
+}
+
+.reward-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.expired-reward {
+    opacity: 0.6;
+}
+
+.reward-card .badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+/* Status badges */
+.status-pending {
+    background-color: #ffc107;
+}
+
+.status-approved {
+    background-color: #28a745;
+}
+
+.status-rejected {
+    background-color: #dc3545;
+}
+
+.status-completed {
+    background-color: #198754;
+}
+
+/* Action buttons */
+.action-buttons .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+}
+
+/* Pagination styles */
+.pagination {
+    margin-top: 1.5rem;
+}
+
+/* Table styles */
+.table th {
+    font-weight: 600;
+    background-color: #f8f9fa;
+}
+
+/* Modal styles */
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-footer {
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+}
+
+
+/* Catalog grid item */
+.catalog-item {
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.catalog-item:hover {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transform: translateY(-2px);
+}
+
+/* Helper classes */
+.points-badge {
+    background-color: #6f42c1;
+    color: white;
+    font-weight: bold;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+}
+
+.availability-badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.available {
+    background-color: #d1e7dd;
+    color: #0f5132;
+}
+
+.limited {
+    background-color: #fff3cd;
+    color: #664d03;
+}
+
+.expired {
+    background-color: #f8d7da;
+    color: #842029;
+}
