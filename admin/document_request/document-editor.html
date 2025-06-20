@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Document</title>
+    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+</head>
+<body>
+
+<h2>Edit Document</h2>
+
+<form id="editorForm">
+    <textarea id="editor" name="editor"></textarea>
+    <br>
+    <button type="button" onclick="downloadEditedDocument()">Download Edited Version</button>
+</form>
+
+<script>
+// Initialize TinyMCE Editor
+tinymce.init({
+    selector: '#editor',
+    height: 600
+});
+
+// Load HTML content dynamically
+const params = new URLSearchParams(window.location.search);
+const file = params.get('file');
+
+fetch(`/uploads/generated_documents/${file}`)
+    .then(res => res.text())
+    .then(html => {
+        tinymce.get('editor').setContent(html);
+    });
+
+// Download edited content
+function downloadEditedDocument() {
+    const editedContent = tinymce.get('editor').getContent();
+
+    const blob = new Blob([editedContent], {type: "text/html"});
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = "Edited-Document.html";
+    a.click();
+
+    URL.revokeObjectURL(url);
+}
+</script>
+
+</body>
+</html>

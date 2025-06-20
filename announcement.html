@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Announcement</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- FullCalendar CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css">
+
+
+    <link rel="stylesheet" href="../css/announcement_public.css">
+    <link rel="stylesheet" href="../css/public_navbar.css">
+</head>
+
+<body>
+    <!--navbar -->
+    <nav class="navbar navbar-header navbar-expand-lg bg-light fixed-top">
+        <div class="container-fluid">
+            <!-- hamburger collapsed menu button besides the logo -->
+            <div class="d-flex align-items-center">
+                <!-- hamburger menu button -->
+                <button class="navbar-toggler " type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" title="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- navbar logo -->
+                <div class="navbar-logo ">
+                    <img src="../asset/img/brgy_official_seal.png" alt="Barangay Ligaya official seal">
+                    <a class="me-auto navbar-brand " href="home.html">Ligaya</a>
+                </div>
+            </div>
+
+
+            <!-- Offcanvas Menu Content -->
+            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
+                aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Logo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
+                        <!-- nav home -->
+                        <li class="nav-item">
+                            <a class="mx-md-2 nav-link" aria-current="page" href="home.html">Home</a>
+                        </li>
+                        <!-- nav about -->
+                        <li class="nav-item">
+                            <a class="mx-md-2 nav-link" href="about.html">About</a>
+                        </li>
+
+                        <!-- nav services -->
+                        <li class="nav-item">
+                            <a class="mx-md-2 nav-link" href="home.html#service">Service</a>
+                        </li>
+
+                        <!-- nav announcement -->
+                        <li class="nav-item dropdown">
+                            <a class="mx-md-2 nav-link active dropdown-toggle" href="announcement-section" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Announcement
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#news-updates">News & Updates</a></li>
+                                <li><a class="dropdown-item" href="#upcoming-events">Upcomming Events</a></li>
+                                <li><a class="dropdown-item" href="#special-announcements">Barangay Volunteer Drive</a></li>
+
+                            </ul>
+                        </li>
+                        <!-- nav leaderboard -->
+                        <li class="nav-item">
+                            <a class="mx-md-2 nav-link" href="leaderboard.html">Leaderboard</a>
+                        </li>
+
+                        <!-- nav project tracking -->
+                        <li class="nav-item">
+                            <a class="mx-md-2 nav-link" href="track-project.html">Brgy Projects</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Login & Menu Button Group -->
+            <div class="d-flex align-items-center">
+                <!-- Login button (shown when user is not logged in) -->
+                <a href="../html/login.html" class="btn login-button" id="loginButton">Login</a>
+
+                <!-- User icon with dropdown (shown when user is logged in) -->
+                <div class="dropdown user-dropdown hidden" id="userDropdown">
+                    <button class="btn dropdown-toggle user-icon-button" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <img src="../asset/img/default_acc_icon.png" alt="User" class="user-icon">
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <h6 class="dropdown-header user-name" id="userName">User Name</h6>
+                        </li>
+                        <li><a class="dropdown-item" href="residents/dashboard.html">Dashboard</a></li>
+                        <li><a class="dropdown-item" href="residents/convert-points.html">Convert Points</a></li> 
+                        <li><a class="dropdown-item" href="residents/document-request.html">Document Requests</a></li>
+                        <li><a class="dropdown-item" href="">Submit Complaints</a></li>
+
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="residents/settings.html">Settings</a></li>
+
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="home.html" id="logoutButton">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!--navbar end-->
+
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Announcement Header -->
+        <div class="announcement-header">
+            <h1 class="announcement-title">Announcement</h1>
+            <div class="section-divider"></div>
+            
+        </div>
+
+        <!-- Filter Section -->
+        <section class="filter-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="input-group mb-2">
+                            <input id="searchInput" type="text" class="form-control"
+                                placeholder="Search announcements...">
+                            <button id="searchBtn" class="btn btn-primary" type="button">Search</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <select id="categoryFilter" class="form-select" aria-label="Filter by category">
+                            <option value="all" selected>All Categories</option>
+                            <option value="News and Update">News & Updates</option>
+                            <option value="Upcoming Event">Events</option>
+                            <option value="Barangay Volunteer Drive">Volunteer Drive Events</option>
+
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dynamic Announcement Sections -->
+        <section class="py-2">
+            <div class="container">
+                <div id="news-updates" class="mb-5">
+                    <h2 class="section-title">News & Updates</h2>
+                    <div class="section-divider mb-4"></div>
+                    <div class="row" id="newsUpdatesList">
+                        <!-- News announcements injected here -->
+                    </div>
+                </div>
+
+                <div id="upcoming-events" class="mb-5">
+                    <h2 class="section-title">Upcoming Events</h2>
+                    <div class="section-divider mb-4"></div>
+                    <div class="row" id="upcomingEventsList">
+                        <!-- Upcoming events injected here -->
+                    </div>
+                </div>
+
+                <div id="volunteer-events">
+                    <h2 class="section-title">Volunteer Drive Events</h2>
+                    <div class="section-divider mb-4"></div>
+                    <div class="row row-cols-lg-2 " id="volunteerEventsList">
+                        <!-- Volunteer events injected here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Special Announcements Section 
+        <section id="special-announcements" class="py-4">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="section-title">Special Announcements</h2>
+                        <div class="section-divider mb-4"></div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12 mb-4">
+                        <div class="card bg-warning text-dark">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-exclamation-triangle me-2"></i>Important: Water Service Interruption</h5>
+                                <p class="card-text">Water service will be interrupted on March 22, 2025, from 10:00 PM to 4:00 AM the following day due to maintenance work. Please store enough water for your needs.</p>
+                                <p class="card-text"><small>Posted: March 15, 2025</small></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12 mb-4">
+                        <div class="card bg-info text-white">
+                            <div class="card-body">
+                                <h5 class="card-title"><i class="fas fa-info-circle me-2"></i>COVID-19 Booster Shots Available</h5>
+                                <p class="card-text">The health center is now offering COVID-19 booster shots for eligible residents. Bring your vaccination card and valid ID. No appointment necessary.</p>
+                                <p class="card-text"><small>Posted: March 10, 2025</small></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        -->
+
+
+
+    <!-- Others Section 
+        <section id="others" class="py-4">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <h2 class="section-title">Other Announcements</h2>
+                        <div class="section-divider mb-4"></div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 mb-4">
+                        <div class="card news-card">
+                            <div class="card-body">
+                                <div class="news-date">March 3, 2025</div>
+                                <h5 class="card-title">Upcoming Scheduled Power Outages</h5>
+                                <p class="card-text">The electric company has announced scheduled maintenance that will
+                                    affect our area. See the full schedule of affected streets and times.</p>
+                                <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card news-card">
+                            <div class="card-body">
+                                <div class="news-date">March 3, 2025</div>
+                                <h5 class="card-title">Upcoming Scheduled Power Outages</h5>
+                                <p class="card-text">The electric company has announced scheduled maintenance that will
+                                    affect our area. See the full schedule of affected streets and times.</p>
+                                <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-4 mb-4">
+                        <div class="card news-card">
+                            <div class="card-body">
+                                <div class="news-date">February 25, 2025</div>
+                                <h5 class="card-title">Garbage Collection Schedule Change</h5>
+                                <p class="card-text">Starting April 1, there will be changes to the garbage collection
+                                    schedule. Please check the new schedule for your area.</p>
+                                <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        -->
+
+    <!-- Pagination 
+        <div class="container pagination-container">
+            <div class="row">
+                <div class="col-12">
+                    <nav aria-label="Announcements pagination">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+    -->
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">&copy; 2025 Barangay Ligaya. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-white me-2">Privacy Policy</a> |
+                    <a href="#" class="text-white me-2">Terms of Service</a> |
+                    <a href="#" class="text-white">Accessibility</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+
+
+
+
+
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+
+    <script src="../js/general-script.js"></script>
+    <script src="../js/resident-announcement.js"></script>
+    <script src="../js/navbar-login-script.js"></script>
+    <script src="../js/login-status-script.js"></script>
+    <script src="../js/logout-script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rewards</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../css/res-navbar.css">
+    <link rel="stylesheet" href="../../css/res-redeem-rewards-style.css">
+</head>
+
+<body>
+    <nav class="navbar bg-light ">
+        <div class="container-fluid">
+            <!-- Hamburger menu and logo -->
+            <div class="d-flex align-items-center">
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" title="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-logo">
+                    <a class="navbar-brand" href="#">Resident Portal</a>
+                </div>
+            </div>
+
+            <!-- Offcanvas menu content -->
+            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
+                aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Resident Portal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
+                        <!-- Nav items -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="../home.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../about.html">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../home.html#service">Service</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../announcement.html">Announcement</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../leaderboard.html">Leaderboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../track-project.html">Brgy Projects</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Profile dropdown -->
+            <div class="d-flex align-items-center">
+                <div class="dropdown user-dropdown" id="userDropdown">
+                    <button class="btn dropdown-toggle user-icon-button" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <img src="../../asset/img/default_acc_icon.png" alt="User" class="user-icon">
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <h6 class="dropdown-header user-name" id="userName">User Name</h6>
+                        </li>
+                        <li><a class="dropdown-item" href="index.html">Dashboard</a></li>
+                        <li><a class="dropdown-item" href="convert-points.html">Convert Points</a></li>
+                        <li><a class="dropdown-item" href="redeem-rewards.html">Redeem Rewards</a></li>
+                        <li><a class="dropdown-item" href="document-request.html">Document Requests</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="settings.html">Settings</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="../home.html" id="logoutButton">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class="container mt-4">
+        <!-- Rewards Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <div class="row align-items-center">
+                            <div class="col-md-6 ps-4">
+                                <h2 class="mb-1">Rewards Center</h2>
+                                <p class="text-muted">Redeem your points for exciting rewards!</p>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row text-center">
+                                    <div class="col-6">
+                                        <div class="p-3 rounded bg-white shadow-sm h-100 d-flex flex-column justify-content-between">
+                                            <div class="">
+                                                <h5 class="text-primary mb-1">Credit Points</h5>
+                                                <h3 class="mb-0">350</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="p-3 rounded bg-white shadow-sm h-100 d-flex flex-column justify-content-between">
+                                            <div>
+                                                <h5 class="text-success mb-1">Redeemable Points</h5>
+                                                <h3 class="mb-0">120</h3>
+                                            </div>
+                                            <button class="btn btn-sm btn-outline-success mt-2" data-bs-toggle="modal" data-bs-target="#convertPointsModal">
+                                                <i class="fas fa-exchange-alt me-1"></i> Convert More
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
+                    data-bs-target="#availableRewards-tab-pane" type="button" role="tab"
+                    aria-controls="availableRewards-tab-pane" aria-selected="true">Available Rewards</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
+                    data-bs-target="#redeemedRewards-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane"
+                    aria-selected="false">Redeemed Rewards</button>
+            </li>
+        </ul>
+
+       
+
+        <div id="rewards-container" class="rewards-grid">
+            <div class="loading">Loading rewards...</div>
+        </div>
+
+        <!-- redeemed rewards tab -->
+        <div class="tab-pane fade" id="redeemedRewards-tab-pane" role="tabpanel" aria-labelledby="redeem-rewards-tab"
+            tabindex="0">
+            <!-- redeemed rewards card content -->
+            <div class="row mb-4">
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <span class="badge bg-success mb-2">75 Redeemable Points</span>
+                            <h5 class="card-title">Community Center Rental</h5>
+                            <p class="card-text">Free one-time rental of the community center for your private event (4
+                                hours).</p>
+                            <div class="d-grid">
+                                <button class="btn btn-success" disabled>
+                                    <i class="fas fa-gift me-1"></i> Redeemed
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+         <!-- Convert Points Modal -->
+         <div class="modal fade" id="convertPointsModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Convert Credit Points</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <h6>Available Credits</h6>
+                                        <h3 class="text-primary">350</h3>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="card bg-light">
+                                    <div class="card-body text-center">
+                                        <h6>Redeemable Points</h6>
+                                        <h3 class="text-success">120</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <form>
+                            <div class="mb-3">
+                                <label for="creditPoints" class="form-label">Credit Points to Convert</label>
+                                <input type="number" class="form-control" id="creditPoints" min="10" max="350"
+                                    step="10">
+                                <div class="form-text">Minimum conversion: 10 points. Conversion rate: 1 credit = 0.5
+                                    redeemable points.</div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="redeemableResult" class="form-label">You will receive</label>
+                                <input type="text" class="form-control" id="redeemableResult"
+                                    value="0 redeemable points" readonly>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary">Convert Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">&copy; 2025 Barangay Ligaya. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-white me-2">Privacy Policy</a> |
+                    <a href="#" class="text-white me-2">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/redeem-reward-resident/get-rewards.js"></script>
+    <script src="/js/resident-dashboard.js"></script>
+    <script src="/js/resident-credits-conversion.js"></script>
+    <script src="/js/navbar-login-script.js"></script>
+    <script src="/js/login-status-script.js"></script>
+    <script src="/js/logout-script.js"></script>
+        
+</body>
+    
+
+</html>

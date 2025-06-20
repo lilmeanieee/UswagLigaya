@@ -1,0 +1,850 @@
+<!-- Admin UI w/ Sidebar -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Leaderboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="../../../css/assign_exp_pts-style.css">
+    <link rel="stylesheet" href="../../../css/sidebar-style.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="d-flex ">
+            <!-- Sidebar -->
+            <div class="sidebar min-vh-100 bg-dark text-white p-3">
+                <div class="logo pt-4 pb-1  mb-auto text-center">
+                    <a href="#" class="text-white text-decoration-none">
+                        <img src="../../../asset/img/brgy logo.png" alt="">
+                        <span class="fs-4 d-none d-lg-inline">Brgy Ligaya</span>
+                    </a>
+                </div>
+                <hr class="text-white">
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <!-- Dashboard -->
+                    <li class="nav-item ">
+                        <a href="../dashboard.html" class="nav-link text-white">
+                            <i class="bi bi-grid me-2"></i>
+                            <span class="d-none d-lg-inline">Dashboard</span>
+                        </a>
+                    </li>
+                    <!-- Account -->
+                    <li class="nav-item ">
+                        <a href="../account.html" class="nav-link text-white">
+                            <i class="bi bi-person-vcard-fill me-2"></i>
+                            <span class="d-none d-lg-inline">Account</span>
+                        </a>
+                    </li>
+                    <!-- Manage Residents -->
+                    <li class="nav-item ">
+                        <a href="../manage_residents/resident-info.html" class="nav-link text-white">
+                            <i class="bi bi-people me-2"></i>
+                            <span class="d-none d-lg-inline">Manage Residents</span>
+                        </a>
+                    </li>
+
+                    <!-- Document Issuance-->
+                    <li class="nav-item dropdown">
+                        <!-- Popover for Mobile -->
+                        <a href="#" class="nav-link text-white d-lg-none mobile-popover" title="Document Issuance"
+                            data-bs-toggle="popover" data-bs-html="true" data-bs-placement="right" data-bs-content='
+                                <ul class="list-unstyled mb-0">
+                                    <li><a href="../document_request/document-request-list.html" class="nav-link text-white">Document Request</a></li>
+                                    <li><a href="../document_request/document-issuance.html" class="nav-link nav-link-active list text-white">Document Issuance</a></li>
+                                    <li><a href="../document_request/document-template.html" class="nav-link list text-white">Add Document Template</a></li>
+                                    <li><a href="../document_request/document-report.html" class="nav-link list text-white">Report (Recent Requests)</a></li>
+                                </ul>'>
+                            <i class="bi bi-file-earmark-text"></i>
+                        </a>
+
+                        <!-- Normal dropdown for larger screens -->
+                        <a href="#" class="nav-link text-white dropdown-toggle d-none d-lg-flex"
+                            data-bs-toggle="collapse" data-bs-target="#servicesDropdown">
+                            <i class="bi bi-file-earmark-text me-2"></i>
+                            <span class="d-none d-lg-inline">Document Issuance</span>
+                        </a>
+                        <ul class="collapse list-unstyled " id="servicesDropdown">
+                            <li><a href="../document_request/document-request-list.html"
+                                    class="nav-link list text-white">Document Request</a></li>
+                            <li><a href="../document_request/document-issuance.html"
+                                    class="nav-link nav-link-active list text-white">Document Issuance</a></li>
+                            <li><a href="../document_request/document-template.html"
+                                    class="nav-link list text-white">Add Document Template</a></li>
+                            <li><a href="../document_request/document-report.html"
+                                    class="nav-link list text-white">Report (Recent Requests)</a></li>
+                        </ul>
+                    </li>
+
+                    
+                    <!-- Announcement -->
+                    <li class="nav-item ">
+                        <a href="../announcement_admin.html" class="nav-link text-white">
+                            <i class="bi bi-megaphone me-2"></i>
+                            <span class="d-none d-lg-inline">Announcement</span>
+                        </a>
+                    </li>
+
+                    <!-- Community-->
+
+
+                    <!-- Manage Leaderboards-->
+                    <li class="nav-item dropdown">
+                        <!-- Popover for Mobile -->
+                        <a href="#" class="nav-link active text-white d-lg-none mobile-popover" title="Manage Leaderboards"
+                            data-bs-toggle="popover" data-bs-html="true" data-bs-placement="right" data-bs-content='
+                                <ul class="list-unstyled mb-0">
+                                    <li><a href="../manage_leaderboards/view-leaderboard.html" class="nav-link text-white">View Leaderboard</a></li>
+                                    <li><a href="../manage_leaderboards/achievement&badges.html" class="nav-link nav-link-active text-white">Achievements & Badges</a></li>
+                                </ul>'>
+                            <i class="bi bi-trophy"></i>
+                        </a>
+
+                        <!-- Normal dropdown for larger screens -->
+                        <a href="#" class="nav-link active text-white dropdown-toggle d-none d-lg-flex"
+                            data-bs-toggle="collapse" data-bs-target="#manageLB_Dropdown">
+                            <i class="bi bi-trophy me-2"></i>
+                            <span class="d-none d-lg-inline">Manage Leaderboards</span>
+                        </a>
+                        <ul class="collapse list-unstyled  " id="manageLB_Dropdown">
+                            <li><a href="../manage_leaderboards/view-leaderboard.html" class="nav-link list text-white">View
+                                    Leaderboard</a></li>
+                            <li><a href="../manage_leaderboards/achievement&badges.html" class="nav-link list nav-link-active text-white">Achievements &
+                                    Badges</a></li>
+                        </ul>
+                    </li>
+
+                     <!-- Credit & Redeemable Points Conversion -->
+                     <li class="nav-item">
+                        <a href="../credit_and_redeemable_point_system/conversion-settings.html" class="nav-link text-white ">
+                            <i class="bi bi-wallet me-2"></i>
+                            <span class="d-none d-lg-inline">Credit Points Conversion</span>
+                        </a>
+                    </li>
+
+                    <!-- Reward Management -->
+                    <li class="nav-item dropdown">
+                        <!-- Popover for Mobile -->
+                        <a href="#" class="nav-link text-white d-lg-none mobile-popover" title="Manage Rewards"
+                            data-bs-toggle="popover" data-bs-html="true" data-bs-placement="right" data-bs-content='
+                            <ul class="list-unstyled mb-0">
+                                <li><a href="../reward_management/redemption-request.html" class="nav-link list text-white">Redemption Request</a></li>
+                                <li><a href="../reward_management/rewards-incentives.html" class="nav-link list text-white">Incentives</a></li>
+                            </ul>'>
+                            <i class="bi bi-gift"></i>
+                        </a>
+
+                        <!-- Normal dropdown for larger screens -->
+                        <a href="#" class="nav-link text-white dropdown-toggle d-none d-lg-flex"
+                            data-bs-toggle="collapse" data-bs-target="#reward_Dropdown">
+                            <i class="bi bi-gift me-2"></i>
+                            <span class="d-none d-lg-inline">Manage Rewards</span>
+                        </a>
+                        <ul class="collapse list-unstyled" id="reward_Dropdown">
+                            <li><a href="../reward_management/redemption-request.html"
+                                    class="nav-link list text-white">Redemption Request</a></li>
+                            <li><a href="../reward_management/rewards-incentives.html"
+                                    class="nav-link list text-white">Incentives</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Volunteer Drive -->
+                    <li class="nav-item ">
+                        <a href="../volunteer_drive/attendance-evaluation.html" class="nav-link text-white">
+                            <i class="bi bi-balloon-heart me-2"></i>
+                            <span class="d-none d-lg-inline">Volunteer Drive</span>
+                        </a>
+                    </li>
+
+
+
+                </ul>
+                <!-- Settings -->
+                <hr class="text-white">
+                <div class="pt-4 pb-1  mb-auto">
+                    <a href="#" class="nav-link text-white">
+                        <i class="bi bi-gear me-2"></i>
+                        <span class="d-none d-lg-inline">Settings</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content col min-vh-100">
+                <div class="container content-header">
+                    <!-- Content Header Title -->
+                    <div class="d-flex justify-content-between align-items-center bg-dark text-white p-3">
+                        <h4 class="mb-0">Manage Leaderboard</h4>
+                    </div>
+                    <!-- End Content Header Title -->
+
+
+                    <!-- Main content -->
+                    <main class="col px-md-4">
+                        <div
+                            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h1 class="h3">Assign Experience Points</h1>
+
+                        </div>
+
+                        <!-- Tabs for different editing modes -->
+                        <ul class="nav nav-tabs mb-4" id="editingTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="individual-tab" data-bs-toggle="tab"
+                                    data-bs-target="#individual-content" type="button" role="tab"
+                                    aria-controls="individual-content" aria-selected="true">Individual Editing</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="bulk-tab" data-bs-toggle="tab"
+                                    data-bs-target="#bulk-content" type="button" role="tab" aria-controls="bulk-content"
+                                    aria-selected="false">Bulk Editing</button>
+                            </li>
+
+                            <!-- Tabs for tier management 
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="tier-tab" data-bs-toggle="tab"
+                                    data-bs-target="#tier-content" type="button" role="tab" aria-controls="tier-content"
+                                    aria-selected="false">Tier Management</button>
+                            </li>
+                            -->
+                        </ul>
+
+                        <div class="tab-content" id="editingTabsContent">
+                            <!-- Individual Editing Tab -->
+                            <div class="tab-pane fade show active" id="individual-content" role="tabpanel"
+                                aria-labelledby="individual-tab">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Search User</h5>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <input type="text" class="form-control" id="userSearchInput"
+                                                    placeholder="Search by name or ID">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <button type="button" class="btn btn-primary w-100">Search</button>
+                                            </div>
+                                        </div>
+                                        <div class="card mb-4">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <h5 class="card-title mb-0">Selected Users (45)</h5>
+                                                    <div>
+                                                        <button class="btn btn-sm btn-outline-secondary me-2">Select
+                                                            All</button>
+                                                        <button class="btn btn-sm btn-outline-secondary">Clear
+                                                            Selection</button>
+                                                    </div>
+                                                </div>
+                                                <div class="table-responsive mb-3">
+                                                    <table class="table table-sm">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            title="Select user"
+                                                                            id="selectAllUsers_Indiv">
+                                                                    </div>
+                                                                </th>
+                                                                <th>User</th>
+                                                                <th>Department</th>
+                                                                <th>Current Points</th>
+                                                                <th>Tier</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            checked="" title="Select user">
+                                                                    </div>
+                                                                </td>
+                                                                <td>Emily Johnson</td>
+                                                                <td>Marketing</td>
+                                                                <td>9,845</td>
+                                                                <td>Diamond</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            checked="" title="Select user">
+                                                                    </div>
+                                                                </td>
+                                                                <td>Michael Chen</td>
+                                                                <td>Engineering</td>
+                                                                <td>8,721</td>
+                                                                <td>Diamond</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            checked="" title="Select user">
+                                                                    </div>
+                                                                </td>
+                                                                <td>Sarah Williams</td>
+                                                                <td>Sales</td>
+                                                                <td>7,935</td>
+                                                                <td>Platinum</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            checked="" title="Select user">
+                                                                    </div>
+                                                                </td>
+                                                                <td>James Rodriguez</td>
+                                                                <td>Support</td>
+                                                                <td>6,542</td>
+                                                                <td>Platinum</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input" type="checkbox"
+                                                                            checked="" title="Select user">
+                                                                    </div>
+                                                                </td>
+                                                                <td>Sophia Lee</td>
+                                                                <td>HR</td>
+                                                                <td>5,891</td>
+                                                                <td>Gold</td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                                <div class="text-center">
+                                                    <button class="btn btn-sm btn-outline-secondary">Show More</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- User Points Editor -->
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://via.placeholder.com/50" class="rounded-circle me-3"
+                                                alt="User Avatar">
+                                            <div>
+                                                <h5 class="mb-0">Emily Johnson</h5>
+                                                <span class="text-muted">ID: 10023 | Current Points: 9,845 | Tier:
+                                                    Diamond</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row mb-4">
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="pointsAction" class="form-label">Action</label>
+                                                    <select class="form-select" id="pointsAction">
+                                                        <option value="add">Add Points</option>
+                                                        <option value="subtract">Subtract Points</option>
+                                                        <option value="set">Set Exact Points</option>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="pointsAmount" class="form-label">Points Amount</label>
+                                                    <input type="number" class="form-control" id="pointsAmount" min="0">
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="pointsReason" class="form-label">Reason</label>
+                                                    <select class="form-select" id="pointsReason">
+                                                        <option value="">Select a reason</option>
+                                                        <option value="challenge">Challenge Completion</option>
+                                                        <option value="contest">Contest Win</option>
+                                                        <option value="activity">Activity Participation</option>
+                                                        <option value="bonus">Admin Bonus</option>
+                                                        <option value="correction">Error Correction</option>
+                                                        <option value="other">Other (Specify)</option>
+                                                    </select>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="pointsNote" class="form-label">Note (Optional)</label>
+                                                    <textarea class="form-control" id="pointsNote" rows="3"></textarea>
+                                                </div>
+                                                <button type="button" class="btn btn-primary">Apply Changes</button>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="mb-3">
+                                                    <label for="tierChange" class="form-label">Change Tier</label>
+                                                    <select class="form-select" id="tierChange">
+                                                        <option value="">No Change</option>
+                                                        <option value="diamond">Diamond</option>
+                                                        <option value="platinum">Platinum</option>
+                                                        <option value="gold">Gold</option>
+                                                        <option value="silver">Silver</option>
+                                                        <option value="bronze">Bronze</option>
+                                                    </select>
+                                                </div>
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h6 class="card-subtitle mb-2 text-muted">Recent Point Changes
+                                                        </h6>
+                                                        <ul class="list-group">
+                                                            <li
+                                                                class="list-group-item d-flex justify-content-between align-items-center">
+                                                                <div>
+                                                                    <span class="badge bg-success">+250</span> Contest
+                                                                    Win
+                                                                    <small class="d-block text-muted">March 19, 2025
+                                                                        09:12</small>
+                                                                </div>
+                                                                <button
+                                                                    class="btn btn-sm btn-outline-secondary">Revert</button>
+                                                            </li>
+                                                            <li
+                                                                class="list-group-item d-flex justify-content-between align-items-center">
+                                                                <div>
+                                                                    <span class="badge bg-success">+100</span> Challenge
+                                                                    Completion
+                                                                    <small class="d-block text-muted">March 18, 2025
+                                                                        14:45</small>
+                                                                </div>
+                                                                <button
+                                                                    class="btn btn-sm btn-outline-secondary">Revert</button>
+                                                            </li>
+                                                            <li
+                                                                class="list-group-item d-flex justify-content-between align-items-center">
+                                                                <div>
+                                                                    <span class="badge bg-danger">-50</span> Error
+                                                                    Correction
+                                                                    <small class="d-block text-muted">March 17, 2025
+                                                                        10:30</small>
+                                                                </div>
+                                                                <button
+                                                                    class="btn btn-sm btn-outline-secondary">Revert</button>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Bulk Editing Tab -->
+                            <div class="tab-pane fade" id="bulk-content" role="tabpanel" aria-labelledby="bulk-tab">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Bulk User Selection</h5>
+                                        <p class="card-subtitle mb-3 text-muted">Select users for bulk point
+                                            modification</p>
+                                        <div class="row g-3 mb-4">
+
+                                            <div class="col-md-3">
+                                                <label for="bulkTier" class="form-label">Tier</label>
+                                                <select class="form-select" id="bulkTier">
+                                                    <option value="">All Tiers</option>
+                                                    <option value="diamond">Diamond</option>
+                                                    <option value="platinum">Platinum</option>
+                                                    <option value="gold">Gold</option>
+                                                    <option value="silver">Silver</option>
+                                                    <option value="bronze">Bronze</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="bulkActivity" class="form-label">Activity Status</label>
+                                                <select class="form-select" id="bulkActivity">
+                                                    <option value="">All Users</option>
+                                                    <option value="active">Active (7 days)</option>
+                                                    <option value="inactive">Inactive (30+ days)</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="bulkFilter" class="form-label">Additional Filter</label>
+                                                <select class="form-select" id="bulkFilter">
+                                                    <option value="">None</option>
+                                                    <option value="new">New Users (7 days)</option>
+                                                    <option value="high">High Performers</option>
+                                                    <option value="low">Low Performers</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <button type="button" class="btn btn-primary" id="filterBtn">Filter
+                                            Users</button>
+                                    </div>
+                                </div>
+
+                                <!-- Filtered User List -->
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h5 class="card-title mb-0">Selected Users (45)</h5>
+                                            <div>
+                                                <button class="btn btn-sm btn-outline-secondary me-2">Select
+                                                    All</button>
+                                                <button class="btn btn-sm btn-outline-secondary">Clear
+                                                    Selection</button>
+                                            </div>
+                                        </div>
+                                        <div class="table-responsive mb-3">
+                                            <table class="table table-sm">
+                                                <thead>
+                                                    <tr>
+                                                        <th>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox"
+                                                                    title="Select user" id="selectAllUsers_Bulk">
+                                                            </div>
+                                                        </th>
+                                                        <th>User</th>
+                                                        <th>Department</th>
+                                                        <th>Current Points</th>
+                                                        <th>Tier</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" checked
+                                                                    title="Select user">
+                                                            </div>
+                                                        </td>
+                                                        <td>Emily Johnson</td>
+                                                        <td>Marketing</td>
+                                                        <td>9,845</td>
+                                                        <td>Diamond</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" checked
+                                                                    title="Select user">
+                                                            </div>
+                                                        </td>
+                                                        <td>Michael Chen</td>
+                                                        <td>Engineering</td>
+                                                        <td>8,721</td>
+                                                        <td>Diamond</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" checked
+                                                                    title="Select user">
+                                                            </div>
+                                                        </td>
+                                                        <td>Sarah Williams</td>
+                                                        <td>Sales</td>
+                                                        <td>7,935</td>
+                                                        <td>Platinum</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" checked
+                                                                    title="Select user">
+                                                            </div>
+                                                        </td>
+                                                        <td>James Rodriguez</td>
+                                                        <td>Support</td>
+                                                        <td>6,542</td>
+                                                        <td>Platinum</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" checked
+                                                                    title="Select user">
+                                                            </div>
+                                                        </td>
+                                                        <td>Sophia Lee</td>
+                                                        <td>HR</td>
+                                                        <td>5,891</td>
+                                                        <td>Gold</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="text-center">
+                                            <button class="btn btn-sm btn-outline-secondary">Show More</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Bulk Action Form -->
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Bulk Action</h5>
+                                        <p class="card-subtitle mb-3 text-muted">Apply the same change to all selected
+                                            users</p>
+                                        <div class="row g-3">
+                                            <div class="col-md-4">
+                                                <label for="bulkPointAction" class="form-label">Action</label>
+                                                <select class="form-select" id="bulkPointAction">
+                                                    <option value="add">Add Points</option>
+                                                    <option value="subtract">Subtract Points</option>
+                                                    <option value="percentage">Add Percentage</option>
+                                                    <option value="multiply">Multiply by Factor</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="bulkPointsAmount" class="form-label">Amount</label>
+                                                <input type="number" class="form-control" id="bulkPointsAmount" min="0">
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label for="bulkPointsReason" class="form-label">Reason</label>
+                                                <select class="form-select" id="bulkPointsReason">
+                                                    <option value="">Select a reason</option>
+                                                    <option value="event">Event Participation</option>
+                                                    <option value="campaign">Campaign Completion</option>
+                                                    <option value="adjustment">System Adjustment</option>
+                                                    <option value="other">Other (Specify)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 mt-3">
+                                            <label for="bulkPointsNote" class="form-label">Note (Optional)</label>
+                                            <textarea class="form-control" id="bulkPointsNote" rows="2"></textarea>
+                                        </div>
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="checkbox" id="notifyUsers">
+                                            <label class="form-check-label" for="notifyUsers">
+                                                Notify users about point changes
+                                            </label>
+                                        </div>
+                                        <div class="alert alert-warning">
+                                            <i class="bi bi-exclamation-triangle"></i> You are about to modify points
+                                            for 45 users. This action can be undone individually but not in bulk.
+                                        </div>
+                                        <button type="button" class="btn btn-primary" id="applyBulkBtn">Apply to
+                                            Selected Users</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Tier Management Tab -->
+                            <div class="tab-pane fade" id="tier-content" role="tabpanel" aria-labelledby="tier-tab">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Tier Thresholds</h5>
+                                        <p class="card-subtitle mb-3 text-muted">Define point requirements for each tier
+                                            level</p>
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Tier</th>
+                                                        <th>Min Points</th>
+                                                        <th>Badge</th>
+                                                        <th>Current Users</th>
+                                                        <th>Benefits</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <span class="badge bg-info text-dark">Diamond</span>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" class="form-control form-control-sm"
+                                                                title="Minimum points required for this tier"
+                                                                value="8000">
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <i class="bi bi-gem text-info fs-4 me-2"></i>
+                                                                <span>Diamond Badge</span>
+                                                            </div>
+                                                        </td>
+                                                        <td>24</td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-secondary"
+                                                                data-bs-toggle="modal" data-bs-target="#benefitsModal">
+                                                                View/Edit
+                                                            </button>
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-secondary"
+                                                                title="Edit Tier">
+                                                                <i class="bi bi-pencil"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <span class="badge bg-primary">Platinum</span>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" class="form-control form-control-sm"
+                                                                title="Minimum points required for this tier"
+                                                                value="6000">
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <i class="bi bi-star-fill text-primary fs-4 me-2"></i>
+                                                                <span>Platinum Badge</span>
+                                                            </div>
+                                                        </td>
+                                                        <td>58</td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-secondary"
+                                                                data-bs-toggle="modal" data-bs-target="#benefitsModal">
+                                                                View/Edit
+                                                            </button>
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-secondary"
+                                                                title="Edit Tier">
+                                                                <i class="bi bi-pencil"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <span class="badge bg-warning text-dark">Gold</span>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" class="form-control form-control-sm"
+                                                                title="Minimum points required for this tier"
+                                                                value="4000">
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <i class="bi bi-trophy text-warning fs-4 me-2"></i>
+                                                                <span>Gold Badge</span>
+                                                            </div>
+                                                        </td>
+                                                        <td>125</td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-secondary"
+                                                                data-bs-toggle="modal" data-bs-target="#benefitsModal">
+                                                                View/Edit
+                                                            </button>
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-secondary"
+                                                                title="Edit Tier">
+                                                                <i class="bi bi-pencil"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <span class="badge bg-secondary">Silver</span>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" class="form-control form-control-sm"
+                                                                title="Minimum points required for this tier"
+                                                                value="2000">
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <i
+                                                                    class="bi bi-shield-shaded text-secondary fs-4 me-2"></i>
+                                                                <span>Silver Badge</span>
+                                                            </div>
+                                                        </td>
+                                                        <td>263</td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-secondary"
+                                                                data-bs-toggle="modal" data-bs-target="#benefitsModal">
+                                                                View/Edit
+                                                            </button>
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-secondary"
+                                                                title="Edit Tier">
+                                                                <i class="bi bi-pencil"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <span class="badge bg-danger">Bronze</span>
+                                                        </td>
+                                                        <td>
+                                                            <input type="number" class="form-control form-control-sm"
+                                                                title="Minimum points required for this tier"
+                                                                value="500">
+                                                        </td>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <i class="bi bi-award text-danger fs-4 me-2"></i>
+                                                                <span>Bronze Badge</span>
+                                                            </div>
+                                                        </td>
+                                                        <td>775</td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-secondary"
+                                                                data-bs-toggle="modal" data-bs-target="#benefitsModal">
+                                                                View/Edit
+                                                            </button>
+                                                        </td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-secondary"
+                                                                title="Edit Tier">
+                                                                <i class="bi bi-pencil"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-3">
+                                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal"
+                                                data-bs-target="#newTierModal">
+                                                <i class="bi bi-plus-circle"></i> Add New Tier
+                                            </button>
+                                            <button type="button" class="btn btn-primary" id="saveTierChangesBtn">Save
+                                                Changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Tier Distribution Chart -->
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">User Tier Distribution</h5>
+                                        <div id="tierChart" class="tier-chart">
+                                            <!-- Chart will be rendered here by JavaScript -->
+                                            <div class="d-flex justify-content-center align-items-center h-100">
+                                                <p class="text-muted">Tier distribution chart will appear here</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+                </div>
+            </div>
+
+
+
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+            <script src="leaderboard.js"></script>
+
+        </div>
+    </div>
+    </div>
+    </div>
+
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="../../../js/sidebar-script.js"></script>
+</body>
+
+</html>

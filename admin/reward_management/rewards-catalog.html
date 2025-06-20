@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reward Management </title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="../../../css/reward-redemption-request-style.css">
+    <link rel="stylesheet" href="../../../css/reward-management-style.css">
+    <link rel="stylesheet" href="../../../css/sidebar-style.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row ">
+            <!-- Sidebar -->
+            <div class="sidebar min-vh-100 bg-dark text-white p-3">
+                <div class="logo pt-4 pb-1  mb-auto text-center">
+                    <a href="#" class="text-white text-decoration-none">
+                        <img src="../../../asset/img/brgy logo.png" alt="">
+                        <span class="fs-4 d-none d-sm-inline">BLMS</span>
+                    </a>
+                </div>
+                <hr class="text-white">
+
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <!-- Dashboard -->
+                    <li class="nav-item ">
+                        <a href="../dashboard.html" class="nav-link text-white">
+                            <i class="bi bi-grid me-2"></i>
+                            <span class="d-none d-sm-inline">Dashboard</span>
+                        </a>
+                    </li>
+
+                    <!-- Manage Residents -->
+                    <li class="nav-item ">
+                        <a href="../manage_residents/resident-info.html" class="nav-link text-white">
+                            <i class="bi bi-people me-2"></i>
+                            <span class="d-none d-sm-inline">Manage Residents</span>
+                        </a>
+                    </li>
+
+                    <!-- Document Issuance -->
+                    <li class="nav-item dropdown">
+                        <!-- Popover for Mobile -->
+                        <a href="#" class="nav-link text-white d-sm-none mobile-popover" title="Document Issuance"
+                            data-bs-toggle="popover" data-bs-html="true" data-bs-placement="right" data-bs-content='
+                                <ul class="list-unstyled mb-0">
+                                    <li><a href="../document_request/document-request-list.html" class="nav-link text-white">Document Request</a></li>
+                                    <li><a href="../document_requestdocument-issuance.html" class="nav-link nav-link-active text-white">Document Issuance</a></li>
+                                    <li><a href="../document_request/document-template.html" class="nav-link list text-white">Add Document Template</a></li>
+                                    <li><a href="../document_request/document-report.html" class="nav-link list text-white">Report (Recent Requests)</a></li>
+                                </ul>'>
+                            <i class="bi bi-file-earmark-text"></i>
+                        </a>
+
+                        <!-- Normal dropdown for larger screens -->
+                        <a href="#" class="nav-link text-white dropdown-toggle d-none d-sm-flex"
+                            data-bs-toggle="collapse" data-bs-target="#servicesDropdown">
+                            <i class="bi bi-file-earmark-text me-2"></i>
+                            <span class="d-none d-sm-inline">Document Issuance</span>
+                        </a>
+                        <ul class="collapse list-unstyled " id="servicesDropdown">
+                            <li><a href="../document_request/document-request-list.html"
+                                    class="nav-link list text-white">Document Request</a></li>
+                            <li><a href="../document_requestdocument-issuance.html"
+                                    class="nav-link nav-link-active text-white">Document Issuance</a></li>
+                            <li><a href="../document_request/document-template.html"
+                                    class="nav-link list text-white">Add Document Template</a></li>
+                            <li><a href="../document_request/document-report.html"
+                                    class="nav-link list text-white">Report (Recent Requests)</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Announcement -->
+                    <li class="nav-item ">
+                        <a href="../announcement_admin.html" class="nav-link text-white">
+                            <i class="bi bi-megaphone me-2"></i>
+                            <span class="d-none d-sm-inline">Announcement</span>
+                        </a>
+                    </li>
+
+
+
+                    <!-- Manage Leaderboards-->
+                    <li class="nav-item dropdown">
+                        <!-- Popover for Mobile -->
+                        <a href="#" class="nav-link text-white d-sm-none mobile-popover" title="Manage Leaderboards"
+                            data-bs-toggle="popover" data-bs-html="true" data-bs-placement="right" data-bs-content='
+                                <ul class="list-unstyled mb-0">
+                                    <li><a href="../manage_leaderboards/view-leaderboard.html" class="nav-link text-white">View Leaderboard</a></li>
+                                     <li><a href="../manage_leaderboards/achievement&badges.html" class="nav-link text-white">Achievements & Badges</a></li>
+                                </ul>'>
+                            <i class="bi bi-trophy"></i>
+                        </a>
+
+                        <!-- Normal dropdown for larger screens -->
+                        <a href="#" class="nav-link text-white dropdown-toggle d-none d-sm-flex"
+                            data-bs-toggle="collapse" data-bs-target="#manageLB_Dropdown">
+                            <i class="bi bi-trophy me-2"></i>
+                            <span class="d-none d-sm-inline">Manage Leaderboards</span>
+                        </a>
+                        <ul class="collapse list-unstyled" id="manageLB_Dropdown">
+                            <li><a href="../manage_leaderboards/view-leaderboard.html"
+                                    class="nav-link list text-white">View
+                                    Leaderboard</a></li>
+                            <li><a href="../manage_leaderboards/achievement&badges.html"
+                                    class="nav-link list text-white">Achievements &
+                                    Badges</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Reward Management -->
+                    <li class="nav-item dropdown">
+                        <!-- Popover for Mobile -->
+                        <a href="#" class="nav-link text-white d-sm-none mobile-popover" title="Manage Rewards"
+                            data-bs-toggle="popover" data-bs-html="true" data-bs-placement="right" data-bs-content='
+                                <ul class="list-unstyled mb-0">
+                                    <li><a href="redemption-request.html" class="nav-link  nav-link-active text-white">Redemption Request</a></li>
+                                    <li><a href="rewards-incentives.html" class="nav-link text-white">Incentives</a></li>
+                                    <li><a href="rewards-catalog.html" class="nav-link text-white">Reward Catalog</a></li>
+                                    <li><a href="redemption-history.html" class="nav-link text-white">Redemption History</a></li>
+                                </ul>'>
+                            <i class="bi bi-gift"></i>
+                        </a>
+
+                        <!-- Normal dropdown for larger screens -->
+                        <a href="#" class="nav-link text-white dropdown-toggle d-none d-sm-flex"
+                            data-bs-toggle="collapse" data-bs-target="#reward_Dropdown">
+                            <i class="bi bi-gift me-2"></i>
+                            <span class="d-none d-sm-inline">Manage Rewards</span>
+                        </a>
+                        <ul class="collapse list-unstyled" id="reward_Dropdown">
+                            <li><a href="redemption-request.html" class="nav-link  nav-link-active text-white">Redemption Request</a></li>
+                                    <li><a href="rewards-incentives.html" class="nav-link text-white">Incentives</a></li>
+                                    <li><a href="rewards-catalog.html" class="nav-link text-white">Reward Catalog</a></li>
+                                    <li><a href="redemption-history.html" class="nav-link text-white">Redemption History</a></li>
+                               
+                        </ul>
+                    </li>
+
+                    <!-- Volunteer Drive -->
+                    <li class="nav-item dropdown">
+                        <!-- Popover for Mobile -->
+                        <a href="#" class="nav-link text-white d-sm-none mobile-popover" title="Volunteer Drive "
+                            data-bs-toggle="popover" data-bs-html="true" data-bs-placement="right" data-bs-content='
+                            <ul class="list-unstyled mb-0">
+                                <li><a href="../volunteer_drive/volunteer-application.html" class="nav-link list text-white">Volunteer
+                                    Applicants</a></li>
+                                <li><a href="../volunteer_drive/attendance-evaluation.html" class="nav-link list text-white">Attendance
+                                        Evaluation</a></li>
+                                <li><a href="../volunteer_drive/volunteer-report.html" class="nav-link list text-white">Report Log</a></li>
+                            </ul>'>
+                            <i class="bi bi-balloon-heart"></i>
+                        </a>
+
+                        <!-- Normal dropdown for larger screens -->
+                        <a href="#" class="nav-link text-white dropdown-toggle d-none d-sm-flex"
+                            data-bs-toggle="collapse" data-bs-target="#volunteer_Dropdown">
+                            <i class="bi bi-balloon-heart me-2"></i>
+                            <span class="d-none d-sm-inline">Volunteer Drive </span>
+                        </a>
+                        <ul class="collapse list-unstyled" id="volunteer_Dropdown">
+                            <li><a href="../volunteer_drive/volunteer-application.html"
+                                    class="nav-link list text-white">Volunteer
+                                    Applicants</a></li>
+                            <li><a href="../volunteer_drive/attendance-evaluation.html"
+                                    class="nav-link list text-white">Attendance
+                                    Evaluation</a></li>
+                            <li><a href="../volunteer_drive/volunteer-report.html" class="nav-link list text-white">Report
+                                    Log</a></li>
+
+                        </ul>
+                    </li>
+
+                </ul>
+                <!-- Settings -->
+                <hr class="text-white">
+                <div class="pt-4 pb-1  mb-auto">
+                    <a href="#" class="nav-link text-white">
+                        <i class="bi bi-gear me-2"></i>
+                        <span class="d-none d-sm-inline">Settings</span>
+                    </a>
+                </div>
+                <!-- Sign out -->
+                <hr class="text-white">
+                <div class="pt-4 pb-1  mb-auto">
+                    <a href="#" class="nav-link text-white" id="logoutBtn">
+                        <i class="bi bi-box-arrow-left me-2"></i>
+                        <span class="d-none d-sm-inline">Sign out</span>
+                    </a>
+                </div>
+
+
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content col-lg-10 content">
+                <div class="container content-header">
+                    <!-- Content Header Title -->
+                    <div class="d-flex justify-content-between align-items-center bg-dark text-white p-3">
+                        <h4 class="mb-0">Reward Management</h4>
+                    </div>
+                    <!-- End Content Header Title -->
+
+                    <!-- Main -->
+                    <main class="col-md-9 col-lg-10 px-md-4 pt-3">
+                        <h3 class="mb-3">Complete Rewards Catalog</h3>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <input type="text" class="form-control" placeholder="Search rewards..."
+                                    id="catalogSearch">
+                            </div>
+                            <div class="col-md-3">
+                                <label for="catalogFilter" class="form-label">Filter Rewards</label>
+                                <select class="form-select" id="catalogFilter">
+                                    <option value="all">All Rewards</option>
+                                    <option value="available">Available Only</option>
+                                    <option value="expired">Expired Only</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="catalogSort" class="form-label">Sort Rewards</label>
+                                <select class="form-select" id="catalogSort">
+                                    <option value="name">Sort by Name</option>
+                                    <option value="points">Sort by Points</option>
+                                    <option value="popularity">Sort by Popularity</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row" id="rewardsCatalogGrid">
+                            <!-- Populated by JavaScript -->
+                        </div>
+                    </main>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+
+    <script src="../../../js/sidebar-script.js"></script>
+    <script src="../../../js/logout-script.js"></script>
+    <script src="../../../js/reward-management-script.js"></script>
+    <script src="../../../js/reward-management-SAMPLE-script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Leaderboard</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+    <link rel="stylesheet" href="../../../css/view_leaderboard-style.css">
+    <link rel="stylesheet" href="../../../css/sidebar-style.css">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="d-flex ">
+            <!-- Sidebar -->
+            <div class="sidebar min-vh-100 bg-dark text-white p-3">
+                <div class="logo pt-4 pb-1  mb-auto text-center">
+                    <a href="#" class="text-white text-decoration-none">
+                        <img src="../../../asset/img/brgy logo.png" alt="">
+                        <span class="fs-4 d-none d-lg-inline">BLMS</span>
+                    </a>
+                </div>
+                <hr class="text-white">
+                <ul class="nav nav-pills flex-column mb-auto">
+                    <!-- Dashboard -->
+                    <li class="nav-item ">
+                        <a href="../dashboard.html" class="nav-link text-white">
+                            <i class="bi bi-grid me-2"></i>
+                            <span class="d-none d-lg-inline">Dashboard</span>
+                        </a>
+                    </li>
+                    <!-- Account -->
+                    <li class="nav-item ">
+                        <a href="../account.html" class="nav-link text-white">
+                            <i class="bi bi-person-vcard-fill me-2"></i>
+                            <span class="d-none d-lg-inline">Account</span>
+                        </a>
+                    </li>
+                    <!-- Manage Residents -->
+                    <li class="nav-item ">
+                        <a href="../manage_residents/resident-info.html" class="nav-link text-white">
+                            <i class="bi bi-people me-2"></i>
+                            <span class="d-none d-lg-inline">Manage Residents</span>
+                        </a>
+                    </li>
+
+                    <!-- Document Issuance-->
+                    <li class="nav-item dropdown">
+                        <!-- Popover for Mobile -->
+                        <a href="#" class="nav-link text-white d-lg-none mobile-popover" title="Document Issuance"
+                            data-bs-toggle="popover" data-bs-html="true" data-bs-placement="right" data-bs-content='
+                                <ul class="list-unstyled mb-0">
+                                    <li><a href="../document_request/document-request-list.html" class="nav-link text-white">Document Request</a></li>
+                                    <li><a href="../document_request/document-template.html" class="nav-link list text-white">Add Document Template</a></li>
+                                </ul>'>
+                            <i class="bi bi-file-earmark-text"></i>
+                        </a>
+
+                        <!-- Normal dropdown for larger screens -->
+                        <a href="#" class="nav-link text-white dropdown-toggle d-none d-lg-flex"
+                            data-bs-toggle="collapse" data-bs-target="#servicesDropdown">
+                            <i class="bi bi-file-earmark-text me-2"></i>
+                            <span class="d-none d-lg-inline">Document Issuance</span>
+                        </a>
+                        <ul class="collapse list-unstyled " id="servicesDropdown">
+                            <li><a href="../document_request/document-request-list.html"
+                                    class="nav-link list text-white">Document Request</a></li>
+                            <li><a href="../document_request/document-template.html"
+                                    class="nav-link list text-white">Add Document Template</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Announcement -->
+                    <li class="nav-item ">
+                        <a href="../announcement_admin.html" class="nav-link text-white">
+                            <i class="bi bi-megaphone me-2"></i>
+                            <span class="d-none d-lg-inline">Announcement</span>
+                        </a>
+                    </li>
+
+                    <!-- Community-->
+
+                    <!-- Manage Leaderboards-->
+                    <li class="nav-item dropdown">
+                        <!-- Popover for Mobile -->
+                        <a href="#" class="nav-link active text-white d-lg-none mobile-popover"
+                            title="Manage Leaderboards" data-bs-toggle="popover" data-bs-html="true"
+                            data-bs-placement="right" data-bs-content='
+                                <ul class="list-unstyled mb-0">
+                                    <li><a href="../manage_leaderboards/view-leaderboard.html" class="nav-link nav-link-active text-white">View Leaderboard</a></li>
+                                    <li><a href="../manage_leaderboards/achievement&badges.html" class="nav-link  text-white">Achievements & Badges</a></li>
+                                </ul>'>
+                            <i class="bi bi-trophy"></i>
+                        </a>
+
+                        <!-- Normal dropdown for larger screens -->
+                        <a href="#" class="nav-link active text-white dropdown-toggle d-none d-lg-flex"
+                            data-bs-toggle="collapse" data-bs-target="#manageLB_Dropdown">
+                            <i class="bi bi-trophy me-2"></i>
+                            <span class="d-none d-lg-inline">Manage Leaderboards</span>
+                        </a>
+                        <ul class="collapse list-unstyled  " id="manageLB_Dropdown">
+                            <li><a href="../manage_leaderboards/view-leaderboard.html"
+                                    class="nav-link list nav-link-active text-white">View
+                                    Leaderboard</a></li>
+                            <li><a href="../manage_leaderboards/achievement&badges.html"
+                                    class="nav-link list  text-white">Achievements &
+                                    Badges</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Credit & Redeemable Points Conversion -->
+                    <li class="nav-item">
+                        <a href="../credit_and_redeemable_point_system/conversion-settings.html"
+                            class="nav-link text-white ">
+                            <i class="bi bi-wallet me-2"></i>
+                            <span class="d-none d-lg-inline">Credit Points Conversion</span>
+                        </a>
+                    </li>
+
+
+                    <!-- Volunteer Drive -->
+                    <li class="nav-item ">
+                        <a href="../volunteer_drive/attendance-evaluation.html" class="nav-link text-white">
+                            <i class="bi bi-balloon-heart me-2"></i>
+                            <span class="d-none d-lg-inline">Volunteer Drive</span>
+                        </a>
+                    </li>
+
+
+                </ul>
+                <!-- Settings -->
+                <hr class="text-white">
+                <div class=" mb-auto">
+                    <a href="#" class="nav-link text-white">
+                        <i class="bi bi-gear me-2"></i>
+                        <span class="d-none d-lg-inline">Settings</span>
+                    </a>
+                </div>
+                <!-- Sign out -->
+                <hr class="text-white">
+                <div class=" mb-auto">
+                    <a href="#" class="nav-link text-white" id="logoutBtn">
+                        <i class="bi bi-box-arrow-left me-2"></i>
+                        <span class="d-none d-lg-inline">Sign out</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content col min-vh-100">
+                <div class="container content-header">
+                    <!-- Content Header Title -->
+                    <div class="d-flex justify-content-between align-items-center bg-dark text-white p-3">
+                        <h4 class="mb-0">Manage Leaderboard</h4>
+                    </div>
+                </div>
+                <!-- End Content Header Title -->
+
+                <div class="container mb-5">
+                    <div class="container mb-5" id="leaderboard-section">
+                        <div
+                            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h3 class=" ">Leaderboard Management</h3>
+                            <div class="btn-toolbar mb-2 mb-md-0">
+                                <div class="btn-group me-2">
+                                    <button type="button" class="btn btn-lg btn-outline-danger" data-bs-toggle="modal"
+                                        data-bs-target="#resetLeaderboardModal"
+                                        title="This will reset the leaderboard and convert all credit points into redeemable points.">
+                                        <i class="bi bi-arrow-counterclockwise"></i> Reset Leaderboard
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Filters Row -->
+                        <div class="row mb-4 filters-row ">
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                    <input type="text" class="form-control" id="nameSearch"
+                                        placeholder="Search by name">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="sortOption" class="form-label visually-hidden">Sort Options</label>
+                                <select class="form-select" id="sortOption">
+                                    <option value="rank">Sort by Rank</option>
+                                    <option value="name">Sort by Name</option>
+                                    <option value="points">Sort by Points (High to Low)</option>
+                                    <option value="pointsAsc">Sort by Points (Low to High)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label for="timeFilter" class="visually-hidden">Time Filter</label>
+                                <select class="form-select" id="timeFilter">
+                                    <option value="all">All Time</option>
+                                    <option value="weekly">This Week</option>
+                                    <option value="monthly">This Month</option>
+                                    <option value="quarterly">This Quarter</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <button class="btn btn-primary w-100" id="applyFilters">Apply Filters</button>
+                            </div>
+                        </div>
+
+                        <!-- Leaderboard Table -->
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover table-lg align-middle">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Rank</th>
+                                        <th scope="col">Resident</th>
+                                        <th scope="col">Total Credit Points</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="leaderboardBody">
+                                    <td class="">1</td>
+                                    <td>Resident Name </td>
+                                    <td>1000  pts</td>
+                                    <td>
+                                        <button class="action-btn view-btn view-history-btn rounded-circle"
+                                            data-resident-id="${resident.id}" data-bs-toggle="tooltip"
+                                            title="View XP History">
+                                            <i class="bi bi-clock-history"></i>
+                                        </button>
+                                        <button class="action-btn remove-btn remove-resident-btn rounded-circle"
+                                            data-resident-id="${resident.id}" data-bs-toggle="tooltip"
+                                            title="Remove from Leaderboard">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                    <!-- Table content will be populated by JavaScript -->
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+    <script src="../../../js/sidebar-script.js"></script>
+    <script src="../../../js/leaderboard-GENERAL-script.js"></script>
+</body>
+
+</html>

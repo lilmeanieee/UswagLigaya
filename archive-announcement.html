@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Archive Announcement</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Archived Announcements</h1>
+    </header>
+
+    <main>
+        <table id="archive-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Date Posted</th>
+                    <th>Date Archived</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Example Static Rows -->
+                <tr>
+                    <td>1</td>
+                    <td>Volunteer Drive Announcement</td>
+                    <td>Volunteer Drive</td>
+                    <td>2025-03-20</td>
+                    <td>2025-04-01</td>
+                    <td>Inactive</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Upcoming Event: Food Drive</td>
+                    <td>Upcoming Event</td>
+                    <td>2025-03-15</td>
+                    <td>2025-03-30</td>
+                    <td>Inactive</td>
+                </tr>
+                <!-- Dynamic data rows will be inserted here using JS -->
+            </tbody>
+        </table>
+        <script src="../js/archive-announcement.js"></script>
+    </main>
+
+    <footer>
+        <!-- Optional footer content -->
+    </footer>
+</body>
+</html>

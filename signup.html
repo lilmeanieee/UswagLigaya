@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="../css/signup-style.css">
+</head>
+
+<body>
+    <div class="container-sm">
+        <form action="../handlers_php/sign-up.php" method="POST" class="form-group">
+            <div class=" bg p-4">
+                <button type="button" class="btn-close btn-close-white" aria-label="Close" onclick="history.back();"></button>
+        
+                <h2 class="text-center mb-3">Create Account</h2>
+                <div class="row">
+                    <div class="col-sm-6 mb-3">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" name="first_name" id="floatingFName" placeholder=" " required>
+                            <label for="floatingFName">First Name</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 mb-3">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" name="last_name" id="floatingLName" placeholder=" " required>
+                            <label for="floatingLName">Last Name</label>
+                        </div> 
+                    </div>
+                </div>
+        
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" name="contact_number" placeholder="01234567890" required>
+                    <label>Contact Number</label>
+                </div>
+                <div class="form-floating mb-3 ">
+                    <input type="email" class="form-control" name="email" placeholder="name@ligaya.gensan.com" required>
+                    <label>Email</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" name="password" placeholder="Password" required>
+                    <label>Password</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" name="confirm_password" placeholder="Confirm Password" required>
+                    <label>Confirm Password</label>
+                </div>
+        
+                <button class="btn btn-register" type="submit">Register</button>
+                <div class="register-link">
+                    <p>Already have an account?</p>
+                    <a href="../html/login.html">Log in</a>
+                </div>
+            </div>
+        </form>
+        
+</form>
+
+    </div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

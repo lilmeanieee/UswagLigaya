@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- FullCalendar CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css">
+
+
+    <link rel="stylesheet" href="css/home.css">
+    <link rel="stylesheet" href="css/public_navbar.css">
+</head>
+
+<body>
+    <!--navbar -->
+    <nav class="navbar navbar-header navbar-expand-lg bg-light fixed-top">
+        <div class="container-fluid">
+            <!-- hamburger collapsed menu button besides the logo -->
+            <div class="d-flex align-items-center">
+                <!-- hamburger menu button -->
+                <button class="navbar-toggler " type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" title="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <!-- navbar logo -->
+                <div class="navbar-logo ">
+                    <img src="asset/img/brgy_official_seal.png" alt="Barangay Ligaya official seal">
+                    <a class="me-auto navbar-brand " href="html/home.html">Ligaya</a>
+                </div>
+            </div>
+
+
+            <!-- Offcanvas Menu Content -->
+            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
+                aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Logo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
+                        <!-- nav home -->
+                        <li class="nav-item">
+                            <a class="mx-md-2 nav-link active" aria-current="page" href="html/home.html">Home</a>
+                        </li>
+                        <!-- nav about -->
+                        <li class="nav-item">
+                            <a class="mx-md-2 nav-link" href="html/about.html">About</a>
+                        </li>
+
+                        <!-- nav services -->
+                        <li class="nav-item">
+                            <a class="mx-md-2 nav-link" href="html/home.html#service">Service</a>
+                        </li>
+
+                        <!-- nav announcement -->
+                        <li class="nav-item dropdown">
+                            <a class="mx-md-2 nav-link dropdown-toggle" href="html/announcement-section" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Announcement
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="html/announcement.html#news-updates">News &
+                                        Updates</a></li>
+                                <li><a class="dropdown-item" href="html/announcement.html#upcoming-events">Upcomming
+                                        Events</a></li>
+                                <li><a class="dropdown-item" href="html/announcement.html#special-announcements">Barangay
+                                        Volunteer Drive</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- nav leaderboard -->
+                        <li class="nav-item">
+                            <a class="mx-md-2 nav-link" href="html/leaderboard.html">Leaderboard</a>
+                        </li>
+
+                        <!-- nav project tracking -->
+                        <li class="nav-item">
+                            <a class="mx-md-2 nav-link" href="html/track-project.html">Brgy Projects</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Login & Menu Button Group -->
+            <div class="d-flex align-items-center">
+                <!-- Login button (shown when user is not logged in) -->
+                <a href="html/login.html" class="btn login-button" id="loginButton">Login</a>
+
+                <!-- User icon with dropdown (shown when user is logged in) -->
+                <!-- Login & Menu Button Group -->
+            <div class="d-flex align-items-center">
+               
+
+                <!-- User icon with dropdown (shown when user is logged in) -->
+                <div class="dropdown user-dropdown hidden" id="userDropdown">
+                    <button class="btn dropdown-toggle user-icon-button" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <img src="asset/img/default_acc_icon.png" alt="User" class="user-icon">
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <h6 class="dropdown-header user-name" id="userName">User Name</h6>
+                        </li>
+                        <li><a class="dropdown-item" href="html/residents/dashboard.html">Dashboard</a></li>
+                        <li><a class="dropdown-item" href="html/residents/convert-points.html">Convert Points</a></li>
+                        <li><a class="dropdown-item" href="html/residents/redeem-rewards.html">Redeem Rewards</a></li>
+                        <li><a class="dropdown-item" href="html/residents/document-request.html">Document Requests</a></li>
+                        <li><a class="dropdown-item" href="html/residents/request-document.html">Request Document</a></li>
+
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="html/residents/settings.html">Settings</a></li>
+
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="html/home.html" id="logoutButton">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!--navbar end-->
+
+    <div class="main-content">
+        <!--hero section-->
+        <section class="hero-section">
+            <div class="container d-flex align-items-center justify-content-center fs-1
+         text-white flex-column text-center">
+                <h1>Connecting People, Building Community</h1>
+                <h2>We are dedicated to making local services more accessible and efficient.
+                    Whether you need official documents, healthcare assistance,
+                    or community programs, we are here to serve you.</h2>
+                <a href="#service" class="btn view-service-button">View Services</a>
+
+            </div>
+        </section>
+        <!--hero section end-->
+
+        <!--about section-->
+        <section class="about-section" id="about">
+            <div class="row">
+                <div class="col-12 text-center mb-10">
+                    <h2 class="section-title">About Us</h2>
+                    <div class="section-divider"></div>
+                    <div class="about-content">
+                        <div class="about-description mx-2">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed dictum leo in lacinia
+                                accumsan.
+                                Maecenas id erat id ligula consectetur consectetur. Cras tempus lacus mi, vel aliquet ex
+                                rhoncus nec.
+                                Fusce cursus, purus et porttitor mattis, sapien justo elementum diam, quis tempus dolor
+                                lectus vitae elit.
+                                Ut tellus ante, congue nec tincidunt eget, bibendum ac arcu.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--about section end-->
+
+        <!--service section-->
+        <section class="service-section" id="service">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h2 class="section-title">Barangay Offered Services</h2>
+                    <div class="section-divider"></div>
+                </div>
+                <div class="container">
+                    <div class="custom-card-row row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 g-3">
+                        <div class="col custom-card-col">
+                            <div class="card h-100 custom-card">
+                                <img src="asset/img/docu_req_icon.png"
+                                    class="custom-card-img card-img-top img-fluid rounded-start"
+                                    alt="Document Request Icon">
+                                <div class="card-body">
+                                    <h5 class="card-title">Document Requests </h5>
+                                    <p class="card-text">Request for barangay documents such as clearance, permits,
+                                        certifications,
+                                        and cedula.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col custom-card-col">
+                            <div class="card h-100 custom-card">
+                                <img src="asset/img/announcement_icon.png"
+                                    class="custom-card-img card-img-top img-fluid rounded-start"
+                                    alt="Megaphone Public Announcement Icon">
+                                <div class="card-body">
+                                    <h5 class="card-title">Public Announcements</h5>
+                                    <p class="card-text">Disseminating important important updates, events, and public
+                                        notices–
+                                        such
+                                        as, job fairs, barangay activities,
+                                        and warning during calamities.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col custom-card-col">
+                            <div class="card h-100 custom-card">
+                                <img src="asset/img/med_checkup_icon.png"
+                                    class="custom-card-img card-img-top img-fluid rounded-start"
+                                    alt="Medical Check-up Icon">
+                                <div class="card-body">
+                                    <h5 class="card-title">Medical Consultation </h5>
+                                    <p class="card-text">Offers scheduled free basic medical check-ups, and
+                                        consultations
+                                        for
+                                        residents.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col custom-card-col">
+                            <div class="card h-100 custom-card">
+                                <img src="asset/img/garbage_truck_icon.png"
+                                    class="custom-card-img card-img-top img-fluid rounded-start" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">Garbage Collection </h5>
+                                    <p class="card-text">Ensures a systematic waste collection schedule.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col custom-card-col">
+                            <div class="card h-100 custom-card">
+                                <img src="asset/img/sports_activity_icon.png"
+                                    class="custom-card-img card-img-top img-fluid rounded-start" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">Sports & Recreation Programs</h5>
+                                    <p class="card-text">Basketball leagues, talent contests, and youth development
+                                        activities.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col custom-card-col">
+                            <div class="card h-100 custom-card">
+                                <img src="asset/img/printing_service_icon.png"
+                                    class="custom-card-img card-img-top img-fluid rounded-start" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">Free Document Printing</h5>
+                                    <p class="card-text">Offers free printing services to assist residents who need
+                                        essential
+                                        documents printed</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--service section end-->
+
+        <!--anouncement section-->
+        <section class="announcement-section" id="anouncement">
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center mb-4">
+                        <h2 class="section-title">Announcements & News</h2>
+                        <div class="section-divider"></div>
+                    </div>
+                </div>
+                <div class="row news-container">
+                    <div class="col-md-4 mb-4">
+                        <div class="card news-card">
+                            <img src="asset/img/neighborhood-illustration.png" class="card-img-top" alt="Community ">
+                            <div class="card-body">
+                                <div class="news-date">March 15, 2025</div>
+                                <h5 class="card-title">New Community Garden Opening</h5>
+                                <p class="card-text">Join us for the grand opening of our community garden, a new green
+                                    space where neighbors can grow food and build connections.</p>
+                                <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card news-card">
+                            <img src="asset/img/neighborhood-illustration.png" class="card-img-top" alt="">
+                            <div class="card-body">
+                                <div class="news-date">March 10, 2025</div>
+                                <h5 class="card-title">Youth Mentor Program Launches</h5>
+                                <p class="card-text">Our new mentor program pairs local youth with accomplished
+                                    professionals to provide guidance and support for future careers.</p>
+                                <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-4">
+                        <div class="card news-card">
+                            <img src="asset/img/neighborhood-illustration.png" class="card-img-top" alt="">
+                            <div class="card-body">
+                                <div class="news-date">March 5, 2025</div>
+                                <h5 class="card-title">Local Business Spotlight Series</h5>
+                                <p class="card-text">We're excited to announce our new monthly feature highlighting the
+                                    diverse small businesses that make our community special.</p>
+                                <a href="#" class="btn btn-sm btn-outline-primary">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12 text-center">
+                        <a href="html/announcement.html" class="btn btn-primary">View All News</a>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+        <!--anouncement section end-->
+
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">&copy; 2025 Barangay Ligaya. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-white me-2">Privacy Policy</a> |
+                    <a href="#" class="text-white me-2">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+
+    <script src="js/navbar-login-script.js"></script>
+    <script src="js/login-status-script.js"></script>
+    <script src="js/logout-script.js"></script>
+
+</body>
+
+</html>
