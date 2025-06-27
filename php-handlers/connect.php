@@ -1,7 +1,7 @@
 <?php
-$host = "127.0.0.1";
-$user = "u722205397_admin";
-$pass = "Ligaya2025";
+$host = "localhost";
+$user = "root";
+$pass = "";
 $db = "u722205397_dbfiles";
 
 // MySQLi connection

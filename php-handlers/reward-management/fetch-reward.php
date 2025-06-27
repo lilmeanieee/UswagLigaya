@@ -26,7 +26,7 @@ if ($result && $result->num_rows > 0) {
             "type" => $row["reward_type"],
             "description" => $row["description"],
             "points" => $row["points_required"],
-            "image" => "/uploads/rewards/" . $row["image_url"]  // Absolute path from root
+            "image" => "/UswagLigaya/uploads/rewards/" . $row["image_url"]  // Absolute path from root
         ];
     }
 }

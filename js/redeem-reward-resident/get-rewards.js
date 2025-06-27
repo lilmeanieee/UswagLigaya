@@ -9,7 +9,7 @@ function switchTab(tab) {
 }
 
 function getImagePath(imageUrl) {
-    return imageUrl ? `../../uploads/rewards/${imageUrl}` : null;
+    return imageUrl ? `/UswagLigaya/uploads/rewards/${imageUrl}` : null;
 }
 
 function createRewardCard(reward) {
@@ -50,7 +50,7 @@ function loadRewards() {
     container.innerHTML = '<div class="loading">Loading rewards...</div>';
     
     // Updated fetch URL to use the correct path
-    fetch(`/php-handlers/redeem-rewards-residents/get-reward.php?tab=${currentTab}`)
+    fetch(`/UswagLigaya/php-handlers/redeem-rewards-residents/get-reward.php?tab=${currentTab}`)
         .then(response => {
             // Check if response is ok
             if (!response.ok) {
@@ -88,7 +88,7 @@ function loadRewards() {
 function redeemReward(rewardId) {
     if (confirm('Are you sure you want to redeem this reward?')) {
         // Updated fetch URL to use the correct path
-        fetch('../php-handlers/redeem-rewards-residents/redeem-reward.php', {
+        fetch('/UswagLigaya/php-handlers/redeem-rewards-residents/redeem-reward.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const user = JSON.parse(userData);
                 const residentId = user.resident_id;
 
-                fetch('/php-handlers/join-volunteer.php', {
+                fetch('/UswagLigaya/php-handlers/join-volunteer.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'

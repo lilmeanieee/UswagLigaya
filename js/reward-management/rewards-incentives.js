@@ -2,8 +2,8 @@
 async function loadRewards() {
     try {
         console.log('Loading rewards...');
-        const response = await fetch('php-handlers/reward-management/fetch-reward.php');
-        
+        const response = await fetch('/UswagLigaya/php-handlers/reward-management/fetch-reward.php');
+
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -105,7 +105,7 @@ document.getElementById('rewardForm').addEventListener('submit', async function 
     console.log('FormData created, sending request...');
 
     try {
-        const response = await fetch('php-handlers/reward-management/add-reward.php', {
+        const response = await fetch('/UswagLigaya/php-handlers/reward-management/add-reward.php', {
             method: 'POST',
             body: formData
         });

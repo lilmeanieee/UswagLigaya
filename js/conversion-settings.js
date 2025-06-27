@@ -25,7 +25,7 @@ function saveRate() {
     formData.append('credit_points', creditPoints);
     formData.append('redeemable_points', redeemPoints);
 
-    fetch('/php-handlers/insert-conversion-rate.php', {
+    fetch('/UswagLigaya/php-handlers/insert-conversion-rate.php', {
         method: 'POST',
         body: formData
     })
@@ -56,7 +56,7 @@ function saveThreshold() {
     const formData = new FormData();
     formData.append('minimum_points_required', minThreshold);
 
-    fetch('/php-handlers/insert-conversion-threshold.php', {
+    fetch('/UswagLigaya/php-handlers/insert-conversion-threshold.php', {
         method: 'POST',
         body: formData
     })
@@ -77,7 +77,7 @@ function saveThreshold() {
 }
 
 function fetchCurrentSettings() {
-    fetch('/php-handlers/get-conversion-settings.php')
+    fetch('/UswagLigaya/php-handlers/get-conversion-settings.php')
         .then(res => res.json())
         .then(data => {
             if (data.success) {

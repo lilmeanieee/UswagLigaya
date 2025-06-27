@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Then fetch fresh data from server
     if (userData && userData.resident_id) {
-        fetch('/php-handlers/get-resident-data.php', {
+        fetch('/UswagLigaya/php-handlers/get-resident-data.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
             body: `resident_id=${encodeURIComponent(userData.resident_id)}`

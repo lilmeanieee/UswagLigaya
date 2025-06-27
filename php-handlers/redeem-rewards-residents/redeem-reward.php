@@ -44,7 +44,6 @@ try {
         throw new Exception('Reward not found or inactive');
     }
     
-    // Get user's current points (you'll need to create a users table or modify this query)
     $stmt = $pdo->prepare("SELECT points_balance FROM users WHERE user_id = :user_id");
     $stmt->bindParam(':user_id', $user_id, PDO::PARAM_INT);
     $stmt->execute();

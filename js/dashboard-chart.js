@@ -1,5 +1,5 @@
     document.addEventListener('DOMContentLoaded', function () {
-        fetch('/php-handlers/get-dashboard-data.php')
+        fetch('/UswagLigaya/php-handlers/get-dashboard-data.php')
             .then(response => response.json())
             .then(data => {
                 // Update Total Residents Count

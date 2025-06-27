@@ -335,11 +335,16 @@
                                             <div class="mb-3">
                                                 <label class="form-label">Badge Status</label>
                                                 <div class="form-check form-switch">
-                                                    <input class="form-check-input" type="checkbox" id="badgeStatus"
-                                                        checked>
+                                                    <input class="form-check-input" type="checkbox" id="badgeStatus" checked>
                                                     <label class="form-check-label" for="badgeStatus">Active</label>
                                                 </div>
+
+                                                <div class="mt-2 d-none" id="activationDateContainer">
+                                                    <label for="activationDate" class="form-label">Set Automatic Activation Date</label>
+                                                    <input type="date" class="form-control" id="activationDateInput">
+                                                </div>
                                             </div>
+
                                         </form>
                                     </div>
                                     <div class="modal-footer">
@@ -376,26 +381,26 @@
                             </div>
                         </div>
 
-                        <!-- Delete Confirmation Modal -->
-                        <div class="modal fade" id="deleteBadgeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-                            aria-labelledby="deleteBadgeModalLabel" aria-hidden="true">
+                        <!-- Archive Confirmation Modal -->
+                        <div class="modal fade" id="archiveBadgeModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+                            aria-labelledby="archiveBadgeModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="deleteBadgeModalLabel">Confirm Delete</h5>
+                                        <h5 class="modal-title" id="archiveBadgeModalLabel">Confirm Archive</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                             aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <p>Are you sure you want to delete the badge "<span
-                                                id="deleteBadgeName"></span>"?</p>
+                                        <p>Are you sure you want to archive the badge "<span
+                                                id="archiveBadgeName"></span>"?</p>
                                         <p class="text-danger">This action cannot be undone.</p>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Cancel</button>
                                         <button type="button" class="btn btn-danger"
-                                            id="confirmDeleteBtn">Delete</button>
+                                            id="confirmArchiveBtn">Archive</button>
                                     </div>
                                 </div>
                             </div>
@@ -414,7 +419,8 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
     <script src="../../js/sidebar-script.js"></script>
-    <script src="../../js/achievement&badges-script.js"></script>
+
+    <script src="/UswagLigaya/js/manage-leaderboard/badge-management.js"></script>
 </body>
 
 </html>

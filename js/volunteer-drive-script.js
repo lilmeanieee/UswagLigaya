@@ -70,7 +70,7 @@ function makeRowsClickable() {
 }
 
 function populateEventDropdown() {
-    fetch('/php-handlers/fetch-upcoming-event.php')
+    fetch('/UswagLigaya/php-handlers/fetch-upcoming-event.php')
         .then(res => res.json())
         .then(events => {
             const dropdown = document.getElementById('event-filter');
@@ -82,7 +82,7 @@ function populateEventDropdown() {
 }
 
 function fetchParticipants(eventId = 'all') {
-    fetch(`/php-handlers/fetch-volunteer-attendance.php?event_id=${eventId}`)
+    fetch(`/UswagLigaya/php-handlers/fetch-volunteer-attendance.php?event_id=${eventId}`)
         .then(res => res.json())
         .then(data => {
             const tbody = document.querySelector("#participants-table tbody");
@@ -117,7 +117,7 @@ function fetchParticipants(eventId = 'all') {
                                   'bg-warning';
 
                 tbody.innerHTML += `
-                    <tr>
+                    <tr data-resident-id="${item.resident_id}">
                         <td><input type="checkbox" class="row-checkbox" value="${item.participation_id}"></td>
                         <td>${item.name}</td>
                         <td>${item.event_title}</td>
@@ -140,19 +140,22 @@ function updateAttendance(status) {
 
     const participationData = [];
 
-    selectedCheckboxes.forEach(checkbox => {
-        const participationId = checkbox.value;
+        selectedCheckboxes.forEach(checkbox => {
         const row = checkbox.closest("tr");
+        const participationId = checkbox.value;
         const creditPoints = parseInt(row.cells[4].textContent);
-        
+        const residentId = row.dataset.residentId;
+
         participationData.push({
             id: participationId,
+            residentId: residentId,
             creditPoints: creditPoints,
-            status: status // Pass the status to the backend
+            status: status
         });
     });
 
-    fetch('/php-handlers/update-volunteer-attendance.php', {
+
+    fetch('/UswagLigaya/php-handlers/update-volunteer-attendance.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -163,6 +166,9 @@ function updateAttendance(status) {
     .then(res => res.json())
     .then(response => {
         if (response.success) {
+            participationData.forEach(item => {
+            checkAndAwardBadges(item.residentId);
+        });
             // Show success message
             alert("✅ Attendance updated successfully!");
             
@@ -196,5 +202,24 @@ function updateAttendance(status) {
     .catch(err => {
         console.error("🔥 Error:", err);
         alert("❌ Error occurred while updating attendance.");
+    });
+}
+
+function checkAndAwardBadges(residentId) {
+    fetch('/UswagLigaya/php-handlers/manage-leaderboard/check-and-award-badges.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `resident_id=${residentId}`
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === 'success' && data.earned.length > 0) {
+            data.earned.forEach(badge => {
+                showBadgeEarnedPopup(badge); // You must have defined this function
+            });
+        }
+    })
+    .catch(err => {
+        console.error("Badge check failed", err);
     });
 }

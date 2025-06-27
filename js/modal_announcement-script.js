@@ -88,7 +88,7 @@ document.getElementById('postAnnouncementBtn').addEventListener('click', functio
 
         console.log('Form data prepared, sending fetch request...'); // Add this for debugging
          
-        fetch('/php-handlers/insert-upcoming-event-announcement.php', {
+        fetch('/UswagLigaya/php-handlers/insert-upcoming-event-announcement.php', {
             method: 'POST',
             body: formData
         })
@@ -131,7 +131,7 @@ document.getElementById('postAnnouncementBtn').addEventListener('click', functio
         formData.append('news_file', document.getElementById('newsImage').files[0]);
         
 
-        fetch('/php-handlers/insert-news-update-announcement.php', {
+        fetch('/UswagLigaya/php-handlers/insert-news-update-announcement.php', {
             method: 'POST',
             body: formData
        })
@@ -181,7 +181,7 @@ document.getElementById('postAnnouncementBtn').addEventListener('click', functio
         formData.append('time_end', document.getElementById('volunteer_TimeEnd').value);
         formData.append('credit_points', document.getElementById('creditPoints').value); // updated ID
     
-        fetch('/php-handlers/insert-volunteer-drive-announcement.php', {
+        fetch('/UswagLigaya/php-handlers/insert-volunteer-drive-announcement.php', {
             method: 'POST',
             body: formData
         })
@@ -232,7 +232,7 @@ document.getElementById('postAnnouncementBtn').addEventListener('click', functio
 //displaying the announcements itooo
 let announcementsFromDB = [];
 
-fetch('/php-handlers/get-announcement.php') 
+fetch('/UswagLigaya/php-handlers/get-announcement.php') 
     .then(res => res.json())
     .then(data => {
         announcementsFromDB = data;
@@ -448,7 +448,7 @@ fetch('/php-handlers/get-announcement.php')
                     }
 
 
-                    fetch('/php-handlers/update-upcoming-event-announcement.php', {
+                    fetch('/UswagLigaya/php-handlers/update-upcoming-event-announcement.php', {
                         method: 'POST',
                         body: formData  
                     })
@@ -463,7 +463,7 @@ fetch('/php-handlers/get-announcement.php')
                     .then(data => {
                         if (data.success || data === 'Update successful') {
                             // Refresh the announcements list
-                            fetch('/php-handlers/get-announcement.php') 
+                            fetch('/UswagLigaya/php-handlers/get-announcement.php') 
                                 .then(res => res.json())
                                 .then(announcements => {
                                     announcementsFromDB = announcements;
@@ -505,7 +505,7 @@ fetch('/php-handlers/get-announcement.php')
                         formData.append('file', fileInput.files[0]);
                     }
 
-                    fetch('/php-handlers/update-news-update-announcement.php', {
+                    fetch('/UswagLigaya/php-handlers/update-news-update-announcement.php', {
                         method: 'POST',
                         body: formData  
                     })
@@ -520,7 +520,7 @@ fetch('/php-handlers/get-announcement.php')
                     .then(data => {
                         if (data.success || data === 'Update successful') {
                             // Refresh the announcements list
-                            fetch('/php-handlers/get-announcement.php') 
+                            fetch('/UswagLigaya/php-handlers/get-announcement.php') 
                                 .then(res => res.json())
                                 .then(announcements => {
                                     announcementsFromDB = announcements;
@@ -568,7 +568,7 @@ fetch('/php-handlers/get-announcement.php')
                         formData.append('file', fileInput.files[0]);
                     }
 
-                    fetch('/php-handlers/update-volunteer-drive-announcement.php', {
+                    fetch('/UswagLigaya/php-handlers/update-volunteer-drive-announcement.php', {
                         method: 'POST',
                         body: formData  
                     })
@@ -583,7 +583,7 @@ fetch('/php-handlers/get-announcement.php')
                     .then(data => {
                         if (data.success || data === 'Update successful') {
                             // Refresh the announcements list
-                            fetch('/php-handlers/get-announcement.php') 
+                            fetch('/UswagLigaya/php-handlers/get-announcement.php') 
                                 .then(res => res.json())
                                 .then(announcements => {
                                     announcementsFromDB = announcements;
@@ -807,7 +807,7 @@ document.addEventListener('click', function (e) {
         const type = e.target.dataset.type;
         
         if (confirm('Are you sure you want to archive this announcement?')) {
-            fetch('/php-handlers/archive-announcement.php', {
+            fetch('/UswagLigaya/php-handlers/archive-announcement.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -825,7 +825,7 @@ document.addEventListener('click', function (e) {
                     if (announcementCard) announcementCard.remove();
             
                     // Optional re-fetch
-                    fetch('/php-handlers/get-announcement.php')
+                    fetch('/UswagLigaya/php-handlers/get-announcement.php')
                         .then(res => res.json())
                         .then(data => {
                             announcementsFromDB = data;

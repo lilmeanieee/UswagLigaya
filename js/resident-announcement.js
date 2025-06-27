@@ -7,14 +7,14 @@ function fetchAnnouncementsAndJoinedEvents() {
     const residentId = userData.resident_id;
 
     // First fetch announcements
-    fetch('/php-handlers/get-announcement.php')
+    fetch('/UswagLigaya/php-handlers/get-announcement.php')
         .then(res => res.json())
         .then(data => {
             announcementsFromDB = data;
 
             // Then fetch joined events if logged in
             if (residentId) {
-                return fetch('/php-handlers/get-joined-events.php', {
+                return fetch('/UswagLigaya/php-handlers/get-joined-events.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `resident_id=${encodeURIComponent(residentId)}`
@@ -426,7 +426,7 @@ if (volunteerFiltered.length > 0) {
                     return;
                 }
 
-                fetch('/php-handlers/join-volunteer.php', {
+                fetch('/UswagLigaya/php-handlers/join-volunteer.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: `resident_id=${residentId}&volunteer_announcement_id=${volunteerId}`
@@ -472,7 +472,7 @@ if (volunteerFiltered.length > 0) {
 }
 
 function fetchJoinCountAndUpdateCards(residentId) {
-    fetch('/php-handlers/join-volunteer.php', {
+    fetch('/UswagLigaya/php-handlers/join-volunteer.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `resident_id=${encodeURIComponent(residentId)}&check_only=true`

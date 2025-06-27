@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
             localStorage.removeItem('userData');
             
             // Also clear PHP session via a logout endpoint
-            fetch('/php-handlers/logout.php')
+            fetch('/UswagLigaya/php-handlers/logout.php')
                 .then(() => {
                     window.location.href = '../html/home.html';
                 })
