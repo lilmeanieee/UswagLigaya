@@ -13,10 +13,11 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../css/res-navbar.css">
     <link rel="stylesheet" href="../css/res-profile-style.css">
+    <link rel="stylesheet" href="../css/res-complaints-style.css">
 </head>
 
 <body>
-
+    <!-- Navigation Bar -->
     <nav class="navbar bg-light ">
         <div class="container-fluid">
             <!-- Hamburger menu and logo -->
@@ -74,9 +75,9 @@
                             <h6 class="dropdown-header user-name" id="userName">User Name</h6>
                         </li>
                         <li><a class="dropdown-item" href="dashboard.html">Dashboard</a></li>
-                        <li><a class="dropdown-item" href="convert-points.html">Convert Points</a></li> 
+                        <li><a class="dropdown-item" href="convert-points.html">Convert Points</a></li>
                         <li><a class="dropdown-item" href="document-request.html">Document Requests</a></li>
-                        <li><a class="dropdown-item" href="">Submit Complaints</a></li>
+                        <li><a class="dropdown-item" href="complaints.html">Submit Complaints</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -91,98 +92,136 @@
         </div>
     </nav>
 
-
+    <!-- Main Content -->
     <div class="container mt-4">
         <div class="row mb-4">
             <div class="col-12">
-                <div class="card bg-light">
-                    <div class="card-body d-flex justify-content-between align-items-center">
-                        <div>
-                            <h2 class="mb-1">Document Request</h2>
+                <div class="row card bg-light">
+                    <div
+                        class="card-body d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center">
+                        <div class="mb-3 mb-md-0">
+                            <h2 class="mb-1">Complaints</h2>
                             <p class="text-muted"></p>
                         </div>
-                        <div>
-                            <a href="request-document.html" class="btn btn-primary">
-                                <i class="fas fa-plus me-2"></i>New Request
+                        <div class="d-grid gap-2 w-sm-auto">
+                            <a href="submit-complaints.html" class="btn btn-primary">
+                                <i class="fas fa-plus me-2"></i>Submit Complaint
+                            </a>
+                            <a href="#" class="btn btn-primary" data-bs-toggle="modal"
+                                data-bs-target="#trackModal">
+                                <i class="fas fa-search me-2"></i>Track Status
                             </a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <!-- Request History Table -->
+
+
+        <!-- SUbmitted Complaints History Table -->
         <div class="document-section">
-            <h3 class="mb-3">All Document Requests</h3>
+            <h3 class="mb-3">My Submission</h3>
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th>Request ID</th>
-                            <th>Document Type</th>
-                            <th>Request Date</th>
+                            <th>Complaint ID</th>
+                            <th>Submission Type</th>
+                            <th>Subject</th>
                             <th>Status</th>
+                            <th>Date</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>REQ-ID</td>
-                            <td>Document Name</td>
-                            <td>May 01, 2025</td>
+                            <td>Complaint</td>
+                            <td>No Response to Noise Complaint</td>
                             <td><span class="badge bg-warning">Pending</span></td>
-                            
+                            <td>May 01, 2025</td>
+
                         </tr>
                         <tr>
                             <td>REQ-ID</td>
-                            <td>Document Name</td>
+                            <td>Feedback</td>
                             <td>April 25, 2025</td>
                             <td><span class="badge bg-success">Completed</span></td>
-                            
+
                         </tr>
                         <tr>
                             <td>REQ-ID</td>
-                            <td>Document Name</td>
+                            <td>Feedback</td>
                             <td>April 20, 2025</td>
                             <td><span class="badge bg-info">Approved</span></td>
-                            
+
                         </tr>
                         <tr>
                             <td>REQ-ID</td>
-                            <td>Document Name</td>
+                            <td>Complaint</td>
                             <td>April 15, 2025</td>
                             <td><span class="badge bg-danger">Rejected</span></td>
-                            
+
                         </tr>
                         <tr>
                             <td>REQ-ID</td>
-                            <td>Document Name</td>
+                            <td>Type</td>
                             <td>April 01, 2025</td>
                             <td><span class="badge bg-success">Completed</span></td>
-                            
+
                         </tr>
                         <tr>
                             <td>REQ-ID</td>
-                            <td>Document Name</td>
+                            <td>Type</td>
                             <td>March 20, 2025</td>
                             <td><span class="badge bg-success">Completed</span></td>
-                            
+
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <nav aria-label="Document requests pagination">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item disabled">
-                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                    </li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#">Next</a>
-                    </li>
-                </ul>
-            </nav>
+
+        </div>
+
+        <!-- Track Status Modal -->
+        <div class="modal fade" id="trackModal" tabindex="-1" aria-labelledby="trackModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="trackModalLabel">Enter Reference Number</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="trackForm">
+                            <div class="mb-3">
+                                <label for="referenceNumber" class="form-label">Reference Number</label>
+                                <input type="text" class="form-control" id="referenceNumber"
+                                    placeholder="Enter Complaint ID or Reference Number" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Track</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Display Complaint Status Modal -->
+        <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="statusModalLabel">Complaint Status</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><strong>Complaint ID:</strong> <span id="complaintId">N/A</span></p>
+                        <p><strong>Submission Type:</strong> <span id="submissionType">N/A</span></p>
+                        <p><strong>Subject:</strong> <span id="subject">N/A</span></p>
+                        <p><strong>Description:</strong> <span id="description">N/A</span></p>
+                        <p><strong>Date:</strong> <span id="date">N/A</span></p>
+                        <p><strong>Timeline:</strong> <span id="timeline">N/A</span></p>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -205,7 +244,7 @@
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/resident-dashboard.js"></script>
-    <script src="../js/resident- .js"></script>
+    <script src="../js/resident-complaint.js"></script>
     <script src="../js/login-status-script.js"></script>
     <script src="../js/logout-script.js"></script>
 
