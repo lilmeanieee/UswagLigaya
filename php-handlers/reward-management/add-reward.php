@@ -61,6 +61,23 @@ try {
         throw new Exception("File too large. Max allowed is 5MB");
     }
 
+    // Process other fields
+    $isActive = isset($_POST['isActive']) ? (int)$_POST['isActive'] : 0;
+    $activationDate = !empty($_POST['activationDate']) ? $_POST['activationDate'] : null;
+    $expirationDate = !empty($_POST['expirationDate']) ? $_POST['expirationDate'] : null;
+
+    // Validate dates if provided
+    if ($activationDate && !DateTime::createFromFormat('Y-m-d', $activationDate)) {
+        echo json_encode(['success' => false, 'error' => 'Invalid activation date format']);
+        exit;
+    }
+
+    if ($expirationDate && !DateTime::createFromFormat('Y-m-d', $expirationDate)) {
+        echo json_encode(['success' => false, 'error' => 'Invalid expiration date format']);
+        exit;
+    }
+
+
     // Unique filename
     $newFileName = uniqid('reward_', true) . '.' . $fileExt;
     $uploadPath = $uploadDir . $newFileName;
@@ -71,19 +88,29 @@ try {
 
     // Insert into database - MySQLi VERSION
     $sql = "INSERT INTO tbl_rewards 
-        (reward_name, reward_type, description, points_required, image_url, status, created_at)
+        (reward_name, reward_type, description, points_required, image_url, created_at, is_active, activation_date, expiration_date)
         VALUES 
-        (?, ?, ?, ?, ?, ?, ?)";
+        (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql);
     
     // Prepare values
-    $status = 'active';
     $createdAt = date('Y-m-d H:i:s');
     
     // MySQLi uses bind_param() with type string
-    // s = string, i = integer, d = double, b = blob
-    $stmt->bind_param("sssisss", $rewardName, $rewardType, $rewardDescription, $rewardPoints, $newFileName, $status, $createdAt);
+    // s = string, si = integer, d = double, b = blob
+$stmt->bind_param("sssississ", 
+    $rewardName,         // s
+    $rewardType,         // s
+    $rewardDescription,  // s
+    $rewardPoints,       // i
+    $newFileName,        // s
+    $createdAt,          // s
+    $isActive,           // i
+    $activationDate,     // s
+    $expirationDate      // s
+);
+
 
     if ($stmt->execute()) {
         echo "Reward added successfully! Image saved as: $newFileName";

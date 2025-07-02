@@ -22,10 +22,12 @@ try {
                 description,
                 points_required,
                 image_url,
-                status,
                 created_at
             FROM tbl_rewards 
-            WHERE status = 'Active' 
+            WHERE is_archived = 0 
+                AND is_active = 1
+                AND (activation_date IS NULL OR activation_date <= NOW())
+                AND (expiration_date IS NULL OR expiration_date >= NOW())
             ORDER BY points_required ASC
         ");
         $stmt->execute();
