@@ -41,6 +41,7 @@
 .sidebar .nav-item:hover,
 .nav-link:hover {
   background-color: #025782;
+  border-radius: .25rem;
 }
 .sidebar .nav-link-active {
   background-color: #028226;

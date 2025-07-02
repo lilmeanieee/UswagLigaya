@@ -53,14 +53,13 @@
                         </a>
                     </li>
 
-                    <!-- Document Issuance -->
+                    <!-- Document Issuance-->
                     <li class="nav-item dropdown">
                         <!-- Popover for Mobile -->
                         <a href="#" class="nav-link text-white d-lg-none mobile-popover" title="Document Issuance"
                             data-bs-toggle="popover" data-bs-html="true" data-bs-placement="right" data-bs-content='
                                 <ul class="list-unstyled mb-0">
                                     <li><a href="document_request/document-request-list.html" class="nav-link text-white">Document Request</a></li>
-                                    <li><a href="document_request/document-issuance.html" class="nav-link  list text-white">Document Issuance</a></li>
                                     <li><a href="document_request/document-template.html" class="nav-link list text-white">Add Document Template</a></li>
                                 </ul>'>
                             <i class="bi bi-file-earmark-text"></i>
@@ -75,10 +74,8 @@
                         <ul class="collapse list-unstyled " id="servicesDropdown">
                             <li><a href="document_request/document-request-list.html"
                                     class="nav-link list text-white">Document Request</a></li>
-                            <li><a href="document_request/document-issuance.html"
-                                    class="nav-link list text-white">Document Issuance</a></li>
-                            <li><a href="document_request/document-template.html"
-                                    class="nav-link list text-white">Add Document Template</a></li>
+                            <li><a href="document_request/document-template.html" class="nav-link list text-white">Add
+                                    Document Template</a></li>
                         </ul>
                     </li>
 
@@ -108,10 +105,10 @@
                             <i class="bi bi-trophy me-2"></i>
                             <span class="d-none d-lg-inline">Manage Leaderboards</span>
                         </a>
-                        <ul class="collapse list-unstyled  " id="manageLB_Dropdown">
+                        <ul class="collapse list-unstyled" id="manageLB_Dropdown">
                             <li><a href="manage_leaderboards/view-leaderboard.html"
                                     class="nav-link list text-white">View
-                                    Leaderboard</a></li> 
+                                    Leaderboard</a></li>
                             <li><a href="manage_leaderboards/achievement&badges.html"
                                     class="nav-link list text-white">Achievements &
                                     Badges</a></li>
@@ -120,12 +117,13 @@
 
                     <!-- Credit & Redeemable Points Conversion -->
                     <li class="nav-item">
-                        <a href="credit_and_redeemable_point_system/conversion-settings.html" class="nav-link text-white ">
+                        <a href="credit_and_redeemable_point_system/conversion-settings.html"
+                            class="nav-link text-white ">
                             <i class="bi bi-wallet me-2"></i>
                             <span class="d-none d-lg-inline">Credit Points Conversion</span>
                         </a>
                     </li>
-                    
+
 
                     <!-- Reward Management -->
                     <li class="nav-item dropdown">
@@ -162,6 +160,28 @@
                     </li>
 
 
+                    <!-- Brgy Projects Tracking -->
+                    <li class="nav-item dropdown">
+                        <!-- Popover for Mobile -->
+                        <a href="#" class="nav-link text-white d-lg-none mobile-popover" title="Project Tracking"
+                            data-bs-toggle="popover" data-bs-html="true" data-bs-placement="right" data-bs-content='
+                                <ul class="list-unstyled mb-0">
+                                     <li><a href="brgy_project/projects.html"class="nav-link list text-white">Projects</a></li>
+                                   
+                                </ul>'>
+                            <i class="bi bi-building"></i>
+                        </a>
+
+                        <!-- Normal dropdown for larger screens -->
+                        <a href="#" class="nav-link text-white dropdown-toggle d-none d-lg-flex"
+                            data-bs-toggle="collapse" data-bs-target="#project_Dropdown">
+                            <i class="bi bi-building me-2"></i>
+                            <span class="d-none d-lg-inline">Project Tracking</span>
+                        </a>
+                        <ul class="collapse list-unstyled" id="project_Dropdown">
+                            <li><a href="brgy_project/projects.html" class="nav-link list text-white">Projects</a></li>
+                        </ul>
+                    </li>
                 </ul>
 
 
@@ -243,7 +263,7 @@
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <div class="col-md-3 mb-4">
                                 <div class="card stats-card bg-info text-white">
                                     <div class="card-body">
@@ -268,31 +288,39 @@
                                     <!-- Tabs -->
                                     <ul class="nav nav-tabs" id="demographicsTabs" role="tablist">
                                         <li class="nav-item">
-                                            <a class="nav-link active" id="gender-tab" data-bs-toggle="tab" href="#gender" role="tab">Gender</a>
+                                            <a class="nav-link active" id="gender-tab" data-bs-toggle="tab"
+                                                href="#gender" role="tab">Gender</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="age-tab" data-bs-toggle="tab" href="#age" role="tab">Age Group</a>
+                                            <a class="nav-link" id="age-tab" data-bs-toggle="tab" href="#age"
+                                                role="tab">Age Group</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="genderPurok-tab" data-bs-toggle="tab" href="#genderPurok" role="tab">Gender by Purok</a>
+                                            <a class="nav-link" id="genderPurok-tab" data-bs-toggle="tab"
+                                                href="#genderPurok" role="tab">Gender by Purok</a>
                                         </li>
                                         <li class="nav-item">
-                                            <a class="nav-link" id="agePurok-tab" data-bs-toggle="tab" href="#agePurok" role="tab">Age Group by Purok</a>
+                                            <a class="nav-link" id="agePurok-tab" data-bs-toggle="tab" href="#agePurok"
+                                                role="tab">Age Group by Purok</a>
                                         </li>
                                     </ul>
-                        
+
                                     <!-- Tab Contents -->
                                     <div class="tab-content mt-3">
-                                        <div class="tab-pane fade show active" id="gender" role="tabpanel", style="max-width: 600px; margin: auto; padding: 20px;">
+                                        <div class="tab-pane fade show active" id="gender" role="tabpanel" ,
+                                            style="max-width: 600px; margin: auto; padding: 20px;">
                                             <canvas id="genderDistributionChart"></canvas>
                                         </div>
-                                        <div class="tab-pane fade" id="age" role="tabpanel", style="max-width: 600px; margin: auto; padding: 20px;">
+                                        <div class="tab-pane fade" id="age" role="tabpanel" ,
+                                            style="max-width: 600px; margin: auto; padding: 20px;">
                                             <canvas id="ageGroupDistributionChart"></canvas>
                                         </div>
-                                        <div class="tab-pane fade" id="genderPurok" role="tabpanel", style="max-width: 600px; margin: auto; padding: 20px;">
+                                        <div class="tab-pane fade" id="genderPurok" role="tabpanel" ,
+                                            style="max-width: 600px; margin: auto; padding: 20px;">
                                             <canvas id="genderByPurokChart"></canvas>
                                         </div>
-                                        <div class="tab-pane fade" id="agePurok" role="tabpanel", style="max-width: 600px; margin: auto; padding: 20px;">
+                                        <div class="tab-pane fade" id="agePurok" role="tabpanel" ,
+                                            style="max-width: 600px; margin: auto; padding: 20px;">
                                             <canvas id="ageGroupByPurokChart"></canvas>
                                         </div>
                                     </div>
@@ -300,107 +328,107 @@
                             </div>
                         </div>
 
-                            <div class="col-md-6 mb-4">
-                                <div class="card">
-                                    <div class="card-header">
-                                        Certificate Requests Monthly
-                                    </div>
-                                    <div class="card-body">
-                                        <canvas id="certificatesChart"></canvas>
-                                    </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    Certificate Requests Monthly
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="certificatesChart"></canvas>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Recent Activity & Calendar Row -->
-                        <div class="row">
-                            <div class="col-md-7 mb-4">
-                                <div class="card">
-                                    <div class="card-header d-flex justify-content-between align-items-center">
-                                        <div>Recent Activities</div>
-                                        <button class="btn btn-sm btn-outline-primary">View All</button>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="activity-item">
-                                            <div class="activity-icon bg-primary"><i class="fas fa-file-alt"></i></div>
-                                            <div class="activity-content">
-                                                <h6>Certificate of Residency Issued</h6>
-                                                <p>For Juan Dela Cruz</p>
-                                                <small class="text-muted">Today, 10:30 AM</small>
-                                            </div>
-                                        </div>
-                                        <div class="activity-item">
-                                            <div class="activity-icon bg-danger"><i
-                                                    class="fas fa-exclamation-circle"></i></div>
-                                            <div class="activity-content">
-                                                <h6>New Blotter Report Filed</h6>
-                                                <p>Case #BLT-2023-042</p>
-                                                <small class="text-muted">Yesterday, 3:45 PM</small>
-                                            </div>
-                                        </div>
-                                        <div class="activity-item">
-                                            <div class="activity-icon bg-success"><i class="fas fa-user-plus"></i></div>
-                                            <div class="activity-content">
-                                                <h6>New Resident Registered</h6>
-                                                <p>Maria Santos added to database</p>
-                                                <small class="text-muted">Yesterday, 11:20 AM</small>
-                                            </div>
-                                        </div>
-                                        <div class="activity-item">
-                                            <div class="activity-icon bg-warning"><i class="fas fa-bullhorn"></i></div>
-                                            <div class="activity-content">
-                                                <h6>Community Program Announced</h6>
-                                                <p>COVID-19 Vaccination Drive</p>
-                                                <small class="text-muted">Apr 5, 2023</small>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-5 mb-4">
-                                <div class="card">
-                                    <div class="card-header">
-                                        Upcoming Events
-                                    </div>
-                                    <div class="card-body">
-                                        <div id="calendar"></div>
-
-                                        <div class="upcoming-events mt-3">
-                                            <div class="event-item">
-                                                <div class="event-date">
-                                                    <span class="event-day">12</span>
-                                                    <span class="event-month">APR</span>
-                                                </div>
-                                                <div class="event-content">
-                                                    <h6>Barangay Assembly</h6>
-                                                    <p><i class="fas fa-clock"></i> 9:00 AM - 12:00 PM</p>
-                                                    <p><i class="fas fa-map-marker-alt"></i> Barangay Hall</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="event-item">
-                                                <div class="event-date">
-                                                    <span class="event-day">15</span>
-                                                    <span class="event-month">APR</span>
-                                                </div>
-                                                <div class="event-content">
-                                                    <h6>Medical Mission</h6>
-                                                    <p><i class="fas fa-clock"></i> 8:00 AM - 3:00 PM</p>
-                                                    <p><i class="fas fa-map-marker-alt"></i> Barangay Covered Court</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
-                    <!-- End Dashboard Content -->
+
+                    <!-- Recent Activity & Calendar Row -->
+                    <div class="row">
+                        <div class="col-md-7 mb-4">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <div>Recent Activities</div>
+                                    <button class="btn btn-sm btn-outline-primary">View All</button>
+                                </div>
+                                <div class="card-body">
+                                    <div class="activity-item">
+                                        <div class="activity-icon bg-primary"><i class="fas fa-file-alt"></i></div>
+                                        <div class="activity-content">
+                                            <h6>Certificate of Residency Issued</h6>
+                                            <p>For Juan Dela Cruz</p>
+                                            <small class="text-muted">Today, 10:30 AM</small>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-icon bg-danger"><i class="fas fa-exclamation-circle"></i>
+                                        </div>
+                                        <div class="activity-content">
+                                            <h6>New Blotter Report Filed</h6>
+                                            <p>Case #BLT-2023-042</p>
+                                            <small class="text-muted">Yesterday, 3:45 PM</small>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-icon bg-success"><i class="fas fa-user-plus"></i></div>
+                                        <div class="activity-content">
+                                            <h6>New Resident Registered</h6>
+                                            <p>Maria Santos added to database</p>
+                                            <small class="text-muted">Yesterday, 11:20 AM</small>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-icon bg-warning"><i class="fas fa-bullhorn"></i></div>
+                                        <div class="activity-content">
+                                            <h6>Community Program Announced</h6>
+                                            <p>COVID-19 Vaccination Drive</p>
+                                            <small class="text-muted">Apr 5, 2023</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5 mb-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    Upcoming Events
+                                </div>
+                                <div class="card-body">
+                                    <div id="calendar"></div>
+
+                                    <div class="upcoming-events mt-3">
+                                        <div class="event-item">
+                                            <div class="event-date">
+                                                <span class="event-day">12</span>
+                                                <span class="event-month">APR</span>
+                                            </div>
+                                            <div class="event-content">
+                                                <h6>Barangay Assembly</h6>
+                                                <p><i class="fas fa-clock"></i> 9:00 AM - 12:00 PM</p>
+                                                <p><i class="fas fa-map-marker-alt"></i> Barangay Hall</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="event-item">
+                                            <div class="event-date">
+                                                <span class="event-day">15</span>
+                                                <span class="event-month">APR</span>
+                                            </div>
+                                            <div class="event-content">
+                                                <h6>Medical Mission</h6>
+                                                <p><i class="fas fa-clock"></i> 8:00 AM - 3:00 PM</p>
+                                                <p><i class="fas fa-map-marker-alt"></i> Barangay Covered Court</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
+                <!-- End Dashboard Content -->
             </div>
         </div>
+    </div>
     </div>
 
 
