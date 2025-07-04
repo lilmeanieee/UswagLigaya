@@ -106,3 +106,109 @@
     flex: 1 1 auto;
     min-height: 0;
 }
+
+/* adding proj: preview image */
+.upload-box {
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #f9f9ff;
+    transition: border-color 0.3s;
+}
+
+.upload-box.dragover {
+    border-color: #6c63ff;
+    background-color: #f0f0ff;
+}
+
+#imagePreviewContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.preview-image-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.preview-image-wrapper img {
+    height: 100px;
+    width: auto;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.remove-btn {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background-color: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 14px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+
+/* viewing proj details */
+.progress-height {
+    height: 10px;
+}
+
+/* viewing proj details: image display */
+.preview-thumb {
+    width: 130px;
+    height: 100px;
+    object-fit: cover;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+/* viewing proj details: preview image in larger display */
+#imagePreviewModal .modal-dialog {
+    max-width: 90%;
+}
+
+#largePreviewImage {
+    display: block;
+    max-height: 90vh;
+    margin: auto;
+}
+.modal-backdrop.show, .bg-transparent {
+    -webkit-backdrop-filter: blur(1px); /* blur background for safri*/
+    backdrop-filter: blur(1px); /* blur background for chrome */
+}
+
+/* edit proj: project stages */
+.stage-edit-item{
+    margin-bottom: 8px;
+}
+
+/* Status color assignment  */
+.select-status.not-started {
+    background-color: #d2d2d2; /* light gray */
+    color: #000000;
+}
+
+.select-status.in-progress {
+    background-color: #fff3cd; /* light yellow */
+    color: #855104;
+}
+
+.select-status.completed {
+    background-color: #d4edda; /* light green */
+    color: #155724;
+}
+
+/* for dragging of update modal's proj stages */
+.sortable-ghost {
+    opacity: 0.6;
+    background-color: #e9ecef;
+}
+.stage-edit-item {
+    cursor: move;
+}
