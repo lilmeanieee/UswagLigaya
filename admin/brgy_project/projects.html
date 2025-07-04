@@ -569,74 +569,74 @@
             </div>
 
             <!-- Add Project Modal -->
-            <div class="modal fade" id="addProjectModal" tabindex="-1">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Add New Project</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+<div class="modal fade" id="addProjectModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add New Project</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Project Name</label>
+                            <input type="text" class="form-control" placeholder="Enter project name">
                         </div>
-                        <div class="modal-body">
-                            <form>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Project Name</label>
-                                        <input type="text" class="form-control" placeholder="Enter project name">
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Category</label>
-                                        <select class="form-select">
-                                            <option>Select category...</option>
-                                            <option>Infrastructure</option>
-                                            <option>Public Service</option>
-                                            <option>Health & Wellness</option>
-                                            <option>Education</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Description</label>
-                                    <textarea class="form-control" rows="3"
-                                        placeholder="Project description..."></textarea>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Start Date</label>
-                                        <input type="date" class="form-control">
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Expected Completion</label>
-                                        <input type="date" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Initial Budget</label>
-                                        <input type="number" class="form-control" placeholder="0.00" step="0.01">
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Funding Source</label>
-                                        <input type="text" class="form-control" placeholder="Source of funding">
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Assign Responsible Personnel</label>
-                                    <input type="text" class="form-control" placeholder="Enter responsible person">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Milestones</label>
-                                    <textarea class="form-control" rows="3"
-                                        placeholder="List project milestones (one per line)..."></textarea>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-primary">Create Project</button>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Category</label>
+                            <select class="form-select">
+                                <option value="">Select category...</option>
+                                <option value="1">Infrastructure</option>
+                                <option value="2">Public Service</option>
+                                <option value="3">Health & Wellness</option>
+                                <option value="4">Education</option>
+                            </select>
                         </div>
                     </div>
-                </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" rows="3"
+                            placeholder="Project description..."></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Start Date</label>
+                            <input type="date" class="form-control">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Expected Completion</label>
+                            <input type="date" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Initial Budget</label>
+                            <input type="number" class="form-control" placeholder="0.00" step="0.01">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Funding Source</label>
+                            <input type="text" class="form-control" placeholder="Source of funding">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Assign Responsible Personnel</label>
+                        <input type="text" class="form-control" placeholder="Enter responsible person">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Milestones</label>
+                        <textarea class="form-control" rows="3"
+                            placeholder="List project milestones (one per line)..."></textarea>
+                    </div>
+                </form>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Create Project</button>
+            </div>
+        </div>
+    </div>
+</div>
         </div>
     </div>
     </div>
@@ -649,6 +649,7 @@
 
     <script src="../../js/sidebar-script.js"></script>
     <script src="../../js/admin-project-script.js"></script>
+    <script src="../../js/brgy-project-admin/add-project.js"></script>
 
 </body>
 
