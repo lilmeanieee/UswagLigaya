@@ -85,7 +85,7 @@ function renderResidents(residents) {
 // Fetch and refresh the full list of residents
 function fetchResidents() {
     $.ajax({
-        url: "/php-handlers/fetch-residents.php",
+        url: "/UswagLigaya/php-handlers/fetch-residents.php",
         method: "GET",
         dataType: "json",
         success: function (data) {

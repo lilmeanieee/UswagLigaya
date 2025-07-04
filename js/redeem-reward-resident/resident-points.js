@@ -47,7 +47,7 @@ class ResidentPointsManager {
             console.log('Attempting to load points for resident_id:', this.resident_id);
             
             // Use the same endpoint as your dashboard
-            const response = await fetch('../../php-handlers/get-resident-data.php', {
+            const response = await fetch('/UswagLigaya/php-handlers/get-resident-data.php', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: `resident_id=${encodeURIComponent(this.resident_id)}`

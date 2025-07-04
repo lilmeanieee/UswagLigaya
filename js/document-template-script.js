@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Sample document types data (this would typically come from a database)
     function fetchDocumentTemplates() {
-        fetch('/php-handlers/get-templates.php')
+        fetch('/UswagLigaya/php-handlers/get-templates.php')
             .then(res => res.json())
             .then(data => {
                 if (Array.isArray(data)) {
@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', function () {
             formData.append("template_file", fileInput.files[0]);
         }
     
-        fetch('/php-handlers/add-template.php', {
+        fetch('/UswagLigaya/php-handlers/add-template.php', {
             method: 'POST',
             body: formData
         })
@@ -285,7 +285,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
          
 
-    fetch('/php-handlers/add-template.php', {
+    fetch('/UswagLigaya/php-handlers/add-template.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -356,7 +356,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!doc) return;
     
         // Send archive request
-        fetch('/php-handlers/update-template.php', {
+        fetch('/UswagLigaya/php-handlers/update-template.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

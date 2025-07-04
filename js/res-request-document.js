@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const templatesMap = {};
 
   // 🔵 1. Fetch Resident Full Name
-  fetch("/php-handlers/get-resident-name.php")
+  fetch("/UswagLigaya/php-handlers/get-resident-name.php")
     .then(res => res.json())
     .then(data => {
       if (data.fullName) {
@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
   // 🔵 2. Load Document Templates into Dropdown
-  fetch("/php-handlers/get-templates.php")
+  fetch("/UswagLigaya/php-handlers/get-templates.php")
     .then(res => res.json())
     .then(templates => {
       dropdown.innerHTML = '<option value="" disabled selected>Choose a document type</option>';
@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const residentId = localStorage.getItem('residentId') || '';
     formData.append("residentId", residentId);
 
-    fetch("/php-handlers/submit-document-request.php ", {
+    fetch("/UswagLigaya/php-handlers/submit-document-request.php ", {
       method: "POST",
       body: formData
     })

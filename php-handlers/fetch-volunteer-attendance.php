@@ -1,5 +1,5 @@
 <?php
-include 'connect.php'; // adjust as needed
+include 'connect.php'; 
 
 $eventId = isset($_GET['event_id']) && $_GET['event_id'] !== 'all' ? intval($_GET['event_id']) : null;
 

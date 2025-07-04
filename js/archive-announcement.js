@@ -1,4 +1,4 @@
-fetch('/php-handlers/fetch-archive.php', {
+fetch('/UswagLigaya/php-handlers/fetch-archive.php', {
     method: 'GET'
 })
 .then(response => {

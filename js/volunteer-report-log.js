@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
         loadingCell.textContent = 'Loading...';
         
         // Fetch participants data
-        fetch(`/php-handlers/volunteer-report-log.php?ajax=true&event_id=${eventId}`)
+        fetch(`/UswagLigaya/php-handlers/volunteer-report-log.php?ajax=true&event_id=${eventId}`)
             .then(response => response.json())
             .then(participants => {
                 // Clear loading indicator

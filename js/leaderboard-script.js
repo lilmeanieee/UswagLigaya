@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // Fetch the latest leaderboard data and update the UI
 function refreshLeaderboard() {
     console.log('Attempting to fetch leaderboard data...');
-    fetch('/php-handlers/get-leaderboard-data.php')
+    fetch('/UswagLigaya/php-handlers/get-leaderboard-data.php')
         .then(response => {
             console.log('Response received:', response);
             if (!response.ok) {
