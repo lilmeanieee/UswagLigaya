@@ -64,3 +64,45 @@
 .timeline-item:last-child::after {
     display: none;
 }
+
+/* modal */
+.form-label,
+.form-check-label {
+    font-weight: 500;
+}
+
+.modal-dialog {
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    max-width: 800px;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.modal-header,
+.modal-footer {
+    position: sticky;
+    z-index: 2;
+    background: #fff;
+}
+
+.modal-header {
+    top: 0;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-footer {
+    bottom: 0;
+    border-top: 1px solid #dee2e6;
+}
+
+.modal-body {
+    overflow-y: auto;
+    flex: 1 1 auto;
+    min-height: 0;
+}

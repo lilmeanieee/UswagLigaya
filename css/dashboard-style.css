@@ -15,6 +15,11 @@
     padding: 0 20px;
     flex-grow: 1;
 }
+.demographics-tab-pane {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+}
 
 .stats-card {
     border-radius: 5px;
