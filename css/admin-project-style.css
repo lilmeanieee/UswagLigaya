@@ -188,6 +188,9 @@
     margin-bottom: 8px;
 }
 
+.select-status {
+     min-width: 150px;
+}
 /* Status color assignment  */
 .select-status.not-started {
     background-color: #d2d2d2; /* light gray */

@@ -90,7 +90,7 @@ document.getElementById("addStageBtnUpdate").addEventListener("click", function 
                 <span class="fw-semibold stage-label">${stageName}</span>
             </div>
             <div class="d-flex align-items-center gap-2">
-                <select class="form-select select-status w-auto" style="min-width: 150px;">
+                <select class="form-select select-status w-auto" aria-label="Stage Status">
                     <option selected>Not Started</option>
                     <option>In Progress</option>
                     <option>Completed</option>
