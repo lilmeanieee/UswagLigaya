@@ -30,7 +30,7 @@
                 <div class="logo pt-4 pb-1  mb-auto text-center">
                     <a href="#" class="text-white text-decoration-none">
                         <img src="../../asset/img/brgy logo.png" alt="">
-                        <span class="fs-4 d-none d-lg-inline">Brgy Ligaya</span>
+                        <span class="fs-4 d-none d-lg-inline">BLMS</span>
                     </a>
                 </div>
                 <hr class="text-white">
@@ -92,9 +92,6 @@
                         </a>
                     </li>
 
-                    <!-- Community-->
-
-
                     <!-- Manage Leaderboards-->
                     <li class="nav-item dropdown">
                         <!-- Popover for Mobile -->
@@ -143,7 +140,7 @@
                     <!-- Brgy Projects -->
                     <li class="nav-item ">
                         <a href="projects.html" class="nav-link active text-white">
-                            <i class="bi bi-balloon-heart me-2"></i>
+                            <i class="bi bi-building me-2"></i>
                             <span class="d-none d-lg-inline">Brgy Project</span>
                         </a>
                     </li>
@@ -170,15 +167,13 @@
 
             <!-- Main Content -->
             <div class="main-content  col min-vh-100">
-                <div class="container content-header">
-                    <!-- Content Header Title -->
-                    <div class="d-flex justify-content-between align-items-center bg-dark text-white p-3">
-                        <h4 class="mb-0">Project Management</h4>
-                    </div>
-                    <!-- End Content Header Title -->
+                <!-- Content Header Title -->
+                <div class="d-flex justify-content-between align-items-center bg-dark text-white p-3">
+                    <h4 class="mb-0">Project Management</h4>
                 </div>
+
                 <!--  Content -->
-                <div class="container mx-3">
+                <div class="container mx-2">
                     <div
                         class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h3 class=" ">Projects</h3>
@@ -211,8 +206,8 @@
                                 <option value="delayed">Delayed</option>
                                 <option value="on-hold">On Hold</option>
                                 <option value="completed">Completed</option>
-                                <option value="cancelled">Cancelled</option>    
-                                
+                                <option value="cancelled">Cancelled</option>
+
                             </select>
                         </div>
                         <!-- Categories Dropdown -->
@@ -229,51 +224,7 @@
 
                     <!-- Projects Grid -->
                     <div class="row">
-                        <!-- Project Card 1 -->
-                        <div class="col-lg-6 col-xl-4 mb-4">
-                            <div class="card project-card border-0 shadow-sm h-100">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-start mb-3">
-                                        <h5 class="card-title mb-0">Barangay Hall Renovation</h5>
-                                        <span class="status-badge status-ongoing">Ongoing</span>
-                                    </div>
-                                    <p class="card-text text-muted mb-3">Complete renovation of the main barangay
-                                        hall including electrical, plumbing, and structural improvements.</p>
-
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between mb-1">
-                                            <small class="text-muted">Progress</small>
-                                            <small class="text-muted">75%</small>
-                                        </div>
-                                        <div class="progress progress-indicator">
-                                            <div class="progress-bar bg-info" style="width: 75%"></div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row text-center mb-3">
-                                        <div class="col-6">
-                                            <div class="text-primary">₱450,000</div>
-                                            <small class="text-muted">Budget</small>
-                                        </div>
-                                        <div class="col-6">
-                                            <div class="text-warning">15 days</div>
-                                            <small class="text-muted">Remaining</small>
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex gap-2">
-                                        <button class="btn btn-outline-primary btn-sm flex-fill" data-bs-toggle="modal"
-                                            data-bs-target="#projectDetailModal">
-                                            <i class="bi bi-eye me-1"></i>View
-                                        </button>
-                                        <button class="btn btn-primary btn-sm flex-fill" data-bs-toggle="modal"
-                                            data-bs-target="#updateProjectModal">
-                                            <i class="bi bi-edit me-1"></i>Update
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Project Card here -->
                     </div>
 
                 </div>
@@ -492,7 +443,8 @@
                                             class="stage-edit-item d-flex align-items-center justify-content-between bg-light p-2 rounded mb-2">
                                             <div class="fw-semibold stage-label">Site Survey & Planning</div>
                                             <div class="d-flex align-items-center gap-2">
-                                                <select class="form-select select-status w-auto" aria-label="Stage Status">
+                                                <select class="form-select select-status w-auto"
+                                                    aria-label="Stage Status">
                                                     <option>Not Started</option>
                                                     <option selected>In Progress</option>
                                                     <option>Completed</option>
@@ -500,13 +452,14 @@
                                                 <button type="button" class="btn-close btn-sm remove-stage-btn"
                                                     aria-label="Remove"></button>
                                             </div>
-                                        </div> 
+                                        </div>
                                         <!-- Stage Item 2 -->
                                         <div
                                             class="stage-edit-item d-flex align-items-center justify-content-between bg-light p-2 rounded mb-2">
                                             <div class="fw-semibold stage-label">Material Procurement</div>
                                             <div class="d-flex align-items-center gap-2">
-                                                <select class="form-select select-status w-auto" aria-label="Stage Status">
+                                                <select class="form-select select-status w-auto"
+                                                    aria-label="Stage Status">
                                                     <option>Not Started</option>
                                                     <option selected>Completed</option>
                                                     <option>In Progress</option>
@@ -514,13 +467,14 @@
                                                 <button type="button" class="btn-close btn-sm remove-stage-btn"
                                                     aria-label="Remove"></button>
                                             </div>
-                                        </div> 
+                                        </div>
                                         <!-- Stage Item 3 -->
                                         <div
                                             class="stage-edit-item d-flex align-items-center justify-content-between bg-light p-2 rounded mb-2">
                                             <div class="fw-semibold stage-label">Final Inspection</div>
                                             <div class="d-flex align-items-center gap-2">
-                                                <select class="form-select select-status w-auto" aria-label="Stage Status">
+                                                <select class="form-select select-status w-auto"
+                                                    aria-label="Stage Status">
                                                     <option selected>Not Started</option>
                                                     <option>In Progress</option>
                                                     <option>Completed</option>
@@ -557,7 +511,8 @@
                                     <!-- Preview Container with an existing image -->
                                     <div id="imagePreviewContainer" class="d-flex flex-wrap gap-2 mt-3">
                                         <div class="position-relative">
-                                            <img src="../../asset/img/default.png" class="img-thumbnail project-image-thumb" alt="Default Project Image">
+                                            <img src="../../asset/img/default.png"
+                                                class="img-thumbnail project-image-thumb" alt="Default Project Image">
                                             <button
                                                 class="btn-close position-absolute top-0 end-0 m-1 btn-sm bg-danger border rounded-circle"
                                                 title="Remove"></button>

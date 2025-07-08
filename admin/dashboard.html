@@ -13,8 +13,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
-    <link rel="stylesheet" href="../css/dashboard-style.css">
     <link rel="stylesheet" href="../css/sidebar-style.css">
+    <link rel="stylesheet" href="../css/dashboard-style.css">
 </head>
 
 <body>
@@ -214,10 +214,9 @@
 
                     <!-- Dashboard Content -->
                     <div class="container-fluid dashboard-content p-3">
-
                         <!-- Stats Cards -->
                         <div class="row mt-4">
-                            <div class="col-md-3 mb-4">
+                            <div class="col-12 col-sm-6 col-lg-3 mb-4">
                                 <div class="card stats-card bg-primary text-white">
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between align-items-center">
@@ -227,12 +226,11 @@
                                             </div>
                                             <i class="fas fa-users fa-2x"></i>
                                         </div>
-                                        <p class="mt-2 mb-0 small">Data updated in real-time</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-md-3 mb-4">
+                            <div class="col-12 col-sm-6 col-lg-3 mb-4">
                                 <div class="card stats-card bg-success text-white">
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between align-items-center">
@@ -242,14 +240,11 @@
                                             </div>
                                             <i class="fas fa-certificate fa-2x"></i>
                                         </div>
-                                        <p class="mt-2 mb-0 small">This week</p>
                                     </div>
                                 </div>
                             </div>
 
-
-
-                            <div class="col-md-3 mb-4">
+                            <div class="col-12 col-sm-6 col-lg-3 mb-4">
                                 <div class="card stats-card bg-info text-white">
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between align-items-center">
@@ -259,12 +254,11 @@
                                             </div>
                                             <i class="fas fa-calendar-alt fa-2x"></i>
                                         </div>
-                                        <p class="mt-2 mb-0 small">Upcoming this month</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="col-md-3 mb-4">
+                            <div class="col-12 col-sm-6 col-lg-3 mb-4">
                                 <div class="card stats-card bg-info text-white">
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between align-items-center">
@@ -289,31 +283,36 @@
                                     <ul class="nav nav-tabs" id="demographicsTabs" role="tablist">
                                         <li class="nav-item" role="presentation">
                                             <a class="nav-link active" id="gender-tab" data-bs-toggle="tab"
-                                                href="#gender" role="tab" aria-controls="gender" aria-selected="true">Gender</a>
+                                                href="#gender" role="tab" aria-controls="gender"
+                                                aria-selected="true">Gender</a>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <a class="nav-link" id="age-tab" data-bs-toggle="tab" href="#age"
-                                                role="tab" aria-controls="age" aria-selected="false">Age Group</a>
+                                            <a class="nav-link" id="age-tab" data-bs-toggle="tab" href="#age" role="tab"
+                                                aria-controls="age" aria-selected="false">Age Group</a>
                                         </li>
                                         <li class="nav-item" role="presentation">
                                             <a class="nav-link" id="genderPurok-tab" data-bs-toggle="tab"
-                                                href="#genderPurok" role="tab" aria-controls="genderPurok" aria-selected="false">Gender by Purok</a>
+                                                href="#genderPurok" role="tab" aria-controls="genderPurok"
+                                                aria-selected="false">Gender by Purok</a>
                                         </li>
                                         <li class="nav-item" role="presentation">
                                             <a class="nav-link" id="agePurok-tab" data-bs-toggle="tab" href="#agePurok"
-                                                role="tab" aria-controls="agePurok" aria-selected="false">Age Group by Purok</a>
+                                                role="tab" aria-controls="agePurok" aria-selected="false">Age Group by
+                                                Purok</a>
                                         </li>
                                     </ul>
 
                                     <!-- Tab Contents -->
                                     <div class="tab-content mt-3">
-                                        <div class="tab-pane fade show active demographics-tab-pane" id="gender" role="tabpanel">
+                                        <div class="tab-pane fade show active demographics-tab-pane" id="gender"
+                                            role="tabpanel">
                                             <canvas id="genderDistributionChart"></canvas>
                                         </div>
                                         <div class="tab-pane fade demographics-tab-pane" id="age" role="tabpanel">
                                             <canvas id="ageGroupDistributionChart"></canvas>
                                         </div>
-                                        <div class="tab-pane fade demographics-tab-pane" id="genderPurok" role="tabpanel">
+                                        <div class="tab-pane fade demographics-tab-pane" id="genderPurok"
+                                            role="tabpanel">
                                             <canvas id="genderByPurokChart"></canvas>
                                         </div>
                                         <div class="tab-pane fade demographics-tab-pane" id="agePurok" role="tabpanel">
@@ -337,7 +336,7 @@
                     </div>
 
                     <!-- Recent Activity & Calendar Row -->
-                    <div class="row">
+                    <div class="row mx-2">
                         <div class="col-md-7 mb-4">
                             <div class="card">
                                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -432,10 +431,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-    <script src="js/sidebar-script.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="js/dashboard-chart.js"></script>
+
+    <script src="../js/sidebar-script.js"></script>
+    <script src="../js/dashboard-chart.js"></script>
 
 
 </body>

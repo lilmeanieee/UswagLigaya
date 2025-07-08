@@ -167,6 +167,13 @@
     cursor: pointer;
     border-radius: 4px;
 }
+.img-thumbnail {
+    width: 130px;
+    height: 100px;
+    object-fit: cover;
+    cursor: pointer;
+    border-radius: 4px;
+}
 
 /* viewing proj details: preview image in larger display */
 #imagePreviewModal .modal-dialog {

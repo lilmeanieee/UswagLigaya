@@ -159,11 +159,11 @@ function initializeProjectDisplay() {
         
         return `
             <div class="col-lg-6 col-xl-4 mb-4">
-                <div class="card project-card border-0 shadow-sm h-100">
+                <div class="card project-card border-0 shadow h-100">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start mb-3">
                             <h5 class="card-title mb-0">${project.project_name || 'Untitled Project'}</h5>
-                            <span class="badge ${statusClass}">${project.status || 'Unknown'}</span>
+                            <span class="status-badge  ${statusClass}">${project.status || 'Unknown'}</span>
                         </div>
                         <p class="card-text text-muted mb-3">${truncatedDescription}</p>
 
@@ -195,7 +195,7 @@ function initializeProjectDisplay() {
                             </button>
                             <button class="btn btn-primary btn-sm flex-fill update-project-btn" 
                                     data-project-id="${project.project_id}">
-                                <i class="bi me-1"></i>Update
+                                <i class="bi bi-pencil-square me-1"></i>Update
                             </button>
                         </div>
                     </div>
