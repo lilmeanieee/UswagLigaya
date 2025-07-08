@@ -208,7 +208,11 @@
                                 <option value="">All Status</option>
                                 <option value="pending">Not Started</option>
                                 <option value="ongoing">Ongoing</option>
+                                <option value="delayed">Delayed</option>
+                                <option value="on-hold">On Hold</option>
                                 <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>    
+                                
                             </select>
                         </div>
                         <!-- Categories Dropdown -->
@@ -263,7 +267,7 @@
                                             <i class="bi bi-eye me-1"></i>View
                                         </button>
                                         <button class="btn btn-primary btn-sm flex-fill" data-bs-toggle="modal"
-                                            data-bs-target="#editProjectModal">
+                                            data-bs-target="#updateProjectModal">
                                             <i class="bi bi-edit me-1"></i>Update
                                         </button>
                                     </div>
@@ -407,12 +411,12 @@
                 </div>
             </div>
 
-            <!-- Edit Project Modal -->
-            <div class="modal fade" id="editProjectModal" tabindex="-1">
+            <!-- Update Project Modal -->
+            <div class="modal fade" id="updateProjectModal" tabindex="-1">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Edit Project - Barangay Hall Renovation</h5>
+                            <h5 class="modal-title">Update Project - Barangay Hall Renovation</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -712,9 +716,8 @@
         crossorigin="anonymous"></script>
 
     <script src="../../js/sidebar-script.js"></script>
-    <script src="../../js/admin-project-script.js"></script>
-    <script src="../../js/brgy-project-admin/add-project.js"></script>
-
+    <script src="../../js/brgy-project-admin/admin-project-script.js"></script>
+    <script src="../../js/brgy-project-admin/display-project.js"></script>
 </body>
 
 </html>
