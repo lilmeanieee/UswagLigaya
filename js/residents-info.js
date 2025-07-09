@@ -25,7 +25,7 @@ window.addNewResident = function(residentData) {
         <td>${residentData.address || ""}</td>
         <td>${residentData.mobile_no || ""}</td>
         <td>${residentData.status || ""}</td>
-        <td>
+        <td class="d-flex flex-column flex-sm-row gap-1">
             <button class="btn btn-info">View</button>
             <button class="btn btn-primary">Edit</button>
         </td>`;
