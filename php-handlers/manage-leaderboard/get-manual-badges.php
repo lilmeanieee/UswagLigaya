@@ -37,7 +37,7 @@ try {
     $badges = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Append full icon URL and convert is_awarded to boolean
-    $baseUrl = '/UswagLigaya/uploads/badge/'; // Adjust if different
+    $baseUrl = '/UswagLigaya/uploads/badge/'; 
     foreach ($badges as &$badge) {
         $badge['badge_icon_url'] = $baseUrl . $badge['badge_icon'];
         $badge['is_awarded'] = (bool)$badge['is_awarded'];

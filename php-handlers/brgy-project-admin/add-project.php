@@ -165,24 +165,63 @@ try {
     // Convert uploaded images array to JSON string for database storage
     $project_images_json = !empty($uploaded_images) ? json_encode($uploaded_images) : null;
     
-    // Prepare insert statement for project
-    $sql = "INSERT INTO tbl_projects (
-        project_name, 
-        category_id, 
-        description, 
-        location,
-        start_date, 
-        expected_completion, 
-        initial_budget, 
-        funding_source, 
-        responsible_person, 
-        status, 
-        progress_percentage,
-        project_image,
-        created_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'Not Started', 0, ?, NOW())";
+    // Prepare insert statement for project (without project_image)
+$sql = "INSERT INTO tbl_projects (
+    project_name, 
+    category_id, 
+    description, 
+    location,
+    start_date, 
+    expected_completion, 
+    initial_budget, 
+    funding_source, 
+    responsible_person, 
+    status, 
+    progress_percentage,
+    created_at
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'Not Started', 0, NOW())";
 
-    $stmt = $pdo->prepare($sql);
+$stmt = $pdo->prepare($sql);
+$result = $stmt->execute([
+    $project_name,
+    $category_id,
+    $description,
+    $location,
+    $start_date,
+    $expected_completion,
+    !empty($initial_budget) ? floatval($initial_budget) : null,
+    $funding_source,
+    $responsible_person
+]);
+
+if (!$result) {
+    throw new Exception('Failed to create project');
+}
+
+$project_id = $pdo->lastInsertId();
+
+// Store images in tbl_project_images
+if (!empty($uploaded_images)) {
+    $image_insert_sql = "INSERT INTO tbl_project_images (project_id, image_filename, file_size) VALUES (?, ?, ?)";
+    $image_stmt = $pdo->prepare($image_insert_sql);
+
+    foreach ($uploaded_images as $filename) {
+        $file_path = $project_dir . '/' . $filename;
+        $relative_path = 'uploads/brgy_projects/' . basename($project_dir) . '/' . $filename;
+        $file_size = file_exists($file_path) ? filesize($file_path) : 0;
+
+        $image_result = $image_stmt->execute([
+            $project_id,
+            $relative_path,
+            $file_size
+        ]);
+
+        if (!$image_result) {
+            throw new Exception('Failed to insert image record: ' . $filename);
+        }
+    }
+}
+
     
     // Execute the statement
     $result = $stmt->execute([

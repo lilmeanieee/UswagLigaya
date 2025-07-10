@@ -205,20 +205,24 @@ function initializeProjectDisplay() {
     }
     
     // Get status class for badge styling
-    function getStatusClass(status) {
-        switch(status) {
-            case 'Planning':
-                return 'bg-secondary';
-            case 'Ongoing':
-                return 'bg-primary';
-            case 'Completed':
-                return 'bg-success';
-            case 'On Hold':
-                return 'bg-warning';
-            default:
-                return 'bg-secondary';
-        }
+   function getStatusClass(status) {
+    switch(status) {
+        case 'Not Started':
+            return 'bg-secondary';      // Gray - hasn't begun
+        case 'Ongoing':
+            return 'bg-primary';        // Blue - in progress
+        case 'Delayed':
+            return 'bg-warning';        // Orange/Yellow - attention needed
+        case 'On Hold':
+            return 'bg-info';           // Light blue - paused but not problematic
+        case 'Completed':
+            return 'bg-success';        // Green - successfully finished
+        case 'Cancelled':
+            return 'bg-danger';         // Red - stopped/terminated
+        default:
+            return 'bg-secondary';      // Gray - unknown status
     }
+}
     
     // Initialize search and filter functionality
     function initializeFilters() {
@@ -267,72 +271,288 @@ function initializeProjectDisplay() {
         }
     }
     
-    // FIXED: Proper modal cleanup and backdrop handling
+    // Fixed modal handling functions for display-project.js
+
+    // FIXED: Enhanced modal cleanup with better error handling
     function cleanupModal(modalId) {
-        const modal = document.getElementById(modalId);
-        if (modal) {
-            // Remove any existing modal instances
-            const existingInstance = bootstrap.Modal.getInstance(modal);
-            if (existingInstance) {
-                existingInstance.dispose();
-            }
-            
-            // Remove modal-related classes from body
-            document.body.classList.remove('modal-open');
-            document.body.style.overflow = '';
-            document.body.style.paddingRight = '';
-            
-            // Remove any leftover backdrops
-            const backdrops = document.querySelectorAll('.modal-backdrop');
-            backdrops.forEach(backdrop => backdrop.remove());
-            
-            // Reset modal state
-            modal.classList.remove('show');
+    const modal = document.getElementById(modalId);
+    if (!modal || !document.body.contains(modal)) return;
+
+    try {
+        const instance = bootstrap.Modal.getInstance(modal);
+        if (instance) {
+            // Let Bootstrap handle hiding, do NOT manually call `hide()` here
+            instance.dispose(); // Just dispose the modal instance after it's hidden
+        }
+
+        // Delay DOM reset until after Bootstrap completes its hide animation
+        setTimeout(() => {
+            modal.classList.remove('show', 'fade');
             modal.style.display = 'none';
             modal.removeAttribute('aria-modal');
             modal.removeAttribute('role');
             modal.setAttribute('aria-hidden', 'true');
-        }
+
+            document.body.classList.remove('modal-open');
+            document.body.style.overflow = '';
+            document.body.style.paddingRight = '';
+
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+
+            if (!modal.classList.contains('fade')) {
+                modal.classList.add('fade');
+            }
+        }, 300); // Bootstrap default transition is 300ms
+    } catch (error) {
+        console.error('Error during modal cleanup:', error);
+        forceModalCleanup(modalId);
     }
-    
-    // FIXED: Better modal show function with proper cleanup
-    function showModal(modalId, loadFunction, projectId) {
-        // Clean up any existing modals first
-        cleanupModal('projectDetailModal');
-        cleanupModal('updateProjectModal');
-        
+}
+
+
+
+    // FIXED: Force cleanup function for stubborn modals
+    function forceModalCleanup(modalId) {
         const modal = document.getElementById(modalId);
-        if (!modal) {
-            console.error(`Modal ${modalId} not found`);
+        if (!modal) return;
+        
+        // Force reset modal state
+        modal.className = 'modal fade';
+        modal.style.cssText = '';
+        modal.setAttribute('aria-hidden', 'true');
+        modal.removeAttribute('aria-modal');
+        modal.removeAttribute('role');
+        
+        // Force body cleanup
+        document.body.className = document.body.className.replace(/modal-open/g, '');
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+        
+        // Remove all backdrops
+        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+    }
+
+    // FIXED: Better modal show function with validation
+    function showModal(modalId, loadFunction, projectId) {
+      
+        
+        // Wait for cleanup to complete
+        setTimeout(() => {
+            const modal = document.getElementById(modalId);
+            if (!modal) {
+                console.error(`Modal ${modalId} not found`);
+                return;
+            }
+            
+            // Validate modal structure
+            if (!validateModalStructure(modal)) {
+                console.error(`Modal ${modalId} has invalid structure`);
+                return;
+            }
+            
+            // Load project data if function is available
+            if (loadFunction && typeof window[loadFunction] === 'function') {
+                try {
+                    window[loadFunction](projectId);
+                } catch (error) {
+                    console.error(`Error loading project data: ${error}`);
+                }
+            }
+            
+            // Show modal with enhanced error handling
+            try {
+                // Ensure modal is properly initialized
+                modal.classList.add('fade');
+                modal.setAttribute('aria-hidden', 'true');
+                
+                const bsModal = new bootstrap.Modal(modal, {
+                    backdrop: true,
+                    keyboard: true,
+                    focus: true
+                });
+                
+                // Add cleanup listener
+                const cleanupListener = () => {
+                    cleanupModal(modalId);
+                    modal.removeEventListener('hidden.bs.modal', cleanupListener);
+                };
+                
+                modal.addEventListener('hidden.bs.modal', cleanupListener);
+                
+                // Show the modal
+                bsModal.show();
+                
+            } catch (error) {
+                console.error('Error showing modal:', error);
+                forceModalCleanup(modalId);
+            }
+        }, 150); // Give cleanup time to complete
+    }
+
+    // NEW: Validate modal structure before showing
+    function validateModalStructure(modal) {
+        if (!modal) return false;
+        
+        // Check for required modal structure
+        const modalDialog = modal.querySelector('.modal-dialog');
+        const modalContent = modal.querySelector('.modal-content');
+        
+        if (!modalDialog || !modalContent) {
+            console.error('Modal missing required dialog or content elements');
+            return false;
+        }
+        
+        // Ensure modal has proper classes
+        if (!modal.classList.contains('modal')) {
+            modal.classList.add('modal');
+        }
+        
+        if (!modal.classList.contains('fade')) {
+            modal.classList.add('fade');
+        }
+        
+        return true;
+    }
+
+    // FIXED: Enhanced event handlers with better error handling
+    function initializeModalHandlers() {
+        // Handle view project button clicks
+        $(document).off('click', '.view-project-btn').on('click', '.view-project-btn', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const projectId = $(this).data('project-id');
+            if (!projectId) {
+                console.error('No project ID found');
+                return;
+            }
+            
+            console.log('View project:', projectId);
+            showModal('projectDetailModal', 'loadProjectDetails', projectId);
+        });
+
+        // Handle update project button clicks
+        $(document).off('click', '.update-project-btn').on('click', '.update-project-btn', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const projectId = $(this).data('project-id');
+            if (!projectId) {
+                console.error('No project ID found');
+                return;
+            }
+            
+            console.log('Update project:', projectId);
+            showModal('updateProjectModal', 'loadProjectForUpdate', projectId);
+        });
+        
+        // Global modal cleanup handler
+        $(document).off('hidden.bs.modal', '.modal').on('hidden.bs.modal', '.modal', function(e) {
+            const modalId = $(this).attr('id');
+            if (modalId) {
+                setTimeout(() => cleanupModal(modalId), 100);
+            }
+        });
+    }
+
+    // FIXED: Enhanced emergency cleanup function
+    window.emergencyModalCleanup = function() {
+        console.log('Running emergency modal cleanup...');
+        
+        try {
+            // Dispose all modal instances
+            $('.modal').each(function() {
+                const instance = bootstrap.Modal.getInstance(this);
+                if (instance) {
+                    try {
+                        instance.dispose();
+                    } catch (e) {
+                        console.warn('Error disposing modal instance:', e);
+                    }
+                }
+            });
+            
+            // Force remove all modal-related elements and classes
+            $('.modal-backdrop').remove();
+            $('.modal').removeClass('show').hide();
+            $('.modal').attr('aria-hidden', 'true').removeAttr('aria-modal role');
+            
+            // Reset body
+            $('body').removeClass('modal-open');
+            $('body').css({
+                'overflow': '',
+                'padding-right': '',
+                'margin-right': ''
+            });
+            
+            // Re-add fade class to all modals
+            $('.modal').addClass('fade');
+            
+            console.log('Emergency modal cleanup completed');
+            
+        } catch (error) {
+            console.error('Error during emergency cleanup:', error);
+            
+            // Last resort: force DOM cleanup
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+            document.body.classList.remove('modal-open');
+            document.body.style.cssText = '';
+        }
+    };
+
+    // FIXED: Better initialization with proper timing
+    function initializeProjectDisplay() {
+        // Check if jQuery is available
+        if (typeof $ === 'undefined') {
+            console.error('jQuery is not loaded. Please include jQuery before this script.');
             return;
         }
         
-        // Load project data if function is available
-        if (loadFunction && typeof window[loadFunction] === 'function') {
-            window[loadFunction](projectId);
-        } else {
-            console.warn(`${loadFunction} function not available`);
-        }
+        // Initialize modal handlers first
+        initializeModalHandlers();
         
-        // Show modal with proper error handling
-        try {
-            const bsModal = new bootstrap.Modal(modal, {
-                backdrop: true,
-                keyboard: true,
-                focus: true
-            });
-            
-            // Add event listeners for proper cleanup
-            modal.addEventListener('hidden.bs.modal', function() {
-                cleanupModal(modalId);
-            }, { once: true });
-            
-            bsModal.show();
-        } catch (error) {
-            console.error('Error showing modal:', error);
-            cleanupModal(modalId);
-        }
+        // Load projects when page loads
+        loadProjects();
+        
+        // Initialize search and filter functionality
+        initializeFilters();
+        
+        // Load categories for filter dropdown
+        loadCategoriesForFilter();
+        
+        // Rest of your existing code...
     }
+
+    // FIXED: Add window resize handler to prevent modal issues
+    window.addEventListener('resize', function() {
+        // Check if any modal is open and handle backdrop issues
+        const openModals = document.querySelectorAll('.modal.show');
+        if (openModals.length > 0) {
+            setTimeout(() => {
+                const backdrops = document.querySelectorAll('.modal-backdrop');
+                if (backdrops.length > 1) {
+                    // Remove extra backdrops
+                    for (let i = 1; i < backdrops.length; i++) {
+                        backdrops[i].remove();
+                    }
+                }
+            }, 100);
+        }
+    });
+
+    // FIXED: Add escape key handler for emergency cleanup
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && e.ctrlKey && e.shiftKey) {
+            // Ctrl+Shift+Escape for emergency cleanup
+            window.emergencyModalCleanup();
+        }
+    });
+
+    // Export the fixed functions
+    window.cleanupModal = cleanupModal;
+    window.showModal = showModal;
+    window.validateModalStructure = validateModalStructure;
+    window.forceModalCleanup = forceModalCleanup;
     
     // FIXED: Handle view project button clicks with proper modal handling
     $(document).on('click', '.view-project-btn', function(e) {
@@ -487,3 +707,4 @@ if (typeof $ !== 'undefined') {
         clearInterval(jqueryCheckInterval);
     }, 10000);
 }
+

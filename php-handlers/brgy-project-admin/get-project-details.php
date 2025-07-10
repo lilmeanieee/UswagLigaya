@@ -1,5 +1,4 @@
 <?php
-// get-project-details.php
 session_start();
 header('Content-Type: application/json');
 
@@ -53,13 +52,36 @@ try {
     $stages_stmt->execute([$project_id]);
     $stages = $stages_stmt->fetchAll(PDO::FETCH_ASSOC);
     
-    // Process project images
-    $project_images = [];
-    if (!empty($project['project_image'])) {
-        $decoded_images = json_decode($project['project_image'], true);
-        if (is_array($decoded_images)) {
-            $project_images = $decoded_images;
-        }
+    // Get project images from tbl_project_images
+    $images_sql = "SELECT image_id, image_filename, file_size, upload_date 
+                   FROM tbl_project_images 
+                   WHERE project_id = ? 
+                   ORDER BY upload_date ASC";
+    $images_stmt = $pdo->prepare($images_sql);
+    $images_stmt->execute([$project_id]);
+    $project_images = $images_stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Format image data with proper URLs - simplified approach like badge system
+    $formatted_images = [];
+    $baseUrl = '/UswagLigaya/uploads/brgy_projects/'; 
+    
+    foreach ($project_images as $image) {
+        // Create the project folder name (clean version)
+        $project_name = $project['project_name'];
+        $clean_project_name = preg_replace('/[^a-zA-Z0-9\-_\s]/', '', $project_name);
+        $clean_project_name = str_replace(' ', '_', $clean_project_name);
+        
+        // Create the image URL - simple and direct like your badge system
+        $image_url = $baseUrl . $clean_project_name . '/' . $image['image_filename'];
+        
+        $formatted_images[] = [
+            'image_id' => $image['image_id'],
+            'filename' => $image['image_filename'],
+            'image_url' => $image_url,
+            'file_size' => $image['file_size'],
+            'upload_date' => $image['upload_date'],
+            'upload_date_formatted' => date('M d, Y g:i A', strtotime($image['upload_date']))
+        ];
     }
     
     // Calculate remaining days
@@ -77,7 +99,7 @@ try {
     }
     
     // Add calculated fields to project data
-    $project['project_images'] = $project_images;
+    $project['project_images'] = $formatted_images;
     $project['stages'] = $stages;
     $project['remaining_days'] = $remaining_days;
     

@@ -502,14 +502,14 @@
                                     <h5 class="mb-0">Project Images</h5>
                                 </div>
                                 <div class="card-body">
-                                    <div id="drop-area" class="upload-box text-center p-4">
+                                    <div id="drop-area-update" class="upload-box text-center p-4">
                                         <p class="mb-2 fw-semibold">Drag & Drop image file<br><span
                                                 class="text-primary">or Browse</span></p>
                                         <p class="text-muted small">Supports: JPEG, PNG, GIF, TIFF</p>
-                                        <input type="file" id="fileInput" accept="image/*" multiple hidden>
+                                        <input type="file" id="fileInputUpdate" accept="image/*" multiple hidden>
                                     </div>
                                     <!-- Preview Container with an existing image -->
-                                    <div id="imagePreviewContainer" class="d-flex flex-wrap gap-2 mt-3">
+                                    <div id="imagePreviewContainerUpdate" class="d-flex flex-wrap gap-2 mt-3">
                                         <div class="position-relative">
                                             <img src="../../asset/img/default.png"
                                                 class="img-thumbnail project-image-thumb" alt="Default Project Image">
@@ -643,13 +643,13 @@
                                     <h5 class="mb-0">Upload Project Images</h5>
                                 </div>
                                 <div class="card-body">
-                                    <div id="drop-area" class="upload-box text-center p-4">
+                                    <div id="drop-area-add" class="upload-box text-center p-4">
                                         <p class="mb-2 fw-semibold">Drag & Drop image file<br><span
                                                 class="text-primary">or Browse</span></p>
                                         <p class="text-muted small">Supports: JPEG, PNG, GIF, TIFF</p>
-                                        <input type="file" id="fileInput" accept="image/*" multiple hidden>
+                                        <input type="file" id="fileInputAdd" accept="image/*" multiple hidden>
                                     </div>
-                                    <div id="imagePreviewContainer" class="d-flex flex-wrap gap-2 mt-3"></div>
+                                    <div id="imagePreviewContainerAdd" class="d-flex flex-wrap gap-2 mt-3"></div>
                                 </div>
                             </div>
                         </div>
@@ -673,6 +673,7 @@
     <script src="../../js/sidebar-script.js"></script>
     <script src="../../js/brgy-project-admin/admin-project-script.js"></script>
     <script src="../../js/brgy-project-admin/display-project.js"></script>
+    <script src="../../js/brgy-project-admin/project-modal-handler.js"></script>
 </body>
 
 </html>

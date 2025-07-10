@@ -100,7 +100,7 @@
     flex: 1 1 auto;
 }
 
-/* Timeline */
+/* Timeline - Modified to remove dots and emphasize stage names */
 .timeline {
     position: relative;
     padding: 0;
@@ -112,40 +112,53 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 40px;
-    width: 2px;
-    background-color: #e9ecef;
+    left: 10px;
+    width: 3px;
+    background-color: #0d6efd;
+    border-radius: 2px;
 }
 
 .timeline-item {
     position: relative;
     margin-bottom: 25px;
-    padding-left: 70px;
+    padding-left: 30px;
 }
 
 .timeline-item:last-child {
     margin-bottom: 0;
 }
 
-.timeline-dot {
-    position: absolute;
-    left: 36px;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background-color: #0d6efd;
-}
+/* Remove the timeline-dot class entirely since we're not using it */
 
 .timeline-content {
-    padding: 15px;
+    padding: 20px;
     background-color: #f8f9fa;
-    border-radius: 5px;
+    border-radius: 8px;
+    border-left: 4px solid #0d6efd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.stage-title {
+    color: #2c3e50;
+    font-weight: bold;
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+    text-transform: capitalize;
 }
 
 .timeline-date {
     display: block;
     margin-bottom: 8px;
     color: #6c757d;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.stage-status {
+    color: #495057;
+    font-size: 0.85rem;
+    font-style: italic;
+    margin-bottom: 0;
 }
 
 .carousel-control-next-icon:hover,

@@ -1,191 +1,239 @@
-// project-modal-handler.js - Handle project modals (view and update)
+// project-modal-handlers.js - Functions to populate project modals with database data
 
-// Function to load project details for view modal
+// Function to load project details for the view modal
 function loadProjectDetails(projectId) {
     if (!projectId) {
         console.error('Project ID is required');
         return;
     }
-    
+
     // Show loading state
     const modal = document.getElementById('projectDetailModal');
-    if (modal) {
-        const modalBody = modal.querySelector('.modal-body');
-        if (modalBody) {
-            modalBody.innerHTML = '<div class="text-center py-4"><i class="bi bi-hourglass-split"></i> Loading project details...</div>';
-        }
-    }
+    const modalBody = modal.querySelector('.modal-body');
+    const originalContent = modalBody.innerHTML;
     
+    modalBody.innerHTML = `
+        <div class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Loading project details...</p>
+        </div>
+    `;
+
+    // Fetch project details
     $.ajax({
         url: '../../php-handlers/brgy-project-admin/get-project-details.php',
         method: 'GET',
         data: { project_id: projectId },
         dataType: 'json',
         success: function(response) {
-            console.log('Project details loaded:', response);
             if (response.success) {
-                populateViewModal(response.project);
+                populateProjectDetailModal(response.project);
             } else {
-                console.error('Failed to load project details:', response.message);
-                showModalError('projectDetailModal', response.message || 'Failed to load project details');
+                modalBody.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        ${response.message || 'Failed to load project details'}
+                    </div>
+                `;
             }
         },
         error: function(xhr, status, error) {
-            console.error('AJAX Error loading project details:', xhr.responseText);
-            showModalError('projectDetailModal', 'Failed to load project details. Please try again.');
+            console.error('Error loading project details:', error);
+            modalBody.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    Failed to load project details. Please try again.
+                </div>
+            `;
         }
     });
 }
 
-// Function to populate view modal with project data
-function populateViewModal(project) {
-    const modal = document.getElementById('projectDetailModal');
-    if (!modal) {
-        console.error('Project detail modal not found');
-        return;
-    }
-    
-    // Format data for display
-    const formattedBudget = project.initial_budget ? 
-        formatCurrency(project.initial_budget) : 'Not specified';
-    
-    const formattedStartDate = project.start_date ? 
-        formatDate(project.start_date) : 'Not specified';
-    
-    const formattedEndDate = project.expected_completion ? 
-        formatDate(project.expected_completion) : 'Not specified';
-    
-    const progressPercentage = project.progress_percentage || 0;
-    
-    // Create images gallery
-    let imagesHtml = '';
-    if (project.project_images && project.project_images.length > 0) {
-        imagesHtml = '<div class="row g-2 mb-3">';
-        project.project_images.forEach(function(image) {
-            imagesHtml += `
-                <div class="col-md-4 col-sm-6">
-                    <img src="../../uploads/brgy_projects/${project.project_name}/${image}" 
-                         class="img-fluid rounded" 
-                         alt="Project Image"
-                         style="height: 120px; object-fit: cover; width: 100%;"
-                         onclick="showImageModal(this.src)">
-                </div>
-            `;
-        });
-        imagesHtml += '</div>';
-    } else {
-        imagesHtml = '<p class="text-muted">No images available</p>';
-    }
-    
-    // Create stages display
-    let stagesHtml = '';
-    if (project.stages && project.stages.length > 0) {
-        stagesHtml = '<div class="timeline">';
-        project.stages.forEach(function(stage, index) {
-            const stageClass = getStageStatusClass(stage.status);
-            const stageIcon = getStageStatusIcon(stage.status);
-            
-            stagesHtml += `
-                <div class="timeline-item">
-                    <div class="timeline-marker ${stageClass}">
-                        <i class="bi ${stageIcon}"></i>
-                    </div>
-                    <div class="timeline-content">
-                        <h6 class="mb-1">${stage.stage_name}</h6>
-                        <small class="text-muted">Status: <span class="badge ${stageClass}">${stage.status}</span></small>
-                        ${stage.start_date && stage.start_date !== '0000-00-00' ? 
-                            `<br><small class="text-muted">Started: ${formatDate(stage.start_date)}</small>` : ''}
-                        ${stage.end_date && stage.end_date !== '0000-00-00' ? 
-                            `<br><small class="text-muted">Completed: ${formatDate(stage.end_date)}</small>` : ''}
-                    </div>
-                </div>
-            `;
-        });
-        stagesHtml += '</div>';
-    } else {
-        stagesHtml = '<p class="text-muted">No stages defined</p>';
-    }
-    
-    // Populate modal content
-    const modalContent = `
-        <div class="row">
-            <div class="col-md-8">
-                <div class="mb-4">
-                    <h4 class="mb-3">${project.project_name}</h4>
-                    <div class="d-flex align-items-center mb-3">
-                        <span class="badge ${getStatusClass(project.status)} me-2">${project.status}</span>
-                        <span class="badge bg-secondary">${project.category_name}</span>
-                    </div>
-                    <p class="text-muted">${project.description || 'No description available'}</p>
-                </div>
+    // Function to populate the project detail modal - FIXED VERSION
+    function populateProjectDetailModal(project) {
+        const modal = document.getElementById('projectDetailModal');
+        
+        // Update modal title
+        const modalTitle = modal.querySelector('.modal-title');
+        modalTitle.textContent = `${project.project_name} - Project Details`;
+        
+        // Format currency
+        const formatCurrency = (amount) => {
+            if (!amount || amount === 0) return 'N/A';
+            return '₱' + Number(amount).toLocaleString('en-PH', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        };
+        
+        // Create project information table
+        const projectInfoTable = `
+            <table class="table table-sm">
+                <tr>
+                    <td class="fw-bold">Category:</td>
+                    <td>${project.category_name || 'N/A'}</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Start Date:</td>
+                    <td>${project.start_date_formatted || 'N/A'}</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Expected Completion:</td>
+                    <td>${project.expected_completion_formatted || 'N/A'}</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Responsible Person:</td>
+                    <td>${project.responsible_person || 'N/A'}</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Total Budget:</td>
+                    <td>${formatCurrency(project.initial_budget)}</td>
+                </tr>
+                <tr>
+                    <td class="fw-bold">Funding Source:</td>
+                    <td>${project.funding_source || 'N/A'}</td>
+                </tr>
+            </table>
+        `;
+        
+        // Create timeline/stages section
+        let timelineHtml = '';
+        if (project.stages && project.stages.length > 0) {
+            project.stages.forEach(stage => {
+                const statusClass = getStageStatusClass(stage.status);
+                const startDate = stage.start_date && stage.start_date !== '0000-00-00' ? 
+                    new Date(stage.start_date).toLocaleDateString('en-US', { 
+                        year: 'numeric', month: 'short', day: 'numeric' 
+                    }) : 'TBD';
+                const endDate = stage.end_date && stage.end_date !== '0000-00-00' ? 
+                    new Date(stage.end_date).toLocaleDateString('en-US', { 
+                        year: 'numeric', month: 'short', day: 'numeric' 
+                    }) : 'TBD';
                 
-                <div class="mb-4">
-                    <h5 class="mb-3">Progress</h5>
-                    <div class="progress mb-2" style="height: 20px;">
-                        <div class="progress-bar bg-info" style="width: ${progressPercentage}%">
-                            ${progressPercentage}%
+                timelineHtml += `
+                    <div class="timeline-item mb-3">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h6 class="mb-1">${stage.stage_name}</h6>
+                                <small class="text-muted">${startDate} - ${endDate}</small>
+                            </div>
+                            <span class="badge ${statusClass}">${stage.status}</span>
                         </div>
                     </div>
-                </div>
+                `;
+            });
+        } else {
+            timelineHtml = '<p class="text-muted">No stages defined for this project.</p>';
+        }
+        
+        // Create images section - FIXED VERSION
+        let imagesHtml = '';
+        if (project.project_images && project.project_images.length > 0) {
+            project.project_images.forEach(image => {
+                // Use the image_url provided by the backend
+                const imageUrl = image.image_url;
+                const filename = image.filename;
                 
-                <div class="mb-4">
-                    <h5 class="mb-3">Project Images</h5>
+                imagesHtml += `
+                    <img src="${imageUrl}" 
+                        alt="Project Image" 
+                        class="img-thumbnail preview-thumb" 
+                        style="width: 100px; height: 100px; object-fit: cover; cursor: pointer;"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#imagePreviewModal"
+                        data-img-src="${imageUrl}">
+                `;
+            });
+        } else {
+            imagesHtml = '<p class="text-muted">No images uploaded for this project.</p>';
+        }
+        
+        // Get last update date
+        const lastUpdated = project.updated_at ? 
+            new Date(project.updated_at).toLocaleDateString('en-US', { 
+                year: 'numeric', month: 'short', day: 'numeric' 
+            }) : 
+            new Date(project.created_at).toLocaleDateString('en-US', { 
+                year: 'numeric', month: 'short', day: 'numeric' 
+            });
+        
+        // Update modal body
+        const modalBody = modal.querySelector('.modal-body');
+        modalBody.innerHTML = `
+            <div class="mb-4">
+                <h6>Project Information</h6>
+                ${projectInfoTable}
+            </div>
+            
+            <div class="mb-4">
+                <h6>Project Timeline & Stages</h6>
+                ${timelineHtml}
+            </div>
+            
+            <div class="mb-3">
+                <h6>Progress Updates</h6>
+                <div class="progress mb-2" style="height: 20px;">
+                    <div class="progress-bar bg-info" style="width: ${project.progress_percentage}%"></div>
+                </div>
+                <small class="text-muted">${project.progress_percentage}% Complete - Last updated: ${lastUpdated}</small>
+            </div>
+            
+            <div class="mb-4">
+                <h6>Project Description</h6>
+                <p class="text-muted">${project.description || 'No description provided.'}</p>
+            </div>
+            
+            <div class="mb-4">
+                <h6>Location</h6>
+                <p class="text-muted">${project.location || 'No location specified.'}</p>
+            </div>
+            
+            <div class="mb-4">
+                <h6>Uploaded Project Images</h6>
+                <div class="d-flex flex-wrap gap-2">
                     ${imagesHtml}
                 </div>
+            </div>
+        `;
+        
+        // Update modal footer button to show update modal
+        const modalFooter = modal.querySelector('.modal-footer');
+        const updateBtn = modalFooter.querySelector('.btn-primary');
+        if (updateBtn) {
+            updateBtn.onclick = function() {
+                // Hide current modal
+                const currentModal = bootstrap.Modal.getInstance(modal);
+                currentModal.hide();
                 
-                <div class="mb-4">
-                    <h5 class="mb-3">Project Stages</h5>
-                    ${stagesHtml}
-                </div>
-            </div>
-            
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">
-                        <h6 class="mb-0">Project Details</h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <strong>Location:</strong>
-                            <p class="mb-0 text-muted">${project.location || 'Not specified'}</p>
-                        </div>
-                        <div class="mb-3">
-                            <strong>Budget:</strong>
-                            <p class="mb-0 text-muted">${formattedBudget}</p>
-                        </div>
-                        <div class="mb-3">
-                            <strong>Funding Source:</strong>
-                            <p class="mb-0 text-muted">${project.funding_source || 'Not specified'}</p>
-                        </div>
-                        <div class="mb-3">
-                            <strong>Responsible Person:</strong>
-                            <p class="mb-0 text-muted">${project.responsible_person || 'Not specified'}</p>
-                        </div>
-                        <div class="mb-3">
-                            <strong>Start Date:</strong>
-                            <p class="mb-0 text-muted">${formattedStartDate}</p>
-                        </div>
-                        <div class="mb-3">
-                            <strong>Expected Completion:</strong>
-                            <p class="mb-0 text-muted">${formattedEndDate}</p>
-                        </div>
-                        <div class="mb-3">
-                            <strong>Created:</strong>
-                            <p class="mb-0 text-muted">${formatDate(project.created_at)}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
-    
-    const modalBody = modal.querySelector('.modal-body');
-    if (modalBody) {
-        modalBody.innerHTML = modalContent;
+                // Show update modal
+                setTimeout(() => {
+                    loadProjectForUpdate(project.project_id);
+                    const updateModal = new bootstrap.Modal(document.getElementById('updateProjectModal'));
+                    updateModal.show();
+                }, 300);
+            };
+        }
+    }
+
+// Function to get stage status badge class
+function getStageStatusClass(status) {
+    switch(status) {
+        case 'Completed':
+            return 'bg-success';
+        case 'In Progress':
+            return 'bg-primary';
+        case 'Not Started':
+            return 'bg-secondary';
+        case 'On Hold':
+            return 'bg-warning';
+        default:
+            return 'bg-secondary';
     }
 }
 
-// Function to load project for update modal
+// Function to load project data for update modal
 function loadProjectForUpdate(projectId) {
     if (!projectId) {
         console.error('Project ID is required');
@@ -194,291 +242,498 @@ function loadProjectForUpdate(projectId) {
     
     // Show loading state
     const modal = document.getElementById('updateProjectModal');
-    if (modal) {
-        const modalBody = modal.querySelector('.modal-body');
-        if (modalBody) {
-            modalBody.innerHTML = '<div class="text-center py-4"><i class="bi bi-hourglass-split"></i> Loading project data...</div>';
-        }
-    }
+    const modalBody = modal.querySelector('.modal-body');
+    const originalContent = modalBody.innerHTML;
     
+    modalBody.innerHTML = `
+        <div class="text-center py-4">
+            <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-2">Loading project data...</p>
+        </div>
+    `;
+    
+    // Fetch project details
     $.ajax({
         url: '../../php-handlers/brgy-project-admin/get-project-details.php',
         method: 'GET',
         data: { project_id: projectId },
         dataType: 'json',
         success: function(response) {
-            console.log('Project data for update loaded:', response);
             if (response.success) {
-                populateUpdateModal(response.project);
+                populateUpdateProjectModal(response.project);
             } else {
-                console.error('Failed to load project data:', response.message);
-                showModalError('updateProjectModal', response.message || 'Failed to load project data');
+                modalBody.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        ${response.message || 'Failed to load project data'}
+                    </div>
+                `;
             }
         },
         error: function(xhr, status, error) {
-            console.error('AJAX Error loading project data:', xhr.responseText);
-            showModalError('updateProjectModal', 'Failed to load project data. Please try again.');
+            console.error('Error loading project data:', error);
+            modalBody.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    Failed to load project data. Please try again.
+                </div>
+            `;
         }
     });
 }
 
-// Function to populate update modal with project data
-function populateUpdateModal(project) {
+// Function to populate the update project modal
+function populateUpdateProjectModal(project) {
     const modal = document.getElementById('updateProjectModal');
-    if (!modal) {
-        console.error('Update project modal not found');
-        return;
-    }
     
-    // Create stages list for editing
-    let stagesHtml = '';
-    if (project.stages && project.stages.length > 0) {
-        project.stages.forEach(function(stage, index) {
-            stagesHtml += `
-                <div class="stage-item mb-3 p-3 border rounded">
-                    <div class="row align-items-center">
-                        <div class="col-md-4">
-                            <input type="text" class="form-control" 
-                                   value="${stage.stage_name}" 
-                                   placeholder="Stage name"
-                                   name="stage_names[]">
+    // Update modal title
+    const modalTitle = modal.querySelector('.modal-title');
+    modalTitle.textContent = `Update Project - ${project.project_name}`;
+    
+    // Create the complete modal body HTML
+    const modalBodyHtml = `
+        <!-- Project Details -->
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5 class="mb-0">Project Details</h5>
+            </div>
+            <div class="card-body">
+                <form id="updateProjectForm">
+                    <input type="hidden" id="projectId" value="${project.project_id}">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Project Name</label>
+                            <input type="text" class="form-control" id="projectName" value="${project.project_name || ''}">
                         </div>
-                        <div class="col-md-3">
-                            <select class="form-select" name="stage_status[]">
-                                <option value="Not Started" ${stage.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
-                                <option value="In Progress" ${stage.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
-                                <option value="Completed" ${stage.status === 'Completed' ? 'selected' : ''}>Completed</option>
-                                <option value="On Hold" ${stage.status === 'On Hold' ? 'selected' : ''}>On Hold</option>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Category</label>
+                            <select class="form-select" id="projectCategory">
+                                <option value="1" ${project.category_id == 1 ? 'selected' : ''}>Infrastructure</option>
+                                <option value="2" ${project.category_id == 2 ? 'selected' : ''}>Public Service</option>
+                                <option value="3" ${project.category_id == 3 ? 'selected' : ''}>Health & Wellness</option>
+                                <option value="4" ${project.category_id == 4 ? 'selected' : ''}>Education</option>
                             </select>
                         </div>
-                        <div class="col-md-2">
-                            <input type="date" class="form-control" 
-                                   value="${stage.start_date !== '0000-00-00' ? stage.start_date : ''}" 
-                                   name="stage_start_dates[]">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" id="projectDescription" rows="3">${project.description || ''}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Location</label>
+                        <input type="text" class="form-control" id="projectLocation" value="${project.location || ''}">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Start Date</label>
+                            <input type="date" class="form-control" id="projectStartDate" value="${project.start_date || ''}">
                         </div>
-                        <div class="col-md-2">
-                            <input type="date" class="form-control" 
-                                   value="${stage.end_date !== '0000-00-00' ? stage.end_date : ''}" 
-                                   name="stage_end_dates[]">
-                        </div>
-                        <div class="col-md-1">
-                            <button type="button" class="btn btn-outline-danger btn-sm remove-stage">
-                                <i class="bi bi-trash"></i>
-                            </button>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Expected Completion</label>
+                            <input type="date" class="form-control" id="projectEndDate" value="${project.expected_completion || ''}">
                         </div>
                     </div>
-                    <input type="hidden" name="stage_ids[]" value="${stage.stage_id}">
-                </div>
-            `;
-        });
-    }
-    
-    // Create current images display
-    let currentImagesHtml = '';
-    if (project.project_images && project.project_images.length > 0) {
-        currentImagesHtml = '<div class="row g-2 mb-3">';
-        project.project_images.forEach(function(image) {
-            currentImagesHtml += `
-                <div class="col-md-3 col-sm-4">
-                    <div class="position-relative">
-                        <img src="../../uploads/brgy_projects/${project.project_name}/${image}" 
-                             class="img-fluid rounded" 
-                             alt="Project Image"
-                             style="height: 80px; object-fit: cover; width: 100%;">
-                        <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 remove-image" 
-                                data-image="${image}" style="font-size: 10px; padding: 2px 6px;">
-                            <i class="bi bi-x"></i>
-                        </button>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Budget</label>
+                            <input type="number" class="form-control" id="projectBudget" value="${project.initial_budget || ''}" step="0.01">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Funding Source</label>
+                            <input type="text" class="form-control" id="projectFunding" value="${project.funding_source || ''}">
+                        </div>
                     </div>
-                </div>
-            `;
-        });
-        currentImagesHtml += '</div>';
-    }
-    
-    // Create update form
-    const updateForm = `
-        <form id="updateProjectForm" enctype="multipart/form-data">
-            <input type="hidden" name="project_id" value="${project.project_id}">
-            <input type="hidden" name="removed_images" id="removedImages" value="">
-            
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Project Name *</label>
-                    <input type="text" class="form-control" name="project_name" value="${project.project_name}" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Category *</label>
-                    <select class="form-select" name="category" required>
-                        <option value="">Select category...</option>
-                        <option value="1" ${project.category_id == 1 ? 'selected' : ''}>Infrastructure</option>
-                        <option value="2" ${project.category_id == 2 ? 'selected' : ''}>Public Service</option>
-                        <option value="3" ${project.category_id == 3 ? 'selected' : ''}>Health & Wellness</option>
-                        <option value="4" ${project.category_id == 4 ? 'selected' : ''}>Education</option>
-                    </select>
-                </div>
-            </div>
-            
-            <div class="mb-3">
-                <label class="form-label">Description *</label>
-                <textarea class="form-control" name="description" rows="3" required>${project.description || ''}</textarea>
-            </div>
-            
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Location *</label>
-                    <input type="text" class="form-control" name="location" value="${project.location || ''}" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Status</label>
-                    <select class="form-select" name="status">
-                        <option value="Not Started" ${project.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
-                        <option value="Planning" ${project.status === 'Planning' ? 'selected' : ''}>Planning</option>
-                        <option value="Ongoing" ${project.status === 'Ongoing' ? 'selected' : ''}>Ongoing</option>
-                        <option value="On Hold" ${project.status === 'On Hold' ? 'selected' : ''}>On Hold</option>
-                        <option value="Completed" ${project.status === 'Completed' ? 'selected' : ''}>Completed</option>
-                    </select>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Start Date *</label>
-                    <input type="date" class="form-control" name="start_date" value="${project.start_date || ''}" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Expected Completion *</label>
-                    <input type="date" class="form-control" name="expected_completion" value="${project.expected_completion || ''}" required>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Initial Budget</label>
-                    <input type="number" class="form-control" name="initial_budget" value="${project.initial_budget || ''}" step="0.01" min="0">
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Progress Percentage</label>
-                    <input type="number" class="form-control" name="progress_percentage" value="${project.progress_percentage || 0}" min="0" max="100">
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Funding Source</label>
-                    <input type="text" class="form-control" name="funding_source" value="${project.funding_source || ''}">
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Responsible Person *</label>
-                    <input type="text" class="form-control" name="responsible_person" value="${project.responsible_person || ''}" required>
-                </div>
-            </div>
-            
-            <div class="mb-3">
-                <label class="form-label">Current Images</label>
-                ${currentImagesHtml || '<p class="text-muted">No images uploaded</p>'}
-            </div>
-            
-            <div class="mb-3">
-                <label class="form-label">Add New Images</label>
-                <input type="file" class="form-control" name="new_images[]" multiple accept="image/*">
-                <small class="text-muted">Select multiple images to add (JPG, PNG, GIF, TIFF)</small>
-            </div>
-            
-            <div class="mb-3">
-                <label class="form-label">Project Stages</label>
-                <div id="stagesContainer">
-                    ${stagesHtml}
-                </div>
-                <button type="button" class="btn btn-outline-secondary btn-sm" id="addStageBtn">
-                    <i class="bi bi-plus"></i> Add Stage
-                </button>
-            </div>
-            
-            <div class="d-flex justify-content-end gap-2">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-save"></i> Save Changes
-                </button>
-            </div>
-        </form>
-    `;
-    
-    const modalBody = modal.querySelector('.modal-body');
-    if (modalBody) {
-        modalBody.innerHTML = updateForm;
-    }
-    
-    // Initialize form handlers
-    initializeUpdateFormHandlers();
-}
-
-// Initialize update form handlers
-function initializeUpdateFormHandlers() {
-    // Remove image handler
-    $(document).on('click', '.remove-image', function(e) {
-        e.preventDefault();
-        const image = $(this).data('image');
-        const removedImages = $('#removedImages').val();
-        const newRemovedImages = removedImages ? removedImages + ',' + image : image;
-        $('#removedImages').val(newRemovedImages);
-        $(this).closest('.col-md-3').remove();
-    });
-    
-    // Add stage handler
-    $(document).on('click', '#addStageBtn', function(e) {
-        e.preventDefault();
-        const stageHtml = `
-            <div class="stage-item mb-3 p-3 border rounded">
-                <div class="row align-items-center">
-                    <div class="col-md-4">
-                        <input type="text" class="form-control" 
-                               placeholder="Stage name"
-                               name="stage_names[]">
+                    <div class="mb-3">
+                        <label class="form-label">Assign Responsible Personnel</label>
+                        <input type="text" class="form-control" id="projectResponsible" value="${project.responsible_person || ''}">
                     </div>
-                    <div class="col-md-3">
-                        <select class="form-select" name="stage_status[]">
-                            <option value="Not Started">Not Started</option>
-                            <option value="In Progress">In Progress</option>
-                            <option value="Completed">Completed</option>
-                            <option value="On Hold">On Hold</option>
+                    <div class="mb-3">
+                        <label class="form-label">Project Status</label>
+                        <select class="form-select" id="projectStatus">
+                            <option value="Not Started" ${project.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
+                            <option value="Ongoing" ${project.status === 'Ongoing' ? 'selected' : ''}>Ongoing</option>
+                            <option value="Delayed" ${project.status === 'Delayed' ? 'selected' : ''}>Delayed</option>
+                            <option value="On Hold" ${project.status === 'On Hold' ? 'selected' : ''}>On Hold</option>
+                            <option value="Completed" ${project.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                            <option value="Cancelled" ${project.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
                         </select>
                     </div>
-                    <div class="col-md-2">
-                        <input type="date" class="form-control" name="stage_start_dates[]">
+                    <div class="mb-3">
+                        <label class="form-label">Progress Percentage</label>
+                        <input type="number" class="form-control" id="projectProgress" value="${project.progress_percentage || 0}" min="0" max="100">
                     </div>
-                    <div class="col-md-2">
-                        <input type="date" class="form-control" name="stage_end_dates[]">
-                    </div>
-                    <div class="col-md-1">
-                        <button type="button" class="btn btn-outline-danger btn-sm remove-stage">
-                            <i class="bi bi-trash"></i>
-                        </button>
-                    </div>
-                </div>
-                <input type="hidden" name="stage_ids[]" value="">
+                </form>
             </div>
-        `;
-        $('#stagesContainer').append(stageHtml);
-    });
-    
-    // Remove stage handler
-    $(document).on('click', '.remove-stage', function(e) {
-        e.preventDefault();
-        $(this).closest('.stage-item').remove();
-    });
-    
-    // Form submission handler
-    $(document).on('submit', '#updateProjectForm', function(e) {
-        e.preventDefault();
+        </div>
         
-        const formData = new FormData(this);
-        const submitBtn = $(this).find('button[type="submit"]');
+        <!-- Project Stages -->
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5 class="mb-0">Project Stages</h5>
+            </div>
+            <div class="card-body" id="projectStagesContainerUpdate">
+                <div class="sortable-stages" id="sortableStages">
+                    ${generateStagesHtml(project.stages || [])}
+                </div>
+                <!-- Input and Add Button for new stage -->
+                <div class="input-group mt-3">
+                    <input type="text" id="newStageInputUpdate" class="form-control" placeholder="Enter new project stage">
+                    <button type="button" class="btn btn-outline-primary" id="addStageBtnUpdate">
+                        <i class="bi bi-plus me-1"></i>Add Stage
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Project Images -->
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Project Images</h5>
+            </div>
+            <div class="card-body">
+                <div id="drop-area-update" class="upload-box text-center p-4" style="border: 2px dashed #dee2e6; border-radius: 8px; cursor: pointer;">
+                    <p class="mb-2 fw-semibold">Drag & Drop image files<br><span class="text-primary">or Browse</span></p>
+                    <p class="text-muted small">Supports: JPEG, PNG, GIF, TIFF</p>
+                    <input type="file" id="fileInputUpdate" accept="image/*" multiple hidden>
+                </div>
+                <!-- Preview Container with existing images -->
+                <div id="imagePreviewContainerUpdate" class="d-flex flex-wrap gap-2 mt-3">
+                    ${generateImagesHtml(project.project_images || [], project.project_name)}
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Update modal body
+    const modalBody = modal.querySelector('.modal-body');
+    modalBody.innerHTML = modalBodyHtml;
+    
+    // Initialize stage management
+    initializeStageManagement();
+    
+    // Initialize image upload
+    initializeImageUpload();
+}
+
+// Function to generate stages HTML
+function generateStagesHtml(stages) {
+    if (!stages || stages.length === 0) {
+        return '<p class="text-muted">No stages defined for this project.</p>';
+    }
+    
+    return stages.map(stage => `
+        <div class="stage-edit-item d-flex align-items-center justify-content-between bg-light p-2 rounded mb-2" data-stage-id="${stage.stage_id}">
+            <div class="fw-semibold stage-label">${stage.stage_name}</div>
+            <div class="d-flex align-items-center gap-2">
+                <select class="form-select select-status w-auto" aria-label="Stage Status">
+                    <option value="Not Started" ${stage.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
+                    <option value="In Progress" ${stage.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                    <option value="Completed" ${stage.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                </select>
+                <button type="button" class="btn-close btn-sm remove-stage-btn" aria-label="Remove"></button>
+            </div>
+        </div>
+    `).join('');
+}
+
+
+    // Function to generate images HTML - FIXED VERSION
+    function generateImagesHtml(images, projectName) {
+    if (!images || images.length === 0) {
+        return '<p class="text-muted">No images uploaded for this project.</p>';
+    }
+    
+        return images.map(image => {
+            const imageUrl = image.image_url || image.filename;
+            const filename = image.filename || image.image_filename;
+            
+            return `
+                <div class="position-relative">
+                    <img src="${imageUrl}" 
+                        class="img-thumbnail project-image-thumb" 
+                        alt="Project Image"
+                        style="width: 100px; height: 100px; object-fit: cover; cursor: pointer;"
+                        data-img-src="${imageUrl}">
+                    <button class="btn-close position-absolute top-0 end-0 m-1 btn-sm bg-danger border rounded-circle remove-image-btn" 
+                            title="Remove" 
+                            data-image="${filename}"></button>
+                </div>
+            `;
+      }).join('');
+    }
+
+
+
+    // Function to initialize stage management
+    function initializeStageManagement() {
+        // Add new stage functionality
+        document.getElementById('addStageBtnUpdate').addEventListener('click', function() {
+            const input = document.getElementById('newStageInputUpdate');
+            const stageName = input.value.trim();
+            
+            if (stageName) {
+                const stagesContainer = document.getElementById('sortableStages');
+                const newStageHtml = `
+                    <div class="stage-edit-item d-flex align-items-center justify-content-between bg-light p-2 rounded mb-2" data-stage-id="new">
+                        <div class="fw-semibold stage-label">${stageName}</div>
+                        <div class="d-flex align-items-center gap-2">
+                            <select class="form-select select-status w-auto" aria-label="Stage Status">
+                                <option value="Not Started" selected>Not Started</option>
+                                <option value="In Progress">In Progress</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                            <button type="button" class="btn-close btn-sm remove-stage-btn" aria-label="Remove"></button>
+                        </div>
+                    </div>
+                `;
+                stagesContainer.insertAdjacentHTML('beforeend', newStageHtml);
+                input.value = '';
+            }
+        });
+        
+        // Remove stage functionality
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-stage-btn')) {
+                e.target.closest('.stage-edit-item').remove();
+            }
+        });
+    }
+
+    // Function to initialize image upload
+    function initializeImageUpload() {
+        const dropArea = document.getElementById('drop-area-update');
+        const fileInput = document.getElementById('fileInputUpdate');
+        const imagePreviewContainer = document.getElementById('imagePreviewContainerUpdate');
+        
+        // Click to browse
+        dropArea.addEventListener('click', () => fileInput.click());
+        
+        // File input change
+        fileInput.addEventListener('change', handleFileSelect);
+        
+        // Drag and drop
+        dropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropArea.classList.add('drag-over');
+        });
+        
+        dropArea.addEventListener('dragleave', () => {
+            dropArea.classList.remove('drag-over');
+        });
+        
+        dropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropArea.classList.remove('drag-over');
+            handleFileSelect(e);
+        });
+        
+        // Remove image functionality
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('remove-image-btn')) {
+                e.target.closest('.position-relative').remove();
+            }
+        });
+    }
+
+    // Function to handle file selection
+    function handleFileSelect(e) {
+        const files = e.target.files || e.dataTransfer.files;
+        const imagePreviewContainer = document.getElementById('imagePreviewContainerUpdate');
+        
+        Array.from(files).forEach(file => {
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const imageHtml = `
+                        <div class="position-relative">
+                            <img src="${e.target.result}" 
+                                class="img-thumbnail project-image-thumb" 
+                                alt="New Project Image"
+                                style="width: 100px; height: 100px; object-fit: cover;">
+                            <button class="btn-close position-absolute top-0 end-0 m-1 btn-sm bg-danger border rounded-circle remove-image-btn" 
+                                    title="Remove" 
+                                    data-image="new"></button>
+                        </div>
+                    `;
+                    imagePreviewContainer.insertAdjacentHTML('beforeend', imageHtml);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    // Initialize image preview modal functionality
+    // Enhanced image preview modal functionality
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('preview-thumb') || e.target.classList.contains('project-image-thumb')) {
+            const imgSrc = e.target.getAttribute('data-img-src') || e.target.src;
+            const largePreviewImage = document.getElementById('largePreviewImage');
+            
+            if (largePreviewImage) {
+                largePreviewImage.src = imgSrc;
+                
+                // Show the modal
+                const imagePreviewModal = new bootstrap.Modal(document.getElementById('imagePreviewModal'), {
+                    backdrop: true,  // Allow clicking backdrop to close
+                    keyboard: true   // Allow ESC key to close
+                });
+                imagePreviewModal.show();
+            }
+        }
+    });
+
+    // Additional event listeners for better UX
+    document.addEventListener('DOMContentLoaded', function() {
+        const imagePreviewModal = document.getElementById('imagePreviewModal');
+        
+        if (imagePreviewModal) {
+            // Close modal when clicking outside the image (on modal body or modal dialog)
+            imagePreviewModal.addEventListener('click', function(e) {
+                // Check if click is on modal body, modal dialog, or modal backdrop
+                if (e.target === imagePreviewModal || 
+                    e.target.classList.contains('modal-body') || 
+                    e.target.classList.contains('modal-dialog') ||
+                    e.target.classList.contains('modal-content')) {
+                    const modal = bootstrap.Modal.getInstance(imagePreviewModal);
+                    if (modal) {
+                        modal.hide();
+                    }
+                }
+            });
+            
+            // Close modal when clicking on the image itself (optional)
+            const largePreviewImage = document.getElementById('largePreviewImage');
+            if (largePreviewImage) {
+                largePreviewImage.addEventListener('click', function() {
+                    const modal = bootstrap.Modal.getInstance(imagePreviewModal);
+                    if (modal) {
+                        modal.hide();
+                    }
+                });
+            }
+            
+            // Close modal with ESC key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    const modal = bootstrap.Modal.getInstance(imagePreviewModal);
+                    if (modal) {
+                        modal.hide();
+                    }
+                }
+            });
+            
+            // Alternative method - listen for clicks on modal body
+            const modalBody = imagePreviewModal.querySelector('.modal-body');
+            if (modalBody) {
+                modalBody.addEventListener('click', function(e) {
+                    // Only close if clicking on the modal body itself, not the image
+                    if (e.target === modalBody) {
+                        const modal = bootstrap.Modal.getInstance(imagePreviewModal);
+                        if (modal) {
+                            modal.hide();
+                        }
+                    }
+                });
+            }
+        }
+    });
+
+
+    // Make functions globally available
+    window.loadProjectDetails = loadProjectDetails;
+    window.loadProjectForUpdate = loadProjectForUpdate;
+
+    // Add this to your project-modal-handlers.js file
+
+    // Function to handle project update form submission
+    function handleUpdateProjectSubmission() {
+        const form = document.getElementById('updateProjectForm');
+        const modal = document.getElementById('updateProjectModal');
+        
+        // Add event listener to the update button in modal footer
+        const updateButton = modal.querySelector('.modal-footer .btn-primary');
+        if (updateButton) {
+            updateButton.addEventListener('click', function() {
+                submitUpdateProject();
+            });
+        }
+    }
+
+    // Function to submit the update project form
+    function submitUpdateProject() {
+        const form = document.getElementById('updateProjectForm');
+        const formData = new FormData();
+        
+        // Get basic project data
+        formData.append('project_id', document.getElementById('projectId').value);
+        formData.append('project_name', document.getElementById('projectName').value);
+        formData.append('category', document.getElementById('projectCategory').value);
+        formData.append('description', document.getElementById('projectDescription').value);
+        formData.append('location', document.getElementById('projectLocation').value);
+        formData.append('start_date', document.getElementById('projectStartDate').value);
+        formData.append('expected_completion', document.getElementById('projectEndDate').value);
+        formData.append('initial_budget', document.getElementById('projectBudget').value);
+        formData.append('funding_source', document.getElementById('projectFunding').value);
+        formData.append('responsible_person', document.getElementById('projectResponsible').value);
+        formData.append('status', document.getElementById('projectStatus').value);
+
+        
+        // Get stages data
+        const stageItems = document.querySelectorAll('.stage-edit-item');
+        const stageIds = [];
+        const stageNames = [];
+        const stageStatus = [];
+        const stageStartDates = [];
+        const stageEndDates = [];
+        
+        stageItems.forEach(item => {
+            const stageId = item.dataset.stageId;
+            const stageName = item.querySelector('.stage-label').textContent;
+            const status = item.querySelector('.select-status').value;
+            
+            stageIds.push(stageId === 'new' ? '' : stageId);
+            stageNames.push(stageName);
+            stageStatus.push(status);
+            stageStartDates.push(''); // You might want to add date inputs for stages
+            stageEndDates.push(''); // You might want to add date inputs for stages
+        });
+        
+        // Append stage data
+        stageIds.forEach((id, index) => {
+            formData.append('stage_ids[]', id);
+            formData.append('stage_names[]', stageNames[index]);
+            formData.append('stage_status[]', stageStatus[index]);
+            formData.append('stage_start_dates[]', stageStartDates[index]);
+            formData.append('stage_end_dates[]', stageEndDates[index]);
+        });
+        
+        // Get removed images
+        const removedImages = [];
+        document.querySelectorAll('.remove-image-btn').forEach(btn => {
+            const imageData = btn.dataset.image;
+            if (imageData && imageData !== 'new') {
+                removedImages.push(imageData);
+            }
+        });
+        formData.append('removed_images', removedImages.join(','));
+        
+        // Get new images
+        const fileInput = document.getElementById('fileInputUpdate');
+        if (fileInput && fileInput.files.length > 0) {
+            for (let i = 0; i < fileInput.files.length; i++) {
+                formData.append('new_images[]', fileInput.files[i]);
+            }
+        }
         
         // Show loading state
-        submitBtn.prop('disabled', true);
-        submitBtn.html('<i class="bi bi-hourglass-split"></i> Saving...');
+        const updateButton = document.querySelector('#updateProjectModal .modal-footer .btn-primary');
+        const originalText = updateButton.textContent;
+        updateButton.disabled = true;
+        updateButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Updating...';
         
+        // Submit the form
         $.ajax({
             url: '../../php-handlers/brgy-project-admin/update-project.php',
             method: 'POST',
@@ -487,151 +742,470 @@ function initializeUpdateFormHandlers() {
             contentType: false,
             dataType: 'json',
             success: function(response) {
-                console.log('Update response:', response);
                 if (response.success) {
                     // Show success message
-                    showAlert('success', response.message);
+                    showAlert('success', 'Project updated successfully!');
                     
                     // Close modal
                     const modal = bootstrap.Modal.getInstance(document.getElementById('updateProjectModal'));
-                    if (modal) {
-                        modal.hide();
-                    }
+                    modal.hide();
                     
-                    // Refresh projects list
-                    if (window.refreshProjects) {
-                        window.refreshProjects();
+                    // Refresh the projects table or reload the page
+                    if (typeof refreshProjectsTable === 'function') {
+                        refreshProjectsTable();
+                    } else {
+                        location.reload();
                     }
                 } else {
-                    showAlert('error', response.message || 'Failed to update project');
+                    showAlert('danger', response.message || 'Failed to update project');
                 }
             },
             error: function(xhr, status, error) {
-                console.error('AJAX Error updating project:', xhr.responseText);
-                showAlert('error', 'Failed to update project. Please try again.');
+                console.error('Update error:', error);
+                showAlert('danger', 'An error occurred while updating the project');
             },
             complete: function() {
                 // Reset button state
-                submitBtn.prop('disabled', false);
-                submitBtn.html('<i class="bi bi-save"></i> Save Changes');
+                updateButton.disabled = false;
+                updateButton.textContent = originalText;
             }
         });
-    });
-}
-
-// Helper functions
-function getStageStatusClass(status) {
-    switch(status) {
-        case 'Not Started':
-            return 'bg-secondary';
-        case 'In Progress':
-            return 'bg-primary';
-        case 'Completed':
-            return 'bg-success';
-        case 'On Hold':
-            return 'bg-warning';
-        default:
-            return 'bg-secondary';
     }
-}
 
-function getStageStatusIcon(status) {
-    switch(status) {
-        case 'Not Started':
-            return 'bi-circle';
-        case 'In Progress':
-            return 'bi-hourglass-split';
-        case 'Completed':
-            return 'bi-check-circle';
-        case 'On Hold':
-            return 'bi-pause-circle';
-        default:
-            return 'bi-circle';
-    }
-}
-
-function getStatusClass(status) {
-    switch(status) {
-        case 'Planning':
-            return 'bg-secondary';
-        case 'Ongoing':
-            return 'bg-primary';
-        case 'Completed':
-            return 'bg-success';
-        case 'On Hold':
-            return 'bg-warning';
-        default:
-            return 'bg-secondary';
-    }
-}
-
-function formatDate(dateString) {
-    if (!dateString || dateString === '0000-00-00') return 'Not specified';
-    
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
-}
-
-function formatCurrency(amount) {
-    if (!amount || amount === 0) return 'Not specified';
-    return '₱' + Number(amount).toLocaleString('en-PH', {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-}
-
-function showModalError(modalId, message) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        const modalBody = modal.querySelector('.modal-body');
+    // Helper function to show alerts
+    function showAlert(type, message) {
+        const alertHtml = `
+            <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        `;
+        
+        // Insert alert at the top of the modal body or page
+        const modalBody = document.querySelector('#updateProjectModal .modal-body');
         if (modalBody) {
-            modalBody.innerHTML = `
-                <div class="alert alert-danger">
-                    <i class="bi bi-exclamation-triangle me-2"></i>
-                    ${message}
-                </div>
-            `;
+            modalBody.insertAdjacentHTML('afterbegin', alertHtml);
         }
     }
-}
 
-function showImageModal(imageSrc) {
-    // Create image modal if it doesn't exist
-    let imageModal = document.getElementById('imageModal');
-    if (!imageModal) {
-        const modalHtml = `
-            <div class="modal fade" id="imageModal" tabindex="-1">
-                <div class="modal-dialog modal-lg modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Project Image</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    // Function to populate the update project modal
+    function populateUpdateProjectModal(project) {
+        const modal = document.getElementById('updateProjectModal');
+        
+        // Update modal title
+        const modalTitle = modal.querySelector('.modal-title');
+        modalTitle.textContent = `Update Project - ${project.project_name}`;
+        
+        // Create the complete modal body HTML
+        const modalBodyHtml = `
+            <!-- Project Details -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5 class="mb-0">Project Details</h5>
+                </div>
+                <div class="card-body">
+                    <form id="updateProjectForm">
+                        <input type="hidden" id="projectId" value="${project.project_id}">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Project Name</label>
+                                <input type="text" class="form-control" id="projectName" value="${project.project_name || ''}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Category</label>
+                                <select class="form-select" id="projectCategory">
+                                    <option value="1" ${project.category_id == 1 ? 'selected' : ''}>Infrastructure</option>
+                                    <option value="2" ${project.category_id == 2 ? 'selected' : ''}>Public Service</option>
+                                    <option value="3" ${project.category_id == 3 ? 'selected' : ''}>Health & Wellness</option>
+                                    <option value="4" ${project.category_id == 4 ? 'selected' : ''}>Education</option>
+                                </select>
+                            </div>
                         </div>
-                        <div class="modal-body text-center">
-                            <img id="modalImage" src="" class="img-fluid" alt="Project Image">
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" id="projectDescription" rows="3">${project.description || ''}</textarea>
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label">Location</label>
+                            <input type="text" class="form-control" id="projectLocation" value="${project.location || ''}">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Start Date</label>
+                                <input type="date" class="form-control" id="projectStartDate" value="${project.start_date || ''}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Expected Completion</label>
+                                <input type="date" class="form-control" id="projectEndDate" value="${project.expected_completion || ''}">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Budget</label>
+                                <input type="number" class="form-control" id="projectBudget" value="${project.initial_budget || ''}" step="0.01">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Funding Source</label>
+                                <input type="text" class="form-control" id="projectFunding" value="${project.funding_source || ''}">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Assign Responsible Personnel</label>
+                            <input type="text" class="form-control" id="projectResponsible" value="${project.responsible_person || ''}">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Project Status</label>
+                            <select class="form-select" id="projectStatus">
+                                <option value="Not Started" ${project.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
+                                <option value="Ongoing" ${project.status === 'Ongoing' ? 'selected' : ''}>Ongoing</option>
+                                <option value="Delayed" ${project.status === 'Delayed' ? 'selected' : ''}>Delayed</option>
+                                <option value="On Hold" ${project.status === 'On Hold' ? 'selected' : ''}>On Hold</option>
+                                <option value="Completed" ${project.status === 'Completed' ? 'selected' : ''}>Completed</option>
+                                <option value="Cancelled" ${project.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Project Stages -->
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5 class="mb-0">Project Stages</h5>
+                </div>
+                <div class="card-body" id="projectStagesContainerUpdate">
+                    <div class="sortable-stages" id="sortableStages">
+                        ${generateStagesHtml(project.stages || [])}
+                    </div>
+                    <!-- Input and Add Button for new stage -->
+                    <div class="input-group mt-3">
+                        <input type="text" id="newStageInputUpdate" class="form-control" placeholder="Enter new project stage">
+                        <button type="button" class="btn btn-outline-primary" id="addStageBtnUpdate">
+                            <i class="bi bi-plus me-1"></i>Add Stage
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Project Images -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Project Images</h5>
+                </div>
+                <div class="card-body">
+                    <div id="drop-area-update" class="upload-box text-center p-4" style="border: 2px dashed #dee2e6; border-radius: 8px; cursor: pointer;">
+                        <p class="mb-2 fw-semibold">Drag & Drop image files<br><span class="text-primary">or Browse</span></p>
+                        <p class="text-muted small">Supports: JPEG, PNG, GIF, TIFF</p>
+                        <input type="file" id="fileInputUpdate" accept="image/*" multiple hidden>
+                    </div>
+                    <!-- Preview Container with existing images -->
+                    <div id="imagePreviewContainerUpdate" class="d-flex flex-wrap gap-2 mt-3">
+                        ${generateImagesHtml(project.project_images || [], project.project_name)}
                     </div>
                 </div>
             </div>
         `;
-        document.body.insertAdjacentHTML('beforeend', modalHtml);
-        imageModal = document.getElementById('imageModal');
+        
+        // Update modal body
+        const modalBody = modal.querySelector('.modal-body');
+        modalBody.innerHTML = modalBodyHtml;
+        
+        // Initialize stage management
+        initializeStageManagement();
+        
+        // Initialize image upload
+        initializeImageUpload();
+        
+        // Reset the update button to its default state
+        resetUpdateButton();
+        
+        // Initialize form submission handler (only once)
+        initializeUpdateButtonHandler();
     }
-    
-    // Set image source and show modal
-    const modalImage = imageModal.querySelector('#modalImage');
-    if (modalImage) {
-        modalImage.src = imageSrc;
-    }
-    
-    const bsModal = new bootstrap.Modal(imageModal);
-    bsModal.show();
-}
 
-// Make functions available globally
-window.loadProjectDetails = loadProjectDetails;
-window.loadProjectForUpdate = loadProjectForUpdate;
+    // Function to reset the update button to its default state
+    function resetUpdateButton() {
+        const modal = document.getElementById('updateProjectModal');
+        const updateButton = modal.querySelector('.modal-footer .btn-primary');
+        
+        if (updateButton) {
+            updateButton.disabled = false;
+            updateButton.textContent = 'Update Project';
+            
+            // Remove any existing event listeners by cloning the button
+            const newButton = updateButton.cloneNode(true);
+            updateButton.parentNode.replaceChild(newButton, updateButton);
+        }
+    }
+
+    // Function to initialize the update button handler (only once)
+    function initializeUpdateButtonHandler() {
+        const modal = document.getElementById('updateProjectModal');
+        const updateButton = modal.querySelector('.modal-footer .btn-primary');
+        
+        if (updateButton) {
+            updateButton.addEventListener('click', function() {
+                submitUpdateProject();
+            });
+        }
+    }
+
+    // Function to submit the update project form
+    function submitUpdateProject() {
+        const form = document.getElementById('updateProjectForm');
+        const formData = new FormData();
+        
+        // Get basic project data
+        formData.append('project_id', document.getElementById('projectId').value);
+        formData.append('project_name', document.getElementById('projectName').value);
+        formData.append('category', document.getElementById('projectCategory').value);
+        formData.append('description', document.getElementById('projectDescription').value);
+        formData.append('location', document.getElementById('projectLocation').value);
+        formData.append('start_date', document.getElementById('projectStartDate').value);
+        formData.append('expected_completion', document.getElementById('projectEndDate').value);
+        formData.append('initial_budget', document.getElementById('projectBudget').value);
+        formData.append('funding_source', document.getElementById('projectFunding').value);
+        formData.append('responsible_person', document.getElementById('projectResponsible').value);
+        formData.append('status', document.getElementById('projectStatus').value);
+        
+        // Get stages data
+        const stageItems = document.querySelectorAll('.stage-edit-item');
+        const stageIds = [];
+        const stageNames = [];
+        const stageStatus = [];
+        const stageStartDates = [];
+        const stageEndDates = [];
+        
+        stageItems.forEach(item => {
+            const stageId = item.dataset.stageId;
+            
+            // Check if stage label exists before accessing textContent
+            const stageLabelElement = item.querySelector('.stage-label');
+            const stageName = stageLabelElement ? stageLabelElement.textContent.trim() : '';
+            
+            // Check if status select exists before accessing value
+            const statusSelectElement = item.querySelector('.select-status');
+            const status = statusSelectElement ? statusSelectElement.value : 'Not Started';
+            
+            // Only add stage if it has a name
+            if (stageName) {
+                stageIds.push(stageId === 'new' ? '' : stageId);
+                stageNames.push(stageName);
+                stageStatus.push(status);
+                stageStartDates.push(''); // You might want to add date inputs for stages
+                stageEndDates.push(''); // You might want to add date inputs for stages
+            }
+        });
+        
+        // Append stage data
+        stageIds.forEach((id, index) => {
+            formData.append('stage_ids[]', id);
+            formData.append('stage_names[]', stageNames[index]);
+            formData.append('stage_status[]', stageStatus[index]);
+            formData.append('stage_start_dates[]', stageStartDates[index]);
+            formData.append('stage_end_dates[]', stageEndDates[index]);
+        });
+        
+        // Get removed images
+        const removedImages = [];
+        document.querySelectorAll('.remove-image-btn').forEach(btn => {
+            const imageData = btn.dataset.image;
+            if (imageData && imageData !== 'new') {
+                removedImages.push(imageData);
+            }
+        });
+        formData.append('removed_images', removedImages.join(','));
+        
+        // Get new images
+        const fileInput = document.getElementById('fileInputUpdate');
+        if (fileInput && fileInput.files.length > 0) {
+            for (let i = 0; i < fileInput.files.length; i++) {
+                formData.append('new_images[]', fileInput.files[i]);
+            }
+        }
+        
+        // Show loading state
+        const updateButton = document.querySelector('#updateProjectModal .modal-footer .btn-primary');
+        const originalText = updateButton.textContent;
+        updateButton.disabled = true;
+        updateButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Updating...';
+        
+        // Submit the form
+        $.ajax({
+            url: '../../php-handlers/brgy-project-admin/update-project.php',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    // Show success message
+                    showAlert('success', 'Project updated successfully!');
+                    
+                    // Close modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('updateProjectModal'));
+                    modal.hide();
+                    
+                    // Refresh the projects display
+                    if (typeof window.refreshProjects === 'function') {
+                        window.refreshProjects();
+                    } else if (typeof refreshProjectsTable === 'function') {
+                        refreshProjectsTable();
+                    } else {
+                        location.reload();
+                    }
+                } else {
+                    showAlert('danger', response.message || 'Failed to update project');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Update error:', error);
+                showAlert('danger', 'An error occurred while updating the project');
+            },
+            complete: function() {
+                // Reset button state
+                updateButton.disabled = false;
+                updateButton.textContent = originalText;
+            }
+        });
+    }
+    // Function to handle project update form submission
+    function handleUpdateProjectSubmission() {
+        const form = document.getElementById('updateProjectForm');
+        const modal = document.getElementById('updateProjectModal');
+        
+        // Add event listener to the update button in modal footer
+        const updateButton = modal.querySelector('.modal-footer .btn-primary');
+        if (updateButton) {
+            updateButton.addEventListener('click', function() {
+                submitUpdateProject();
+            });
+        }
+    }
+
+    // Function to submit the update project form
+    // Function to submit the update project form
+    function submitUpdateProject() {
+        const form = document.getElementById('updateProjectForm');
+        const formData = new FormData();
+        
+        // Get basic project data
+        formData.append('project_id', document.getElementById('projectId').value);
+        formData.append('project_name', document.getElementById('projectName').value);
+        formData.append('category', document.getElementById('projectCategory').value);
+        formData.append('description', document.getElementById('projectDescription').value);
+        formData.append('location', document.getElementById('projectLocation').value);
+        formData.append('start_date', document.getElementById('projectStartDate').value);
+        formData.append('expected_completion', document.getElementById('projectEndDate').value);
+        formData.append('initial_budget', document.getElementById('projectBudget').value);
+        formData.append('funding_source', document.getElementById('projectFunding').value);
+        formData.append('responsible_person', document.getElementById('projectResponsible').value);
+        formData.append('status', document.getElementById('projectStatus').value);
+        
+        // Get stages data
+        const stageItems = document.querySelectorAll('.stage-edit-item');
+        const stageIds = [];
+        const stageNames = [];
+        const stageStatus = [];
+        const stageStartDates = [];
+        const stageEndDates = [];
+        
+        stageItems.forEach(item => {
+            const stageId = item.dataset.stageId;
+            
+            // Check if stage label exists before accessing textContent
+            const stageLabelElement = item.querySelector('.stage-label');
+            const stageName = stageLabelElement ? stageLabelElement.textContent.trim() : '';
+            
+            // Check if status select exists before accessing value
+            const statusSelectElement = item.querySelector('.select-status');
+            const status = statusSelectElement ? statusSelectElement.value : 'Not Started';
+            
+            // Only add stage if it has a name
+            if (stageName) {
+                stageIds.push(stageId === 'new' ? '' : stageId);
+                stageNames.push(stageName);
+                stageStatus.push(status);
+                stageStartDates.push(''); // You might want to add date inputs for stages
+                stageEndDates.push(''); // You might want to add date inputs for stages
+            }
+        });
+        
+        // Append stage data
+        stageIds.forEach((id, index) => {
+            formData.append('stage_ids[]', id);
+            formData.append('stage_names[]', stageNames[index]);
+            formData.append('stage_status[]', stageStatus[index]);
+            formData.append('stage_start_dates[]', stageStartDates[index]);
+            formData.append('stage_end_dates[]', stageEndDates[index]);
+        });
+        
+        // Get removed images
+        const removedImages = [];
+        document.querySelectorAll('.remove-image-btn').forEach(btn => {
+            const imageData = btn.dataset.image;
+            if (imageData && imageData !== 'new') {
+                removedImages.push(imageData);
+            }
+        });
+        formData.append('removed_images', removedImages.join(','));
+        
+        // Get new images
+        const fileInput = document.getElementById('fileInputUpdate');
+        if (fileInput && fileInput.files.length > 0) {
+            for (let i = 0; i < fileInput.files.length; i++) {
+                formData.append('new_images[]', fileInput.files[i]);
+            }
+        }
+        
+        // Show loading state
+        const updateButton = document.querySelector('#updateProjectModal .modal-footer .btn-primary');
+        const originalText = updateButton.textContent;
+        updateButton.disabled = true;
+        updateButton.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Updating...';
+        
+        // Submit the form
+        $.ajax({
+            url: '../../php-handlers/brgy-project-admin/update-project.php',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    // Show success message
+                    showAlert('success', 'Project updated successfully!');
+                    
+                    // Close modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('updateProjectModal'));
+                    modal.hide();
+                    
+                    // Refresh the projects display
+                    if (typeof window.refreshProjects === 'function') {
+                        window.refreshProjects();
+                    } else if (typeof refreshProjectsTable === 'function') {
+                        refreshProjectsTable();
+                    } else {
+                        location.reload();
+                    }
+                } else {
+                    showAlert('danger', response.message || 'Failed to update project');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Update error:', error);
+                showAlert('danger', 'An error occurred while updating the project');
+            },
+            complete: function() {
+                // Reset button state
+                updateButton.disabled = false;
+                updateButton.textContent = originalText;
+            }
+        });
+    }
+
+    // Make functions globally available
+    window.submitUpdateProject = submitUpdateProject;
+    window.handleUpdateProjectSubmission = handleUpdateProjectSubmission;

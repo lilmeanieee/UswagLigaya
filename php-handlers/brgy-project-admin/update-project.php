@@ -25,7 +25,7 @@ $project_name = trim($_POST['project_name'] ?? '');
 $category = $_POST['category'] ?? '';
 $description = trim($_POST['description'] ?? '');
 $location = trim($_POST['location'] ?? '');
-$status = $_POST['status'] ?? 'Not Started';
+$status = $_POST['status'] ?? '';
 $start_date = $_POST['start_date'] ?? '';
 $expected_completion = $_POST['expected_completion'] ?? '';
 $initial_budget = $_POST['initial_budget'] ?? null;
@@ -120,7 +120,7 @@ try {
     $pdo->beginTransaction();
     
     // Get current project data
-    $current_project_sql = "SELECT project_name, project_image FROM tbl_projects WHERE project_id = ?";
+    $current_project_sql = "SELECT project_name FROM tbl_projects WHERE project_id = ?";
     $current_project_stmt = $pdo->prepare($current_project_sql);
     $current_project_stmt->execute([$project_id]);
     $current_project = $current_project_stmt->fetch(PDO::FETCH_ASSOC);
@@ -128,6 +128,11 @@ try {
     if (!$current_project) {
         throw new Exception('Project not found');
     }
+    
+    // Check if project name has changed
+    $project_name_changed = ($current_project['project_name'] !== $project_name);
+    $old_project_dir = '../../uploads/brgy_projects/' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $current_project['project_name']);
+    $new_project_dir = '../../uploads/brgy_projects/' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $project_name);
     
     // Map category names to IDs
     $category_id = null;
@@ -155,22 +160,62 @@ try {
     
     // Handle image management
     $current_images = [];
-    if (!empty($current_project['project_image'])) {
-        $decoded_images = json_decode($current_project['project_image'], true);
-        if (is_array($decoded_images)) {
-            $current_images = $decoded_images;
-        }
+    $current_images_sql = "SELECT image_id, image_filename FROM tbl_project_images WHERE project_id = ?";
+    $current_images_stmt = $pdo->prepare($current_images_sql);
+    $current_images_stmt->execute([$project_id]);
+    $current_images_records = $current_images_stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    // Build array of current images
+    foreach ($current_images_records as $record) {
+        $current_images[$record['image_id']] = $record['image_filename'];
     }
     
     // Remove deleted images
     $images_to_remove = [];
     if (!empty($removed_images)) {
-        $images_to_remove = explode(',', $removed_images);
-        $current_images = array_diff($current_images, $images_to_remove);
+        $image_ids_to_remove = explode(',', $removed_images);
+        
+        // Delete from database first
+        foreach ($image_ids_to_remove as $image_id) {
+            if (is_numeric($image_id) && isset($current_images[$image_id])) {
+                $images_to_remove[] = $current_images[$image_id];
+                
+                // Delete from database
+                $delete_image_sql = "DELETE FROM tbl_project_images WHERE image_id = ? AND project_id = ?";
+                $delete_image_stmt = $pdo->prepare($delete_image_sql);
+                $delete_image_stmt->execute([$image_id, $project_id]);
+            }
+        }
     }
     
-    // Create project directory for new images
-    $project_dir = '../../uploads/brgy_projects/' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $project_name);
+    // Handle project folder renaming if project name changed
+    if ($project_name_changed && is_dir($old_project_dir)) {
+        // Create new directory if it doesn't exist
+        if (!is_dir($new_project_dir)) {
+            if (!mkdir($new_project_dir, 0755, true)) {
+                throw new Exception('Failed to create new project directory');
+            }
+        }
+        
+        // Move all files from old directory to new directory
+        $files = glob($old_project_dir . '/*');
+        foreach ($files as $file) {
+            $filename = basename($file);
+            $new_file_path = $new_project_dir . '/' . $filename;
+            
+            if (!rename($file, $new_file_path)) {
+                throw new Exception('Failed to move file: ' . $filename);
+            }
+        }
+        
+        // Remove old directory if empty
+        if (is_dir($old_project_dir) && count(glob($old_project_dir . '/*')) === 0) {
+            rmdir($old_project_dir);
+        }
+    }
+    
+    // Create project directory for new images (use new project name)
+    $project_dir = $new_project_dir;
     if (!is_dir($project_dir)) {
         if (!mkdir($project_dir, 0755, true)) {
             throw new Exception('Failed to create project directory');
@@ -188,6 +233,7 @@ try {
                 $file_name = $files['name'][$i];
                 $file_tmp = $files['tmp_name'][$i];
                 $file_ext = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
+                $file_size = $files['size'][$i];
                 
                 // Validate file extension
                 if (!in_array($file_ext, $allowed_extensions)) {
@@ -200,7 +246,16 @@ try {
                 
                 // Move uploaded file
                 if (move_uploaded_file($file_tmp, $file_path)) {
-                    $new_uploaded_images[] = $unique_name;
+                    // Insert image record into database
+                    $insert_image_sql = "INSERT INTO tbl_project_images (project_id, image_filename, file_size) VALUES (?, ?, ?)";
+                    $insert_image_stmt = $pdo->prepare($insert_image_sql);
+                    $insert_image_stmt->execute([$project_id, $unique_name, $file_size]);
+                    
+                    $new_uploaded_images[] = [
+                        'image_id' => $pdo->lastInsertId(),
+                        'filename' => $unique_name,
+                        'file_size' => $file_size
+                    ];
                 } else {
                     throw new Exception("Failed to upload image: {$file_name}");
                 }
@@ -208,11 +263,7 @@ try {
         }
     }
     
-    // Combine current images with new images
-    $all_images = array_merge($current_images, $new_uploaded_images);
-    $project_images_json = !empty($all_images) ? json_encode(array_values($all_images)) : null;
-    
-    // Update project
+    // Update project (removed project_image from update)
     $update_sql = "UPDATE tbl_projects SET 
                    project_name = ?, 
                    category_id = ?, 
@@ -225,7 +276,6 @@ try {
                    progress_percentage = ?,
                    funding_source = ?, 
                    responsible_person = ?, 
-                   project_image = ?,
                    updated_at = NOW()
                    WHERE project_id = ?";
 
@@ -243,7 +293,6 @@ try {
         floatval($progress_percentage),
         $funding_source,
         $responsible_person,
-        $project_images_json,
         $project_id
     ]);
     
@@ -251,8 +300,12 @@ try {
         throw new Exception('Failed to update project');
     }
     
-    // Handle project stages
+    
+// Handle project stages
     if (!empty($stage_names) && is_array($stage_names)) {
+        // Get current date for status updates
+        $current_date = date('Y-m-d');
+        
         // Process existing and new stages
         for ($i = 0; $i < count($stage_names); $i++) {
             $stage_name = trim($stage_names[$i]);
@@ -260,18 +313,59 @@ try {
             
             $stage_id = !empty($stage_ids[$i]) ? $stage_ids[$i] : null;
             $stage_stat = $stage_status[$i] ?? 'Not Started';
-            $stage_start = !empty($stage_start_dates[$i]) ? $stage_start_dates[$i] : '0000-00-00';
-            $stage_end = !empty($stage_end_dates[$i]) ? $stage_end_dates[$i] : '0000-00-00';
+            
+            // Initialize dates
+            $stage_start = '0000-00-00';
+            $stage_end = '0000-00-00';
             
             if ($stage_id && is_numeric($stage_id)) {
                 // Update existing stage
+                
+                // Get current stage data to check for status changes
+                $current_stage_sql = "SELECT status, start_date, end_date FROM tbl_project_stages WHERE stage_id = ? AND project_id = ?";
+                $current_stage_stmt = $pdo->prepare($current_stage_sql);
+                $current_stage_stmt->execute([$stage_id, $project_id]);
+                $current_stage_data = $current_stage_stmt->fetch(PDO::FETCH_ASSOC);
+                
+                if ($current_stage_data) {
+                    $old_status = $current_stage_data['status'];
+                    $old_start_date = $current_stage_data['start_date'];
+                    $old_end_date = $current_stage_data['end_date'];
+                    
+                    // Handle date logic based on status changes
+                    if ($stage_stat === 'Not Started') {
+                        $stage_start = '0000-00-00';
+                        $stage_end = '0000-00-00';
+                    } elseif ($stage_stat === 'On going') {
+                        // If changing from 'Not Started' to 'On going', set start_date to today
+                        if ($old_status === 'Not Started') {
+                            $stage_start = $current_date;
+                        } else {
+                            // Keep existing start_date if it was already ongoing or completed
+                            $stage_start = ($old_start_date !== '0000-00-00') ? $old_start_date : $current_date;
+                        }
+                        $stage_end = '0000-00-00';
+                    } elseif ($stage_stat === 'Completed') {
+                        // If changing to 'Completed', set end_date to today
+                        if ($old_status !== 'Completed') {
+                            $stage_end = $current_date;
+                            // Set start_date to today if it was never started
+                            $stage_start = ($old_start_date !== '0000-00-00') ? $old_start_date : $current_date;
+                        } else {
+                            // Keep existing dates if already completed
+                            $stage_start = $old_start_date;
+                            $stage_end = $old_end_date;
+                        }
+                    }
+                }
+                
                 $update_stage_sql = "UPDATE tbl_project_stages SET 
-                                   stage_name = ?, 
-                                   status = ?, 
-                                   start_date = ?, 
-                                   end_date = ?, 
-                                   updated_at = NOW()
-                                   WHERE stage_id = ? AND project_id = ?";
+                                stage_name = ?, 
+                                status = ?, 
+                                start_date = ?, 
+                                end_date = ?, 
+                                updated_at = NOW()
+                                WHERE stage_id = ? AND project_id = ?";
                 
                 $update_stage_stmt = $pdo->prepare($update_stage_sql);
                 $update_stage_stmt->execute([
@@ -284,14 +378,27 @@ try {
                 ]);
             } else {
                 // Insert new stage
+                
+                // Handle date logic for new stages based on status
+                if ($stage_stat === 'Not Started') {
+                    $stage_start = '0000-00-00';
+                    $stage_end = '0000-00-00';
+                } elseif ($stage_stat === 'On going') {
+                    $stage_start = $current_date;
+                    $stage_end = '0000-00-00';
+                } elseif ($stage_stat === 'Completed') {
+                    $stage_start = $current_date;
+                    $stage_end = $current_date;
+                }
+                
                 $insert_stage_sql = "INSERT INTO tbl_project_stages (
-                                   project_id, 
-                                   stage_name, 
-                                   status, 
-                                   start_date, 
-                                   end_date, 
-                                   created_at
-                                   ) VALUES (?, ?, ?, ?, ?, NOW())";
+                                project_id, 
+                                stage_name, 
+                                status, 
+                                start_date, 
+                                end_date, 
+                                created_at
+                                ) VALUES (?, ?, ?, ?, ?, NOW())";
                 
                 $insert_stage_stmt = $pdo->prepare($insert_stage_sql);
                 $insert_stage_stmt->execute([
@@ -319,12 +426,15 @@ try {
             $delete_all_stages_stmt->execute([$project_id]);
         }
     }
+
     
     // Delete removed image files from filesystem
     if (!empty($images_to_remove)) {
-        $old_project_dir = '../../uploads/brgy_projects/' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $current_project['project_name']);
-        foreach ($images_to_remove as $image) {
-            $image_path = $old_project_dir . '/' . $image;
+        // Use new project directory if name changed, otherwise use old directory
+        $images_dir = $project_name_changed ? $new_project_dir : $old_project_dir;
+        
+        foreach ($images_to_remove as $image_filename) {
+            $image_path = $images_dir . '/' . $image_filename;
             if (file_exists($image_path)) {
                 unlink($image_path);
             }
@@ -350,8 +460,8 @@ try {
     
     // Clean up uploaded files on error
     if (!empty($new_uploaded_images)) {
-        foreach ($new_uploaded_images as $image) {
-            $file_path = $project_dir . '/' . $image;
+        foreach ($new_uploaded_images as $image_data) {
+            $file_path = $project_dir . '/' . $image_data['filename'];
             if (file_exists($file_path)) {
                 unlink($file_path);
             }
@@ -373,8 +483,8 @@ try {
     
     // Clean up uploaded files on error
     if (!empty($new_uploaded_images)) {
-        foreach ($new_uploaded_images as $image) {
-            $file_path = $project_dir . '/' . $image;
+        foreach ($new_uploaded_images as $image_data) {
+            $file_path = $project_dir . '/' . $image_data['filename'];
             if (file_exists($file_path)) {
                 unlink($file_path);
             }
