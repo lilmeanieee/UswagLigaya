@@ -37,11 +37,11 @@ document.addEventListener("DOMContentLoaded", function () {
             // Also clear PHP session via a logout endpoint
             fetch('/UswagLigaya/php-handlers/logout.php')
                 .then(() => {
-                    window.location.href = '../html/home.html';
+                    window.location.href = 'index.html';
                 })
                 .catch(() => {
                     // If the fetch fails, still redirect
-                    window.location.href = '../html/home.html';
+                    window.location.href = 'index.html';
                 });
         });
 }
