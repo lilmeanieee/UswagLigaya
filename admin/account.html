@@ -86,7 +86,7 @@
                             <span class="d-none d-lg-inline">Announcement</span>
                         </a>
                     </li>
-                    
+
                     <!-- Manage Leaderboards-->
                     <li class="nav-item dropdown">
                         <!-- Popover for Mobile -->
@@ -117,13 +117,14 @@
 
                     <!-- Credit & Redeemable Points Conversion -->
                     <li class="nav-item">
-                        <a href="credit_and_redeemable_point_system/conversion-settings.html" class="nav-link text-white ">
+                        <a href="credit_and_redeemable_point_system/conversion-settings.html"
+                            class="nav-link text-white ">
                             <i class="bi bi-wallet me-2"></i>
                             <span class="d-none d-lg-inline">Credit Points Conversion</span>
                         </a>
                     </li>
 
-                   
+
                     <!-- Volunteer Drive -->
                     <li class="nav-item ">
                         <a href="volunteer_drive/attendance-evaluation.html" class="nav-link text-white">
@@ -168,50 +169,49 @@
                     <!-- End Content Header Title -->
 
                     <!--  Content  -->
-                    <div class="container ">
-                        <div class="mx-2 " id="account-container">
-                            <div
-                                class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                <h3 class=" ">List of Accounts</h3>
-                                <div class="btn-toolbar mb-2 mb-md-0">
-                                    <div class="btn-group me-2">
-                                        <button class="btn btn-primary" data-bs-toggle="modal"
-                                            data-bs-target="#addAccountModal"
-                                            title="Add User Account: Brgy Admin or Residents">
-                                            Add Account
-                                        </button>
-                                    </div>
+                    <div class=" container mx-2 " id="account-container">
+                        <div
+                            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                            <h3 class=" ">List of Accounts</h3>
+                            <div class="btn-toolbar mb-2 mb-md-0">
+                                <div class="btn-group me-2">
+                                    <button class="btn btn-primary" data-bs-toggle="modal"
+                                        data-bs-target="#addAccountModal"
+                                        title="Add User Account: Brgy Admin or Residents">
+                                        Add Account
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Filters Row -->
+                        <div class="d-flex flex-column flex-md-row gap-2 mb-4 filters-row">
+                            <!-- Search Bar -->
+                            <div class="flex-grow-1 search-bar">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                    <input type="text" class="form-control" id="nameSearch"
+                                        placeholder="Search by name">
                                 </div>
                             </div>
 
-                            <!-- Filters Row -->
-                            <div class="d-flex flex-column flex-md-row gap-2 mb-4 filters-row">
-                                <!-- Search Bar -->
-                                <div class="flex-grow-1 search-bar">
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-search"></i></span>
-                                        <input type="text" class="form-control" id="nameSearch"
-                                            placeholder="Search by name">
-                                    </div>
-                                </div>
-
-                                <!-- Sort Dropdown -->
-                                <div class="sort-dropdown">
-                                    <select class="form-select" id="sortOption" title="Sort by roles">
-                                        <option selected disabled>Sort by Roles</option>
-                                        <option value="rank">Sort by Residents</option>
-                                        <option value="name">Sort by Brgy Admin</option>
-                                        <option value="points">Sort by Brgy Captain</option>
-                                        <option value="pointsAsc">Sort by Brgy Secretary</option>
-                                    </select>
-                                </div>
+                            <!-- Sort Dropdown -->
+                            <div class="sort-dropdown">
+                                <select class="form-select" id="sortOption" title="Sort by roles">
+                                    <option selected disabled>Sort by Roles</option>
+                                    <option value="rank">Sort by Residents</option>
+                                    <option value="name">Sort by Brgy Admin</option>
+                                    <option value="points">Sort by Brgy Captain</option>
+                                    <option value="pointsAsc">Sort by Brgy Secretary</option>
+                                </select>
                             </div>
+                        </div>
 
-
-
-                            <!-- list of accounts Table -->
-                            <div class="table-responsive">
-                                <table class="table table-bordered table-striped table-hover table-lg align-middle">
+                        <!-- list of accounts Table -->
+                        <!-- Desktop Table (hidden on mobile) -->
+                        <div class="d-none d-md-block">
+                            <div class="table-responsive acc-table">
+                                <table class="table table-bordered table-striped table-hover align-middle">
                                     <thead class="table-dark">
                                         <tr>
                                             <th scope="col">Fullname</th>
@@ -228,179 +228,76 @@
                                     </tbody>
                                 </table>
                             </div>
+                        </div>
 
-                            <!-- adding account Modal -->
-                            <div class="modal fade" id="addAccountModal" data-bs-backdrop="static"
-                                data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header bg-primary text-white">
-                                            <h5 class="modal-title">Create Account</h5>
-                                            <button type="button" class="btn-close btn-close-white"
-                                                data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form id="accountForm">
-                                                <div class="mb-3">
-                                                    <label for="accountType" class="form-label">What kind of
-                                                        account?</label>
-                                                    <select class="form-select" id="accountType" required>
-                                                        <option selected disabled>Select Account Type</option>
-                                                        <option value="resident">Resident</option>
-                                                        <option value="admin">Barangay Admin</option>
-                                                    </select>
-                                                </div>
-                                                <hr class="line-color">
+                        <!-- Mobile Card Layout (hidden on desktop) -->
+                        <div class="d-md-none" id="accountCardsContainer">
+                            <!-- Cards will be populated by JavaScript -->
+                        </div>
+                    </div>
 
-                                                <!-- Resident Fields -->
-                                                <div id="commonFields" class="hidden">
-                                                    <!-- Profile Picture Section -->
-                                                    <div class="text-center mb-3">
-                                                        <img id="profilePreview"
-                                                            src="../asset/img/default_acc_icon.png"
-                                                            alt="Account Profile"
-                                                            class="rounded-circle profile-preview" />
-
-                                                        <!-- button for uploading -->
-                                                        <div class="mt-2">
-                                                            <!-- Hidden file input -->
-                                                            <input type="file" id="profileImage" class="d-none"
-                                                                accept="image/*" />
-                                                            <!-- Custom upload button -->
-                                                            <label for="profileImage"
-                                                                class="btn btn-outline-primary btn-sm mb-0">
-                                                                Upload Profile Picture
-                                                            </label>
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="row mb-2 align-items-center">
-                                                        <label class="col-sm-3 col-form-label">Fullname:</label>
-                                                        <div class="col-sm-9">
-                                                            <input type="text" class="form-control" id="fullName"
-                                                                required />
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row mb-2 align-items-center">
-                                                        <label class="col-sm-3 col-form-label">Username:</label>
-                                                        <div class="col-sm-9">
-                                                            <input type="text" class="form-control" id="username"
-                                                                required />
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row mb-2 align-items-center">
-                                                        <label class="col-sm-3 col-form-label">Email Address:</label>
-                                                        <div class="col-sm-9">
-                                                            <input type="email" class="form-control" id="email" />
-                                                        </div>
-                                                    </div>
-
-
-
-                                                    <div class="row mb-2 align-items-center">
-                                                        <label class="col-sm-3 col-form-label">Password:</label>
-                                                        <div class="col-sm-9">
-                                                            <input type="password" class="form-control" id="password" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <!-- Admin Fields -->
-                                                <div id="adminFields" class="hidden">
-                                                    <div class="row mb-2 align-items-center">
-                                                        <label class="col-sm-3 col-form-label">Position:</label>
-                                                        <div class="col-sm-9">
-                                                            <select class="form-select" id="position">
-                                                                <option>Barangay Captain</option>
-                                                                <option>Secretary</option>
-                                                                <option>IT</option>
-                                                                <option>Other</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row mb-2 align-items-center">
-                                                        <label class="col-sm-3 col-form-label">Committee:</label>
-                                                        <div class="col-sm-9">
-                                                            <input type="text" class="form-control" id="committee" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button class="btn btn-secondary" data-bs-dismiss="modal">
-                                                Close
-                                            </button>
-                                            <button class="btn btn-primary" id="createBtn">
-                                                Create Account
-                                            </button>
-                                        </div>
-                                    </div>
+                    <!-- adding account Modal -->
+                    <div class="modal fade" id="addAccountModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                        tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title">Create Account</h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
-                            </div>
-
-                            <!-- editing account Modal -->
-                            <div class="modal fade" id="editAccountModal" data-bs-backdrop="static"
-                                data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <form class="modal-content" id="editForm">
-                                        <div class="modal-header bg-success text-white">
-                                            <h5 class="modal-title">EDIT ACCOUNT</h5>
-                                            <button type="button" class="btn-close btn-close-white"
-                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                <div class="modal-body">
+                                    <form id="accountForm">
+                                        <div class="mb-3">
+                                            <label for="accountType" class="form-label">What kind of
+                                                account?</label>
+                                            <select class="form-select" id="accountType" required>
+                                                <option selected disabled>Select Account Type</option>
+                                                <option value="resident">Resident</option>
+                                                <option value="admin">Barangay Admin</option>
+                                            </select>
                                         </div>
-                                        <div class="modal-body">
-                                            <input type="hidden" id="editIndex" />
+                                        <hr class="line-color">
 
+                                        <!-- Resident Fields -->
+                                        <div id="commonFields" class="hidden">
                                             <!-- Profile Picture Section -->
                                             <div class="text-center mb-3">
-                                                <img id="editProfilePreview" src="../asset/img/default_acc_icon.png"
+                                                <img id="profilePreview" src="../asset/img/default_acc_icon.png"
                                                     alt="Account Profile" class="rounded-circle profile-preview" />
+
                                                 <!-- button for uploading -->
                                                 <div class="mt-2">
                                                     <!-- Hidden file input -->
-                                                    <input type="file" id="editProfileImage" class="d-none"
+                                                    <input type="file" id="profileImage" class="d-none"
                                                         accept="image/*" />
                                                     <!-- Custom upload button -->
-                                                    <label for="editProfileImage"
+                                                    <label for="profileImage"
                                                         class="btn btn-outline-primary btn-sm mb-0">
                                                         Upload Profile Picture
                                                     </label>
                                                 </div>
-                                            </div>
 
-                                            <div class="row mb-2 align-items-center">
-                                                <label class="col-sm-3 col-form-label">Account ID:</label>
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="editAccountID" disabled/>
-                                                </div>
                                             </div>
 
                                             <div class="row mb-2 align-items-center">
                                                 <label class="col-sm-3 col-form-label">Fullname:</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="editFullname"
-                                                        required disabled/>
+                                                    <input type="text" class="form-control" id="fullName" required />
                                                 </div>
                                             </div>
 
                                             <div class="row mb-2 align-items-center">
                                                 <label class="col-sm-3 col-form-label">Username:</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="editUsername"
-                                                        required />
+                                                    <input type="text" class="form-control" id="username" required />
                                                 </div>
                                             </div>
 
                                             <div class="row mb-2 align-items-center">
                                                 <label class="col-sm-3 col-form-label">Email Address:</label>
                                                 <div class="col-sm-9">
-                                                    <input type="email" class="form-control" id="editEmail" required />
+                                                    <input type="email" class="form-control" id="email" />
                                                 </div>
                                             </div>
 
@@ -409,18 +306,21 @@
                                             <div class="row mb-2 align-items-center">
                                                 <label class="col-sm-3 col-form-label">Password:</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="editPassword" />
+                                                    <input type="password" class="form-control" id="password" />
                                                 </div>
                                             </div>
+                                        </div>
 
+                                        <!-- Admin Fields -->
+                                        <div id="adminFields" class="hidden">
                                             <div class="row mb-2 align-items-center">
                                                 <label class="col-sm-3 col-form-label">Position:</label>
                                                 <div class="col-sm-9">
-                                                    <select class="form-select" id="editPosition">
+                                                    <select class="form-select" id="position">
                                                         <option>Barangay Captain</option>
                                                         <option>Secretary</option>
                                                         <option>IT</option>
-                                                        <option>None</option>
+                                                        <option>Other</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -428,22 +328,119 @@
                                             <div class="row mb-2 align-items-center">
                                                 <label class="col-sm-3 col-form-label">Committee:</label>
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="editCommittee" />
+                                                    <input type="text" class="form-control" id="committee" />
                                                 </div>
                                             </div>
                                         </div>
 
-                                        <div class="modal-footer">
-                                            <button class="btn btn-success" type="submit">Save</button>
-                                            <button class="btn btn-danger" type="button"
-                                                data-bs-dismiss="modal">Cancel</button>
-                                        </div>
                                     </form>
                                 </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-secondary" data-bs-dismiss="modal">
+                                        Close
+                                    </button>
+                                    <button class="btn btn-primary" id="createBtn">
+                                        Create Account
+                                    </button>
+                                </div>
                             </div>
-
                         </div>
                     </div>
+
+                    <!-- editing account Modal -->
+                    <div class="modal fade" id="editAccountModal" data-bs-backdrop="static" data-bs-keyboard="false"
+                        tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <form class="modal-content" id="editForm">
+                                <div class="modal-header bg-success text-white">
+                                    <h5 class="modal-title">EDIT ACCOUNT</h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <input type="hidden" id="editIndex" />
+
+                                    <!-- Profile Picture Section -->
+                                    <div class="text-center mb-3">
+                                        <img id="editProfilePreview" src="../asset/img/default_acc_icon.png"
+                                            alt="Account Profile" class="rounded-circle profile-preview" />
+                                        <!-- button for uploading -->
+                                        <div class="mt-2">
+                                            <!-- Hidden file input -->
+                                            <input type="file" id="editProfileImage" class="d-none" accept="image/*" />
+                                            <!-- Custom upload button -->
+                                            <label for="editProfileImage" class="btn btn-outline-primary btn-sm mb-0">
+                                                Upload Profile Picture
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2 align-items-center">
+                                        <label class="col-sm-3 col-form-label">Account ID:</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="editAccountID" disabled />
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2 align-items-center">
+                                        <label class="col-sm-3 col-form-label">Fullname:</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="editFullname" required
+                                                disabled />
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2 align-items-center">
+                                        <label class="col-sm-3 col-form-label">Username:</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="editUsername" required />
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2 align-items-center">
+                                        <label class="col-sm-3 col-form-label">Email Address:</label>
+                                        <div class="col-sm-9">
+                                            <input type="email" class="form-control" id="editEmail" required />
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="row mb-2 align-items-center">
+                                        <label class="col-sm-3 col-form-label">Password:</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="editPassword" />
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2 align-items-center">
+                                        <label class="col-sm-3 col-form-label">Position:</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-select" id="editPosition">
+                                                <option>Barangay Captain</option>
+                                                <option>Secretary</option>
+                                                <option>IT</option>
+                                                <option>None</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-2 align-items-center">
+                                        <label class="col-sm-3 col-form-label">Committee:</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" id="editCommittee" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button class="btn btn-success" type="submit">Save</button>
+                                    <button class="btn btn-danger" type="button" data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
 
 
 

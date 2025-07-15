@@ -29,3 +29,49 @@ hr.line-color{
 .sort-dropdown {
     min-width:150px;
 }
+
+/* for account table */
+.acc-table {
+    height: 400px; /* control the table scroll height */
+    overflow-x: auto; 
+    border-bottom: 2px solid #343a40;
+}
+
+@media (max-width: 768px) {
+    .table-responsive {
+        font-size: 0.875rem;
+    }
+    
+    .table th,
+    .table td {
+        padding: 0.375rem 0.25rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100px;
+    }
+    
+    .table th:nth-child(4), /* Password column */
+    .table td:nth-child(4) {
+        display: none;
+    }
+    
+    .table th:nth-child(6), /* Committee column */
+    .table td:nth-child(6) {
+        display: none;
+    }
+    
+    .btn-sm {
+        padding: 0.25rem 0.375rem;
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .table th,
+    .table td {
+        padding: 0.25rem 0.125rem;
+        font-size: 0.75rem;
+        max-width: 80px;
+    }
+}
