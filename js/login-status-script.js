@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function() {
             // User is not logged in
             document.getElementById('loginButton').style.display = 'block';
             document.getElementById('userDropdown').style.display = 'none';
+            document.getElementById('notificationIcon').style.display = 'none';
         }
     }
     
@@ -24,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // Clear user data
         localStorage.removeItem('userData');
         // Redirect to home or login page
-        window.location.href = '/home.html';
+        window.location.href = '/index.html';
     });
     
     // Check login status when page loads
