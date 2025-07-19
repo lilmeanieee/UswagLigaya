@@ -477,7 +477,6 @@ function initializeProjectDisplay() {
             $('.modal').removeClass('show').hide();
             $('.modal').attr('aria-hidden', 'true').removeAttr('aria-modal role');
             
-            // Reset body
             $('body').removeClass('modal-open');
             $('body').css({
                 'overflow': '',
