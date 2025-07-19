@@ -1,10 +1,16 @@
+// Declare allProjects in global scope so all functions can access it
+let allProjects = []; 
+
 document.addEventListener("DOMContentLoaded", function () {
+    
     fetch('/UswagLigaya/php-handlers/brgy-project-res/get-project.php')
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                renderProjectCards(data.data);
-                initializeProjectModal(data.data);
+                allProjects = data.data; // Store all projects
+                renderProjectCards(allProjects);
+                initializeProjectModal(allProjects);
+                initializeSearchAndFilter(); // Initialize search and filter functionality
             } else {
                 console.error("Failed to load projects:", data.message);
             }
@@ -12,11 +18,123 @@ document.addEventListener("DOMContentLoaded", function () {
         .catch(error => console.error("AJAX error:", error));
 });
 
+// Initialize search and filter functionality
+function initializeSearchAndFilter() {
+    const searchInput = document.getElementById('searchInput');
+    const searchBtn = document.getElementById('searchBtn');
+    const categoryFilter = document.getElementById('categoryFilter');
+
+    // Search functionality
+    function performSearch() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        const selectedStatus = categoryFilter.value;
+        
+        let filteredProjects = allProjects;
+
+        // Filter by search term
+        if (searchTerm) {
+            filteredProjects = filteredProjects.filter(project => 
+                project.project_name.toLowerCase().includes(searchTerm) ||
+                project.description.toLowerCase().includes(searchTerm) ||
+                project.location?.toLowerCase().includes(searchTerm) ||
+                project.responsible_person?.toLowerCase().includes(searchTerm) ||
+                project.category_name?.toLowerCase().includes(searchTerm)
+            );
+        }
+
+        // Filter by status
+        if (selectedStatus !== 'all') {
+            const statusMap = {
+                'completed': 'Completed',
+                'ongoing': 'Ongoing',
+                'not_started': 'Not Started',
+                'cancelled': 'Cancelled',
+                'delayed': 'Delayed',
+                'on_hold': 'On Hold'
+            };
+            
+            const targetStatus = statusMap[selectedStatus];
+            if (targetStatus) {
+                filteredProjects = filteredProjects.filter(project => 
+                    project.status === targetStatus
+                );
+            }
+        }
+
+        renderProjectCards(filteredProjects);
+        updateResultsCount(filteredProjects.length, allProjects.length);
+    }
+
+    // Event listeners
+    searchBtn.addEventListener('click', performSearch);
+    searchInput.addEventListener('keyup', function(e) {
+        if (e.key === 'Enter') {
+            performSearch();
+        }
+    });
+    
+    // Real-time search as user types (with debounce)
+    let searchTimeout;
+    searchInput.addEventListener('input', function() {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(performSearch, 300); // 300ms delay
+    });
+
+    categoryFilter.addEventListener('change', performSearch);
+
+    // Clear search functionality
+    const clearBtn = document.getElementById('clearBtn');
+    if (clearBtn) {
+        clearBtn.addEventListener('click', function() {
+            searchInput.value = '';
+            categoryFilter.value = 'all';
+            renderProjectCards(allProjects);
+            updateResultsCount(allProjects.length, allProjects.length);
+        });
+    }
+}
+
+// Update results count display
+function updateResultsCount(filteredCount, totalCount) {
+    let resultsInfo = document.getElementById('resultsInfo');
+    if (!resultsInfo) {
+        // Create results info element if it doesn't exist
+        resultsInfo = document.createElement('div');
+        resultsInfo.id = 'resultsInfo';
+        resultsInfo.className = 'results-info mb-3';
+        
+        const container = document.querySelector('.container.mt-4');
+        const cardView = document.getElementById('card-view');
+        container.insertBefore(resultsInfo, cardView);
+    }
+    
+ 
+    
+    // Show "No results" message if no projects found
+    const cardView = document.getElementById('card-view');
+    if (filteredCount === 0) {
+        cardView.innerHTML = `
+            <div class="col-12">
+                <div class="text-center py-5">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">No projects found</h4>
+                    <p class="text-muted">Try adjusting your search terms or filters</p>
+                </div>
+            </div>
+        `;
+    }
+}
+
 function renderProjectCards(projectsData) {
     const container = document.getElementById('card-view');
     container.innerHTML = "";
 
-    Object.values(projectsData).forEach(project => {
+    // Handle empty results
+    if (!projectsData || projectsData.length === 0) {
+        return; // updateResultsCount will handle the empty state
+    }
+
+    projectsData.forEach(project => {
         const progress = parseInt(project.progress_percentage) || 0;
         const defaultImage = "asset/img/neighborhood-illustration.png";
         
@@ -59,7 +177,9 @@ function initializeProjectModal(projectsData) {
     document.addEventListener("click", function (e) {
         if (e.target.classList.contains("view-details-btn")) {
             const projectId = e.target.getAttribute("data-project-id");
-            const project = projectsData[projectId];
+            
+            // FIX: Find project by project_id since projectsData is now an array
+            const project = allProjects.find(p => p.project_id == projectId);
 
             if (!project) return;
 
@@ -226,7 +346,6 @@ function getStatusBadgeClass(status) {
             return 'badge bg-secondary'; // Fallback style
     }
 }
-
 
 function getProgressBarClass(progress) {
     if (progress === 100) return 'bg-success';

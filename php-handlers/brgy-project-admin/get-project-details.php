@@ -47,7 +47,7 @@ try {
     }
     
     // Get project stages
-    $stages_sql = "SELECT * FROM tbl_project_stages WHERE project_id = ? ORDER BY stage_id ASC";
+    $stages_sql = "SELECT * FROM tbl_project_stages WHERE project_id = ? ORDER BY stage_order ASC";
     $stages_stmt = $pdo->prepare($stages_sql);
     $stages_stmt->execute([$project_id]);
     $stages = $stages_stmt->fetchAll(PDO::FETCH_ASSOC);

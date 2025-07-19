@@ -1,684 +1,778 @@
-// Fixed implementation for project stages and image upload functionality
+class AddProjectModal {
+    constructor() {
+        this.selectedFiles = [];
+        this.elements = {};
+        this.init();
+    }
 
-// Global variables
-let selectedFiles = [];
-let isInitialized = false;
+    init() {
+        this.bindElements();
+        this.attachEventListeners();
+        this.initializeDefaultStages();
+        this.loadCategories();
+        this.createErrorContainer();
+    }
+// Replace your bindElements method with this enhanced version
 
-// Initialize everything when DOM is ready
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM Content Loaded - Initializing...');
+bindElements() {
+    console.log('=== ELEMENT BINDING DEBUG ===');
     
-    // Initialize basic functionality first
-    initializeSelectStatusColors();
-    initializeImagePreviewModal();
+    // Try different selectors for date inputs
+    const dateInputs = document.querySelectorAll('#addProjectModal input[type="date"]');
+    console.log('Found date inputs:', dateInputs.length);
     
-    // Check if modal exists
-    const modal = document.getElementById('addProjectModal');
-    if (modal) {
-        console.log('Modal found, setting up modal event listeners');
+    dateInputs.forEach((input, index) => {
+        console.log(`Date input ${index}:`, input);
+        console.log(`Date input ${index} value:`, input.value);
+        console.log(`Date input ${index} name:`, input.name);
+        console.log(`Date input ${index} id:`, input.id);
+        console.log(`Date input ${index} parent label:`, input.closest('.mb-3')?.querySelector('label')?.textContent);
+    });
+
+    this.elements = {
+        modal: document.getElementById('addProjectModal'),
+        form: document.querySelector('#addProjectModal form'),
+        projectNameInput: document.querySelector('#addProjectModal input[placeholder="Enter project name"]'),
+        categorySelect: document.querySelector('#addProjectModal select'),
+        descriptionInput: document.querySelector('#addProjectModal textarea'),
+        locationInput: document.querySelector('#addProjectModal input[placeholder="Enter location of project"]'),
         
-        // Initialize modal features when modal is shown
-        modal.addEventListener('shown.bs.modal', function() {
-            console.log('Modal is shown - initializing features');
-            // Small delay to ensure DOM is ready
-            setTimeout(() => {
-                initializeModalFeatures();
-            }, 100);
+        // More specific selectors for date inputs
+        startDateInput: dateInputs[0], // First date input should be start date
+        completionDateInput: dateInputs[1], // Second date input should be completion date
+        
+        budgetInput: document.querySelector('#addProjectModal input[type="number"]'),
+        fundingSourceInput: document.querySelector('#addProjectModal input[placeholder="Source of funding"]'),
+        responsiblePersonInput: document.querySelector('#addProjectModal input[placeholder="Enter responsible person"]'),
+        stagesContainer: document.getElementById('projectStagesContainerAdd'),
+        newStageInput: document.getElementById('newStageInputAdd'),
+        addStageBtn: document.getElementById('addStageBtnAdd'),
+        dropArea: document.getElementById('drop-area-add'),
+        fileInput: document.getElementById('fileInputAdd'),
+        previewContainer: document.getElementById('imagePreviewContainerAdd'),
+        createBtn: document.querySelector('#addProjectModal .btn-primary'),
+        cancelBtn: document.querySelector('#addProjectModal .btn-secondary')
+    };
+    
+    // Alternative binding method - by looking at the structure
+    const startDateLabel = Array.from(document.querySelectorAll('#addProjectModal label')).find(label => 
+        label.textContent.includes('Start Date'));
+    const completionDateLabel = Array.from(document.querySelectorAll('#addProjectModal label')).find(label => 
+        label.textContent.includes('Expected Completion'));
+    
+    if (startDateLabel) {
+        const startDateInput = startDateLabel.parentElement.querySelector('input[type="date"]');
+        if (startDateInput) {
+            this.elements.startDateInput = startDateInput;
+            console.log('Found start date input by label:', startDateInput);
+        }
+    }
+    
+    if (completionDateLabel) {
+        const completionDateInput = completionDateLabel.parentElement.querySelector('input[type="date"]');
+        if (completionDateInput) {
+            this.elements.completionDateInput = completionDateInput;
+            console.log('Found completion date input by label:', completionDateInput);
+        }
+    }
+    
+    // Debug: Check if critical elements are found
+    console.log('Modal found:', !!this.elements.modal);
+    console.log('Start date input found:', !!this.elements.startDateInput);
+    console.log('End date input found:', !!this.elements.completionDateInput);
+    console.log('Start date input element:', this.elements.startDateInput);
+    console.log('End date input element:', this.elements.completionDateInput);
+    
+    // Verify they are different elements
+    console.log('Are date inputs the same element?', this.elements.startDateInput === this.elements.completionDateInput);
+    
+    // Check current values
+    if (this.elements.startDateInput && this.elements.completionDateInput) {
+        console.log('Current start date value:', this.elements.startDateInput.value);
+        console.log('Current completion date value:', this.elements.completionDateInput.value);
+    }
+}
+
+    createErrorContainer() {
+        // Create error container if it doesn't exist
+        let errorContainer = document.getElementById('addProjectModalErrors');
+        if (!errorContainer) {
+            errorContainer = document.createElement('div');
+            errorContainer.id = 'addProjectModalErrors';
+            errorContainer.className = 'alert alert-danger d-none mb-3';
+            errorContainer.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <div>
+                        <strong>Please fix the following errors:</strong>
+                        <ul class="mb-0 mt-1" id="addProjectErrorList"></ul>
+                    </div>
+                </div>
+            `;
+            
+            // Insert at the beginning of the modal body
+            const modalBody = this.elements.modal.querySelector('.modal-body');
+            if (modalBody) {
+                modalBody.insertBefore(errorContainer, modalBody.firstChild);
+            }
+        }
+        
+        this.elements.errorContainer = errorContainer;
+        this.elements.errorList = document.getElementById('addProjectErrorList');
+    }
+
+    showErrors(errors) {
+        if (!this.elements.errorContainer || !this.elements.errorList) {
+            console.error('Error container not found');
+            return;
+        }
+
+        // Clear previous errors
+        this.elements.errorList.innerHTML = '';
+        
+        if (errors.length > 0) {
+            // Add each error as a list item
+            errors.forEach(error => {
+                const li = document.createElement('li');
+                li.textContent = error;
+                this.elements.errorList.appendChild(li);
+            });
+            
+            // Show the error container
+            this.elements.errorContainer.classList.remove('d-none');
+            
+            // Scroll to top of modal to show errors
+            const modalBody = this.elements.modal.querySelector('.modal-body');
+            if (modalBody) {
+                modalBody.scrollTop = 0;
+            }
+        } else {
+            // Hide error container if no errors
+            this.elements.errorContainer.classList.add('d-none');
+        }
+    }
+
+    hideErrors() {
+        if (this.elements.errorContainer) {
+            this.elements.errorContainer.classList.add('d-none');
+        }
+    }
+
+    attachEventListeners() {
+        // Stage management
+        this.elements.addStageBtn.addEventListener('click', () => this.addNewStage());
+        this.elements.newStageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                this.addNewStage();
+            }
         });
+
+        // File upload events
+        this.elements.dropArea.addEventListener('click', () => this.elements.fileInput.click());
+        this.elements.fileInput.addEventListener('change', (e) => this.handleFileSelect(e));
         
-        // Clear data when modal is hidden
-        modal.addEventListener('hidden.bs.modal', function() {
-            console.log('Modal hidden - clearing files');
-            clearSelectedFiles();
-            isInitialized = false;
+        // Drag and drop events
+        this.elements.dropArea.addEventListener('dragover', (e) => this.handleDragOver(e));
+        this.elements.dropArea.addEventListener('dragleave', (e) => this.handleDragLeave(e));
+        this.elements.dropArea.addEventListener('drop', (e) => this.handleDrop(e));
+
+        // Form submission
+        this.elements.createBtn.addEventListener('click', () => this.handleSubmit());
+        
+        // Modal events
+        this.elements.modal.addEventListener('hidden.bs.modal', () => this.resetForm());
+        this.elements.cancelBtn.addEventListener('click', () => this.resetForm());
+        
+        // Hide errors when user starts typing/selecting
+        this.addInputEventListeners();
+    }
+
+    addInputEventListeners() {
+        // Add event listeners to form inputs to hide errors when user starts interacting
+        const inputs = [
+            this.elements.projectNameInput,
+            this.elements.categorySelect,
+            this.elements.descriptionInput,
+            this.elements.locationInput,
+            this.elements.startDateInput,
+            this.elements.completionDateInput,
+            this.elements.budgetInput,
+            this.elements.fundingSourceInput,
+            this.elements.responsiblePersonInput
+        ];
+
+        inputs.forEach(input => {
+            if (input) {
+                input.addEventListener('input', () => this.hideErrors());
+                input.addEventListener('change', () => this.hideErrors());
+            }
         });
-    } else {
-        console.error('Modal not found!');
     }
-    
-    // Load categories if jQuery is available
-    if (typeof $ !== 'undefined') {
-        loadCategories();
-        initializeAddProjectHandler();
-    }
-});
 
-// Initialize modal-specific features
-function initializeModalFeatures() {
-    console.log('Initializing modal features...');
-    
-    // Prevent multiple initialization
-    if (isInitialized) {
-        console.log('Already initialized, skipping...');
-        return;
-    }
-    
-    const modal = document.getElementById('addProjectModal');
-    if (!modal) {
-        console.error('Modal not found');
-        return;
-    }
-    
-    // Check if modal is visible
-    if (!modal.classList.contains('show')) {
-        console.log('Modal not visible, skipping initialization');
-        return;
-    }
-    
-    // Wait for modal to be fully rendered
-    const dropArea = modal.querySelector('#drop-area-add');
-    const addStageBtn = modal.querySelector('#addStageBtnAdd');
-    
-    if (!dropArea || !addStageBtn) {
-        console.log('Modal elements not ready, retrying...');
-        setTimeout(() => {
-            initializeModalFeatures();
-        }, 200);
-        return;
-    }
-    
-    try {
-        initializeImageUpload();
-        initializeStageManagement();
-        isInitialized = true;
-        console.log('Feature initialization complete');
-    } catch (error) {
-        console.error('Error initializing features:', error);
-    }
-}
+    initializeDefaultStages() {
+        const defaultStages = [
+            { name: 'Site Survey & Planning', checked: true },
+            { name: 'Material Procurement', checked: true },
+            { name: 'Final Inspection', checked: false }
+        ];
 
-// Initialize image upload functionality
-function initializeImageUpload() {
-    console.log('Initializing image upload...');
-    
-    const dropArea = document.getElementById('drop-area-add');
-    const fileInput = document.getElementById('fileInputAdd');
-    const previewContainer = document.getElementById('imagePreviewContainerAdd');
+        this.elements.stagesContainer.innerHTML = '';
+        
+        defaultStages.forEach(stage => {
+            this.createStageElement(stage.name, stage.checked);
+        });
 
-    console.log('Image Upload Elements:', {
-        dropArea: !!dropArea,
-        fileInput: !!fileInput,
-        previewContainer: !!previewContainer
-    });
-    
-    if (!dropArea || !fileInput || !previewContainer) {
-        console.error('Missing image upload elements');
-        return;
+        // Add the input group for new stages
+        this.addStageInputGroup();
     }
-    
-    // Remove existing event listeners by checking if they exist
-    if (dropArea._uploadInitialized) {
-        console.log('Image upload already initialized');
-        return;
-    }
-    
-    // Mark as initialized
-    dropArea._uploadInitialized = true;
-    fileInput._uploadInitialized = true;
-    
-    // Define event handlers
-    const handleDropAreaClick = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        console.log('Drop area clicked - opening file dialog');
-        fileInput.click();
-    };
-    
-    const handleFileInputChange = (e) => {
-        console.log('File input changed:', e.target.files.length, 'files selected');
-        if (e.target.files.length > 0) {
-            handleFiles(e.target.files, previewContainer);
-        }
-    };
-    
-    const handleDragOver = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        dropArea.classList.add('dragover');
-        dropArea.style.backgroundColor = '#f8f9fa';
-        dropArea.style.border = '2px dashed #007bff';
-    };
-    
-    const handleDragLeave = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        dropArea.classList.remove('dragover');
-        dropArea.style.backgroundColor = '';
-        dropArea.style.border = '';
-    };
-    
-    const handleDrop = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        dropArea.classList.remove('dragover');
-        dropArea.style.backgroundColor = '';
-        dropArea.style.border = '';
-        
-        const files = e.dataTransfer.files;
-        console.log('Files dropped:', files.length);
-        if (files.length > 0) {
-            handleFiles(files, previewContainer);
-        }
-    };
-    
-    // Add event listeners
-    dropArea.addEventListener('click', handleDropAreaClick);
-    fileInput.addEventListener('change', handleFileInputChange);
-    dropArea.addEventListener('dragover', handleDragOver);
-    dropArea.addEventListener('dragleave', handleDragLeave);
-    dropArea.addEventListener('drop', handleDrop);
-    
-    console.log('Image upload initialized successfully');
-}
 
-// Handle file uploads with validation
-function handleFiles(files, previewContainer) {
-    console.log('Processing', files.length, 'files');
-    
-    Array.from(files).forEach(file => {
-        console.log('Processing file:', file.name, 'Type:', file.type, 'Size:', file.size);
-        
-        // Validate file type
-        if (!file.type.startsWith('image/')) {
-            showAlert('error', `File "${file.name}" is not an image. Only image files are allowed.`);
-            return;
-        }
-        
-        // Validate file size (5MB limit)
-        if (file.size > 5 * 1024 * 1024) {
-            showAlert('error', `File "${file.name}" is too large. Maximum size is 5MB.`);
-            return;
-        }
-        
-        // Add file to selected files array
-        selectedFiles.push(file);
-        console.log('Added file to selectedFiles. Total files:', selectedFiles.length);
-        
-        // Create preview
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            createImagePreview(event.target.result, file.name, selectedFiles.length - 1, previewContainer);
-        };
-        reader.readAsDataURL(file);
-    });
-}
-
-// Create image preview element
-function createImagePreview(src, fileName, fileIndex, previewContainer) {
-    const wrapper = document.createElement('div');
-    wrapper.classList.add('position-relative', 'd-inline-block', 'm-2');
-    wrapper.setAttribute('data-file-index', fileIndex);
-    wrapper.style.width = '120px';
-    wrapper.style.height = '120px';
-    
-    const img = document.createElement('img');
-    img.src = src;
-    img.classList.add('img-thumbnail');
-    img.style.width = '100%';
-    img.style.height = '100%';
-    img.style.objectFit = 'cover';
-    img.style.borderRadius = '8px';
-    img.title = fileName;
-    
-    const removeBtn = document.createElement('button');
-    removeBtn.innerHTML = '<i class="bi bi-x"></i>';
-    removeBtn.classList.add('btn', 'btn-sm', 'btn-danger', 'position-absolute', 'top-0', 'end-0', 'rounded-circle');
-    removeBtn.style.width = '30px';
-    removeBtn.style.height = '30px';
-    removeBtn.style.fontSize = '16px';
-    removeBtn.style.lineHeight = '1';
-    removeBtn.style.transform = 'translate(50%, -50%)';
-    removeBtn.setAttribute('type', 'button');
-    removeBtn.setAttribute('title', 'Remove image');
-    
-    removeBtn.onclick = function(e) {
-        e.stopPropagation();
-        const fileIndex = parseInt(wrapper.getAttribute('data-file-index'));
-        selectedFiles.splice(fileIndex, 1);
-        wrapper.remove();
-        updateFileIndices(previewContainer);
-        console.log('Image removed. Remaining files:', selectedFiles.length);
-    };
-    
-    wrapper.appendChild(img);
-    wrapper.appendChild(removeBtn);
-    previewContainer.appendChild(wrapper);
-    
-    console.log('Image preview created for:', fileName);
-}
-
-// Update file indices for remaining previews
-function updateFileIndices(previewContainer) {
-    const previews = previewContainer.querySelectorAll('[data-file-index]');
-    previews.forEach((preview, index) => {
-        preview.setAttribute('data-file-index', index);
-    });
-}
-
-// Initialize stage management
-function initializeStageManagement() {
-    console.log('Initializing stage management...');
-    
-    const addStageBtn = document.getElementById('addStageBtnAdd');
-    const stageInput = document.getElementById('newStageInputAdd');
-    const stagesContainer = document.getElementById('projectStagesContainerAdd');
-    
-    console.log('Stage Management Elements:', {
-        addStageBtn: !!addStageBtn,
-        stageInput: !!stageInput,
-        stagesContainer: !!stagesContainer
-    });
-    
-    if (!addStageBtn || !stageInput || !stagesContainer) {
-        console.error('Missing stage management elements');
-        return;
-    }
-    
-    // Check if already initialized
-    if (addStageBtn._stageInitialized) {
-        console.log('Stage management already initialized');
-        return;
-    }
-    
-    // Mark as initialized
-    addStageBtn._stageInitialized = true;
-    stageInput._stageInitialized = true;
-    
-    // Add stage button click handler
-    const handleAddStage = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        const stageInputValue = stageInput.value.trim();
-        console.log('Add Stage clicked. Input value:', stageInputValue);
-        
-        if (!stageInputValue) {
-            showAlert('error', 'Please enter a stage name');
-            stageInput.focus();
-            return;
-        }
-        
-        // Check if stage already exists
-        const existingStages = stagesContainer.querySelectorAll('.form-check-label');
-        const stageExists = Array.from(existingStages).some(label => 
-            label.textContent.trim().toLowerCase() === stageInputValue.toLowerCase()
-        );
-        
-        if (stageExists) {
-            showAlert('error', 'This stage already exists');
-            stageInput.focus();
-            return;
-        }
-        
-        // Create new stage element
+    createStageElement(stageName, isChecked = false) {
         const stageDiv = document.createElement('div');
         stageDiv.className = 'stage-edit-item mb-3';
         stageDiv.innerHTML = `
-            <div class="form-check d-flex align-items-center justify-content-between">
-                <div class="d-flex align-items-center">
-                    <input class="form-check-input me-2" type="checkbox" checked>
-                    <label class="form-check-label">${stageInputValue}</label>
-                </div>
-                <button type="button" class="btn btn-sm btn-outline-danger remove-stage-btn" title="Remove stage">
-                    <i class="bi bi-trash"></i>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" ${isChecked ? 'checked' : ''}>
+                <label class="form-check-label">${stageName}</label>
+                <button type="button" class="btn btn-sm btn-outline-danger ms-2 remove-stage-btn" title="Remove stage">
+                    <i class="bi bi-x"></i>
                 </button>
             </div>
         `;
-        
-        // Add remove functionality
-        const removeBtn = stageDiv.querySelector('.remove-stage-btn');
-        removeBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            stageDiv.remove();
-            console.log('Stage removed:', stageInputValue);
-            showAlert('success', 'Stage removed successfully!');
-        });
-        
-        // Find the input group and insert the new stage before it
-        const inputGroup = stagesContainer.querySelector('.input-group');
-        if (inputGroup) {
-            stagesContainer.insertBefore(stageDiv, inputGroup);
-        } else {
-            stagesContainer.appendChild(stageDiv);
-        }
-        
-        // Clear input and focus
-        stageInput.value = '';
-        stageInput.focus();
-        
-        console.log('Stage added successfully:', stageInputValue);
-        showAlert('success', 'Stage added successfully!');
-    };
-    
-    const handleKeyPress = (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            handleAddStage(e);
-        }
-    };
-    
-    // Add event listeners
-    addStageBtn.addEventListener('click', handleAddStage);
-    stageInput.addEventListener('keypress', handleKeyPress);
-    
-    console.log('Stage management initialized successfully');
-}
 
-// Initialize select status colors
-function initializeSelectStatusColors() {
-    function updateSelectColor(select) {
-        select.classList.remove('not-started', 'in-progress', 'completed');
-        switch (select.value) {
-            case 'Not Started':
-                select.classList.add('not-started');
-                break;
-            case 'In Progress':
-                select.classList.add('in-progress');
-                break;
-            case 'Completed':
-                select.classList.add('completed');
-                break;
+        // Add remove functionality for custom stages
+        const removeBtn = stageDiv.querySelector('.remove-stage-btn');
+        removeBtn.addEventListener('click', () => {
+            stageDiv.remove();
+        });
+
+        // Insert before the input group
+        const inputGroup = this.elements.stagesContainer.querySelector('.input-group');
+        this.elements.stagesContainer.insertBefore(stageDiv, inputGroup);
+    }
+
+    addStageInputGroup() {
+        const inputGroupDiv = document.createElement('div');
+        inputGroupDiv.className = 'input-group mt-3';
+        inputGroupDiv.innerHTML = `
+            <input type="text" id="newStageInputAdd" class="form-control" placeholder="Enter other project stage">
+            <button type="button" class="btn btn-outline-primary" id="addStageBtnAdd">
+                <i class="bi bi-plus me-1"></i>Add Stage
+            </button>
+        `;
+
+        this.elements.stagesContainer.appendChild(inputGroupDiv);
+        
+        // Update references
+        this.elements.newStageInput = document.getElementById('newStageInputAdd');
+        this.elements.addStageBtn = document.getElementById('addStageBtnAdd');
+        
+        // Reattach event listeners
+        this.elements.addStageBtn.addEventListener('click', () => this.addNewStage());
+        this.elements.newStageInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                this.addNewStage();
+            }
+        });
+    }
+
+    addNewStage() {
+        const stageName = this.elements.newStageInput.value.trim();
+        
+        if (!stageName) {
+            this.showErrors(['Please enter a stage name']);
+            return;
+        }
+
+        // Check if stage already exists
+        const existingStages = Array.from(this.elements.stagesContainer.querySelectorAll('.form-check-label'))
+            .map(label => label.textContent.trim());
+        
+        if (existingStages.includes(stageName)) {
+            this.showErrors(['This stage already exists']);
+            return;
+        }
+
+        this.createStageElement(stageName, false);
+        this.elements.newStageInput.value = '';
+        this.elements.newStageInput.focus();
+        this.hideErrors();
+    }
+
+    handleDragOver(e) {
+        e.preventDefault();
+        this.elements.dropArea.classList.add('dragover');
+    }
+
+    handleDragLeave(e) {
+        e.preventDefault();
+        this.elements.dropArea.classList.remove('dragover');
+    }
+
+    handleDrop(e) {
+        e.preventDefault();
+        this.elements.dropArea.classList.remove('dragover');
+        
+        const files = Array.from(e.dataTransfer.files);
+        this.processFiles(files);
+    }
+
+    handleFileSelect(e) {
+        const files = Array.from(e.target.files);
+        this.processFiles(files);
+        // Reset input so same file can be selected again
+        e.target.value = '';
+    }
+
+    processFiles(files) {
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/tiff'];
+        const maxSize = 5 * 1024 * 1024; // 5MB
+        const fileErrors = [];
+
+        files.forEach(file => {
+            if (!allowedTypes.includes(file.type)) {
+                fileErrors.push(`Invalid file type: ${file.name}. Only JPEG, PNG, GIF, and TIFF are allowed.`);
+                return;
+            }
+
+            if (file.size > maxSize) {
+                fileErrors.push(`File too large: ${file.name}. Maximum size is 5MB.`);
+                return;
+            }
+
+            // Add to selected files
+            const fileIndex = this.selectedFiles.length;
+            this.selectedFiles.push(file);
+
+            // Create preview
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                this.createImagePreview(e.target.result, file.name, fileIndex);
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // Show file errors if any
+        if (fileErrors.length > 0) {
+            this.showErrors(fileErrors);
         }
     }
-    
-    // Handle existing selects
-    document.querySelectorAll('.select-status').forEach(select => {
-        updateSelectColor(select);
-        select.addEventListener('change', () => updateSelectColor(select));
-    });
-    
-    // Handle dynamically added selects
-    document.addEventListener('change', function(e) {
-        if (e.target.classList.contains('select-status')) {
-            updateSelectColor(e.target);
-        }
-    });
-}
 
-// Initialize image preview modal
-function initializeImagePreviewModal() {
-    document.querySelectorAll('.preview-thumb').forEach(img => {
-        img.addEventListener('click', () => {
-            const largePreviewImage = document.getElementById('largePreviewImage');
-            if (largePreviewImage) {
-                largePreviewImage.src = img.getAttribute('data-img-src');
-            }
-        });
-    });
-}
-
-// jQuery-based functionality (if available)
-function loadCategories() {
-    if (typeof $ === 'undefined') return;
-    
-    $.ajax({
-        url: '../../php-handlers/brgy-project-admin/get-categories.php',
-        method: 'GET',
-        dataType: 'json',
-        success: function(response) {
-            if (response.success) {
-                const categorySelect = $('#addProjectModal select').first();
-                categorySelect.empty();
-                categorySelect.append('<option value="">Select category...</option>');
-                
-                response.categories.forEach(function(category) {
-                    categorySelect.append(
-                        `<option value="${category.category_id}">${category.category_name}</option>`
-                    );
-                });
-            }
-        },
-        error: function() {
-            console.log('Failed to load categories');
-        }
-    });
-}
-
-function initializeAddProjectHandler() {
-    if (typeof $ === 'undefined') return;
-    
-    // Handle Add Project Button Click
-    $('#addProjectModal .btn-primary').on('click', function(e) {
-        e.preventDefault();
+    createImagePreview(src, fileName, fileIndex) {
+        const { previewContainer } = this.elements;
         
-        // Get form data
-        const formData = new FormData();
-        
-        // Basic project data
-        formData.append('project_name', $('#addProjectModal input[placeholder="Enter project name"]').val().trim());
-        formData.append('category', $('#addProjectModal select').first().val());
-        formData.append('description', $('#addProjectModal textarea[placeholder="Project description..."]').val().trim());
-        formData.append('location', $('#addProjectModal input[placeholder="Enter location of project"]').val().trim());
-        formData.append('start_date', $('#addProjectModal input[type="date"]').first().val());
-        formData.append('expected_completion', $('#addProjectModal input[type="date"]').last().val());
-        formData.append('initial_budget', $('#addProjectModal input[placeholder="0.00"]').val());
-        formData.append('funding_source', $('#addProjectModal input[placeholder="Source of funding"]').val().trim());
-        formData.append('responsible_person', $('#addProjectModal input[placeholder="Enter responsible person"]').val().trim());
-        
-        // Get project stages
-        const stages = [];
-        $('#addProjectModal .stage-edit-item .form-check-input:checked').each(function() {
-            const stageName = $(this).closest('.form-check').find('.form-check-label').text().trim();
-            if (stageName) {
-                stages.push(stageName);
-            }
-        });
-        
-        // Add stages to formData
-        stages.forEach(function(stage, index) {
-            formData.append(`project_stages[${index}]`, stage);
-        });
-        
-        // Add uploaded images
-        if (selectedFiles && selectedFiles.length > 0) {
-            selectedFiles.forEach(function(file) {
-                formData.append('project_images[]', file);
-            });
-        }
-        
-        // Validate form data
-        if (!validateProjectForm(formData)) {
+        if (!previewContainer) {
+            console.error('Preview container not found when creating preview');
             return;
         }
         
-        // Show loading state
-        const submitBtn = $(this);
-        const originalText = submitBtn.text();
-        submitBtn.prop('disabled', true).text('Creating...');
+        const wrapper = document.createElement('div');
+        wrapper.className = 'position-relative d-inline-block m-2';
+        wrapper.setAttribute('data-file-index', fileIndex);
+        wrapper.style.cssText = 'width: 120px; height: 120px;';
         
-        // Send AJAX request
-        $.ajax({
-            url: '../../php-handlers/brgy-project-admin/add-project.php',
-            method: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    showAlert('success', 'Project created successfully!');
-                    
-                    // Reset form
-                    $('#addProjectModal form')[0].reset();
-                    clearSelectedFiles();
-                    resetStages();
-                    
-                    setTimeout(function() {
-                        $('#addProjectModal').modal('hide');
-                        location.reload();
-                    }, 1500);
-                } else {
-                    showAlert('error', response.message || 'Failed to create project');
-                }
-            },
-            error: function(xhr) {
-                console.error('AJAX Error:', xhr.responseText);
-                showAlert('error', 'An error occurred while creating the project');
-            },
-            complete: function() {
-                submitBtn.prop('disabled', false).text(originalText);
-            }
+        const img = document.createElement('img');
+        img.src = src;
+        img.className = 'img-thumbnail';
+        img.style.cssText = 'width: 100%; height: 100%; object-fit: cover; border-radius: 8px;';
+        img.title = fileName;
+        
+        const removeBtn = document.createElement('button');
+        removeBtn.innerHTML = '<i class="bi bi-x"></i>';
+        removeBtn.className = 'btn btn-sm btn-danger position-absolute top-0 end-0 rounded-circle';
+        removeBtn.style.cssText = 'width: 30px; height: 30px; font-size: 16px; line-height: 1; transform: translate(50%, -50%);';
+        removeBtn.setAttribute('type', 'button');
+        removeBtn.setAttribute('title', 'Remove image');
+        
+        removeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const fileIndex = parseInt(wrapper.getAttribute('data-file-index'));
+            this.selectedFiles.splice(fileIndex, 1);
+            wrapper.remove();
+            this.updateFileIndices();
+            console.log(`Image removed. Remaining files: ${this.selectedFiles.length}`);
         });
-    });
+        
+        wrapper.appendChild(img);
+        wrapper.appendChild(removeBtn);
+        previewContainer.appendChild(wrapper);
+        
+        console.log('Add project modal image preview created for:', fileName);
+    }
+
+    updateFileIndices() {
+        const previews = this.elements.previewContainer.querySelectorAll('[data-file-index]');
+        previews.forEach((preview, index) => {
+            preview.setAttribute('data-file-index', index);
+        });
+    }
+
+  async loadCategories() {
+    try {
+        console.log('Attempting to load categories...');
+        const response = await fetch('http://localhost/UswagLigaya/php-handlers/brgy-project-admin/get-categories.php');
+        
+        // Check if the response is ok
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        // Check if response is JSON
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+            const text = await response.text();
+            console.error('Non-JSON response received:', text);
+            throw new Error('Server returned non-JSON response');
+        }
+        
+        const data = await response.json();
+        console.log('Categories response:', data);
+        
+        if (data.success) {
+            this.populateCategories(data.categories);
+            console.log('Categories loaded successfully');
+        } else {
+            console.error('Failed to load categories:', data.message);
+            // Show a user-friendly error
+            this.showCategoryError(data.message || 'Failed to load categories');
+        }
+    } catch (error) {
+        console.error('Error loading categories:', error);
+        this.showCategoryError('Unable to load categories. Please check your connection and try again.');
+    }
 }
 
-// Form validation function
-function validateProjectForm(formData) {
+showCategoryError(message) {
+    const select = this.elements.categorySelect;
+    select.innerHTML = `<option value="">Error loading categories - ${message}</option>`;
+}
+
+    populateCategories(categories) {
+        const select = this.elements.categorySelect;
+        
+        // Clear existing options except the first one
+        select.innerHTML = '<option value="">Select category...</option>';
+        
+        categories.forEach(category => {
+            const option = document.createElement('option');
+            option.value = category.category_id;
+            option.textContent = category.category_name;
+            select.appendChild(option);
+        });
+    }
+
+    getSelectedStages() {
+        const stages = [];
+        const stageElements = this.elements.stagesContainer.querySelectorAll('.stage-edit-item');
+        
+        stageElements.forEach(element => {
+            const checkbox = element.querySelector('input[type="checkbox"]');
+            const label = element.querySelector('label');
+            
+            if (checkbox && checkbox.checked && label) {
+                stages.push(label.textContent.trim());
+            }
+        });
+        
+        return stages;
+    }
+
+// Replace your validateForm method with this enhanced debugging version
+
+validateForm() {
     const errors = [];
     
-    const projectName = formData.get('project_name');
-    const category = formData.get('category');
-    const description = formData.get('description');
-    const location = formData.get('location');
-    const startDate = formData.get('start_date');
-    const expectedCompletion = formData.get('expected_completion');
-    const responsiblePerson = formData.get('responsible_person');
+    if (!this.elements.projectNameInput.value.trim()) {
+        errors.push('Project name is required');
+    }
     
-    if (!projectName) errors.push('Project name is required');
-    if (!category) errors.push('Category is required');
-    if (!description) errors.push('Description is required');
-    if (!location) errors.push('Location is required');
-    if (!startDate) errors.push('Start date is required');
-    if (!expectedCompletion) errors.push('Expected completion date is required');
-    if (!responsiblePerson) errors.push('Responsible person is required');
+    if (!this.elements.categorySelect.value) {
+        errors.push('Category is required');
+    }
     
-    // Validate dates
-    if (startDate && expectedCompletion) {
-        const startDateObj = new Date(startDate);
-        const endDateObj = new Date(expectedCompletion);
+    if (!this.elements.descriptionInput.value.trim()) {
+        errors.push('Description is required');
+    }
+    
+    if (!this.elements.locationInput.value.trim()) {
+        errors.push('Location is required');
+    }
+    
+    if (!this.elements.startDateInput.value) {
+        errors.push('Start date is required');
+    }
+    
+    if (!this.elements.completionDateInput.value) {
+        errors.push('Expected completion date is required');
+    }
+    
+    if (!this.elements.responsiblePersonInput.value.trim()) {
+        errors.push('Responsible person is required');
+    }
+    
+    // Enhanced date validation with detailed debugging
+    if (this.elements.startDateInput.value && this.elements.completionDateInput.value) {
+        console.log('=== ENHANCED DATE VALIDATION DEBUG ===');
         
-        if (startDateObj >= endDateObj) {
-            errors.push('Expected completion date must be after start date');
+        // Check the actual DOM elements
+        console.log('Start date input element:', this.elements.startDateInput);
+        console.log('Completion date input element:', this.elements.completionDateInput);
+        
+        // Get raw values
+        const startDateRaw = this.elements.startDateInput.value;
+        const endDateRaw = this.elements.completionDateInput.value;
+        
+        console.log('Raw start date value:', startDateRaw);
+        console.log('Raw end date value:', endDateRaw);
+        console.log('Raw values are equal?', startDateRaw === endDateRaw);
+        
+        // Check if we're getting the right elements
+        console.log('Start date input ID:', this.elements.startDateInput.id);
+        console.log('End date input ID:', this.elements.completionDateInput.id);
+        
+        // Let's manually query the date inputs to verify
+        const allDateInputs = document.querySelectorAll('#addProjectModal input[type="date"]');
+        console.log('All date inputs found:', allDateInputs);
+        console.log('First date input value:', allDateInputs[0]?.value);
+        console.log('Second date input value:', allDateInputs[1]?.value);
+        
+        // Create date objects
+        const startDate = new Date(startDateRaw);
+        const endDate = new Date(endDateRaw);
+        
+        console.log('Start date object:', startDate);
+        console.log('End date object:', endDate);
+        console.log('Start date ISO:', startDate.toISOString());
+        console.log('End date ISO:', endDate.toISOString());
+        
+        // Check if dates are valid
+        console.log('Start date valid?', !isNaN(startDate.getTime()));
+        console.log('End date valid?', !isNaN(endDate.getTime()));
+        
+        // Compare dates
+        console.log('Start date time:', startDate.getTime());
+        console.log('End date time:', endDate.getTime());
+        console.log('Time difference (ms):', endDate.getTime() - startDate.getTime());
+        console.log('Time difference (days):', (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
+        
+        // Validation logic
+        if (endDate < startDate) {
+            console.log('ERROR: Completion date is before start date');
+            errors.push('Expected completion date cannot be before start date');
+        } else {
+            console.log('SUCCESS: Date validation passed');
         }
     }
+    
+    // Validate budget
+    if (this.elements.budgetInput.value && (isNaN(this.elements.budgetInput.value) || parseFloat(this.elements.budgetInput.value) < 0)) {
+        errors.push('Budget must be a valid positive number');
+    }
+    
+    return errors;
+}
+    async handleSubmit() {
+    const errors = this.validateForm();
     
     if (errors.length > 0) {
-        showAlert('error', errors.join('<br>'));
-        return false;
+        this.showErrors(errors);
+        return;
     }
-    
-    return true;
-}
 
-// Reset stages to default
-function resetStages() {
-    const container = document.getElementById('projectStagesContainerAdd');
-    if (container) {
-        // Remove custom stages, keep default ones
-        container.querySelectorAll('.stage-edit-item').forEach(function(stage) {
-            const label = stage.querySelector('.form-check-label');
-            if (label) {
-                const text = label.textContent.trim();
-                if (!text.includes('Site Survey') && 
-                    !text.includes('Material Procurement') && 
-                    !text.includes('Final Inspection')) {
-                    stage.remove();
-                }
+    // Hide any existing errors
+    this.hideErrors();
+
+    // Disable submit button
+    this.elements.createBtn.disabled = true;
+    this.elements.createBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Creating...';
+
+    try {
+        const formData = new FormData();
+        
+        // Add form fields
+        formData.append('project_name', this.elements.projectNameInput.value.trim());
+        formData.append('category', this.elements.categorySelect.value);
+        formData.append('description', this.elements.descriptionInput.value.trim());
+        formData.append('location', this.elements.locationInput.value.trim());
+        formData.append('start_date', this.elements.startDateInput.value);
+        formData.append('expected_completion', this.elements.completionDateInput.value);
+        formData.append('initial_budget', this.elements.budgetInput.value || '');
+        formData.append('funding_source', this.elements.fundingSourceInput.value.trim());
+        formData.append('responsible_person', this.elements.responsiblePersonInput.value.trim());
+        
+        // Add selected stages
+        const selectedStages = this.getSelectedStages();
+        selectedStages.forEach((stage, index) => {
+            formData.append(`project_stages[${index}]`, stage);
+        });
+        
+        // Add images
+        this.selectedFiles.forEach((file, index) => {
+            formData.append(`project_images[${index}]`, file);
+        });
+
+        // Fixed URL - removed the duplicated path segment
+        const response = await fetch('http://localhost/UswagLigaya/php-handlers/brgy-project-admin/add-project.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        // Check if response is ok before parsing JSON
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data.success) {
+            // Create success message
+            const successContainer = document.createElement('div');
+            successContainer.className = 'alert alert-success mb-3';
+            successContainer.innerHTML = `
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    <strong>Project created successfully!</strong>
+                </div>
+            `;
+            
+            // Show success message briefly
+            const modalBody = this.elements.modal.querySelector('.modal-body');
+            if (modalBody) {
+                modalBody.insertBefore(successContainer, modalBody.firstChild);
+                modalBody.scrollTop = 0;
             }
-        });
+            
+            // Wait a moment then close modal and refresh
+            setTimeout(() => {
+                this.resetForm();
+                
+                // Close modal
+                const modal = bootstrap.Modal.getInstance(this.elements.modal);
+                if (modal) {
+                    modal.hide();
+                }
+                
+                // Refresh page or update project list
+                if (typeof refreshProjectList === 'function') {
+                    refreshProjectList();
+                } else {
+                    location.reload();
+                }
+            }, 1500);
+        } else {
+            this.showErrors([data.message || 'Error creating project']);
+        }
+    } catch (error) {
+        console.error('Error submitting form:', error);
         
-        // Reset default checkboxes
-        container.querySelectorAll('.form-check-input').forEach(function(checkbox) {
-            checkbox.checked = false;
-        });
+        // More specific error handling
+        if (error.name === 'SyntaxError') {
+            this.showErrors(['Server returned an invalid response. Please check if the server is running correctly.']);
+        } else if (error.message.includes('HTTP error!')) {
+            this.showErrors(['Server error occurred. Please try again or contact support.']);
+        } else {
+            this.showErrors(['An error occurred while creating the project. Please try again.']);
+        }
+    } finally {
+        // Re-enable submit button
+        this.elements.createBtn.disabled = false;
+        this.elements.createBtn.innerHTML = 'Create Project';
     }
 }
 
-// Alert function
-function showAlert(type, message) {
-    const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
-    const alertIcon = type === 'success' ? 'bi-check-circle' : 'bi-exclamation-triangle';
-    
-    const alertHtml = `
-        <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
-            <i class="bi ${alertIcon} me-2"></i>
-            ${message}
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    `;
-    
-    // Remove existing alerts
-    const addModal = document.getElementById('addProjectModal');
-    if (addModal) {
-        const existingAlerts = addModal.querySelectorAll('.alert');
-        existingAlerts.forEach(alert => alert.remove());
+    resetForm() {
+        // Reset all form fields
+        this.elements.projectNameInput.value = '';
+        this.elements.categorySelect.value = '';
+        this.elements.descriptionInput.value = '';
+        this.elements.locationInput.value = '';
+        this.elements.startDateInput.value = '';
+        this.elements.completionDateInput.value = '';
+        this.elements.budgetInput.value = '';
+        this.elements.fundingSourceInput.value = '';
+        this.elements.responsiblePersonInput.value = '';
         
-        // Add new alert
-        const modalBody = addModal.querySelector('.modal-body');
-        if (modalBody) {
-            modalBody.insertAdjacentHTML('afterbegin', alertHtml);
+        // Reset stages
+        this.initializeDefaultStages();
+        
+        // Clear selected files and previews
+        this.selectedFiles = [];
+        this.elements.previewContainer.innerHTML = '';
+        this.elements.fileInput.value = '';
+        
+        // Reset button state
+        this.elements.createBtn.disabled = false;
+        this.elements.createBtn.innerHTML = 'Create Project';
+        
+        // Hide errors and remove any success messages
+        this.hideErrors();
+        const successMessages = this.elements.modal.querySelectorAll('.alert-success');
+        successMessages.forEach(msg => msg.remove());
+    }
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    new AddProjectModal();
+});
+
+// Add CSS for drag and drop styling and error display
+const style = document.createElement('style');
+style.textContent = `
+    .upload-box {
+        border: 2px dashed #dee2e6;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .upload-box:hover {
+        border-color: #0d6efd;
+        background-color: #f8f9fa;
+    }
+    
+    .upload-box.dragover {
+        border-color: #0d6efd;
+        background-color: #e3f2fd;
+    }
+    
+    .remove-stage-btn {
+        opacity: 0.6;
+        transition: opacity 0.2s ease;
+    }
+    
+    .stage-edit-item:hover .remove-stage-btn {
+        opacity: 1;
+    }
+    
+    .form-check {
+        display: flex;
+        align-items: center;
+    }
+    
+    .form-check-label {
+        flex: 1;
+        margin-right: 8px;
+    }
+    
+    #addProjectModalErrors {
+        animation: slideDown 0.3s ease-out;
+    }
+    
+    @keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
         }
     }
     
-    // Auto-dismiss success alerts after 3 seconds
-    if (type === 'success') {
-        setTimeout(function() {
-            document.querySelectorAll('.alert-success').forEach(alert => {
-                alert.style.display = 'none';
-            });
-        }, 3000);
+    .alert-success {
+        animation: slideDown 0.3s ease-out;
     }
-}
-
-// Clear selected files function
-function clearSelectedFiles() {
-    selectedFiles = [];
-    const imagePreviewContainer = document.getElementById('imagePreviewContainerAdd');
-    if (imagePreviewContainer) {
-        imagePreviewContainer.innerHTML = '';
-    }
-    const fileInput = document.getElementById('fileInputAdd');
-    if (fileInput) {
-        fileInput.value = '';
-    }
-}
-
-// Manual initialization function for testing
-window.manualInit = function() {
-    console.log('Manual initialization triggered');
-    isInitialized = false;
-    initializeModalFeatures();
-};
-
-// Debug functions
-window.testUpload = function() {
-    console.log('Testing upload functionality...');
-    const dropArea = document.getElementById('drop-area-add');
-    const fileInput = document.getElementById('fileInputAdd');
-    
-    console.log('Drop area:', dropArea);
-    console.log('File input:', fileInput);
-    
-    if (dropArea && fileInput) {
-        console.log('Elements found, triggering click...');
-        dropArea.click();
-    } else {
-        console.log('Elements not found');
-    }
-};
-
-window.testStage = function() {
-    console.log('Testing stage functionality...');
-    const stageInput = document.getElementById('newStageInputAdd');
-    const addBtn = document.getElementById('addStageBtnAdd');
-    
-    console.log('Stage input:', stageInput);
-    console.log('Add button:', addBtn);
-    
-    if (stageInput && addBtn) {
-        stageInput.value = 'Test Stage';
-        addBtn.click();
-    } else {
-        console.log('Elements not found');
-    }
-};
-
-// Alternative initialization if Bootstrap modal events aren't working
-window.forceInit = function() {
-    console.log('Force initialization triggered');
-    isInitialized = false;
-    setTimeout(() => {
-        initializeModalFeatures();
-    }, 500);
-};
+`;
+document.head.appendChild(style);

@@ -123,8 +123,22 @@ try {
             }
     }
     
-    // Create project directory for images
-    $project_dir = '../../uploads/brgy_projects/' . preg_replace('/[^a-zA-Z0-9_-]/', '_', $project_name);
+    // Determine project status based on start date
+    $current_date = date('Y-m-d');
+    $project_status = ($start_date <= $current_date) ? 'Ongoing' : 'Not Started';
+    
+    // Create project directory for images - FIXED: Use consistent naming
+    $project_name_sanitized = preg_replace('/[^a-zA-Z0-9_-]/', '_', $project_name);
+    $project_dir = '../../uploads/brgy_projects/' . $project_name_sanitized;
+    
+    // Ensure the base uploads directory exists
+    $base_upload_dir = '../../uploads/brgy_projects';
+    if (!is_dir($base_upload_dir)) {
+        if (!mkdir($base_upload_dir, 0755, true)) {
+            throw new Exception('Failed to create base upload directory');
+        }
+    }
+    
     if (!is_dir($project_dir)) {
         if (!mkdir($project_dir, 0755, true)) {
             throw new Exception('Failed to create project directory');
@@ -133,6 +147,8 @@ try {
     
     // Handle image uploads
     $uploaded_images = [];
+    $uploaded_image_info = []; // Store additional info for debugging
+    
     if (isset($_FILES['project_images']) && !empty($_FILES['project_images']['name'][0])) {
         $files = $_FILES['project_images'];
         $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif', 'tiff'];
@@ -155,6 +171,14 @@ try {
                 // Move uploaded file
                 if (move_uploaded_file($file_tmp, $file_path)) {
                     $uploaded_images[] = $unique_name;
+                    
+                    // Store additional info for debugging
+                    $uploaded_image_info[] = [
+                        'original_name' => $file_name,
+                        'unique_name' => $unique_name,
+                        'file_path' => $file_path,
+                        'file_size' => filesize($file_path)
+                    ];
                 } else {
                     throw new Exception("Failed to upload image: {$file_name}");
                 }
@@ -162,68 +186,23 @@ try {
         }
     }
     
-    // Convert uploaded images array to JSON string for database storage
-    $project_images_json = !empty($uploaded_images) ? json_encode($uploaded_images) : null;
-    
-    // Prepare insert statement for project (without project_image)
-$sql = "INSERT INTO tbl_projects (
-    project_name, 
-    category_id, 
-    description, 
-    location,
-    start_date, 
-    expected_completion, 
-    initial_budget, 
-    funding_source, 
-    responsible_person, 
-    status, 
-    progress_percentage,
-    created_at
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'Not Started', 0, NOW())";
+    // Insert project into main table with determined status
+    $sql = "INSERT INTO tbl_projects (
+        project_name, 
+        category_id, 
+        description, 
+        location,
+        start_date, 
+        expected_completion, 
+        initial_budget, 
+        funding_source, 
+        responsible_person, 
+        status, 
+        progress_percentage,
+        created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0, NOW())";
 
-$stmt = $pdo->prepare($sql);
-$result = $stmt->execute([
-    $project_name,
-    $category_id,
-    $description,
-    $location,
-    $start_date,
-    $expected_completion,
-    !empty($initial_budget) ? floatval($initial_budget) : null,
-    $funding_source,
-    $responsible_person
-]);
-
-if (!$result) {
-    throw new Exception('Failed to create project');
-}
-
-$project_id = $pdo->lastInsertId();
-
-// Store images in tbl_project_images
-if (!empty($uploaded_images)) {
-    $image_insert_sql = "INSERT INTO tbl_project_images (project_id, image_filename, file_size) VALUES (?, ?, ?)";
-    $image_stmt = $pdo->prepare($image_insert_sql);
-
-    foreach ($uploaded_images as $filename) {
-        $file_path = $project_dir . '/' . $filename;
-        $relative_path = 'uploads/brgy_projects/' . basename($project_dir) . '/' . $filename;
-        $file_size = file_exists($file_path) ? filesize($file_path) : 0;
-
-        $image_result = $image_stmt->execute([
-            $project_id,
-            $relative_path,
-            $file_size
-        ]);
-
-        if (!$image_result) {
-            throw new Exception('Failed to insert image record: ' . $filename);
-        }
-    }
-}
-
-    
-    // Execute the statement
+    $stmt = $pdo->prepare($sql);
     $result = $stmt->execute([
         $project_name,
         $category_id,
@@ -234,47 +213,71 @@ if (!empty($uploaded_images)) {
         !empty($initial_budget) ? floatval($initial_budget) : null,
         $funding_source,
         $responsible_person,
-        $project_images_json
+        $project_status
     ]);
-    
+
     if (!$result) {
         throw new Exception('Failed to create project');
     }
-    
+
     $project_id = $pdo->lastInsertId();
-    
-    // Insert project stages
+
+    // Store images in tbl_project_images - FIXED: Consistent path format
+       if (!empty($uploaded_images)) {
+        $image_insert_sql = "INSERT INTO tbl_project_images (project_id, image_filename, file_size) VALUES (?, ?, ?)";
+        $image_stmt = $pdo->prepare($image_insert_sql);
+
+        foreach ($uploaded_image_info as $image_info) {
+            // FIXED: Store only the filename (consistent with update-project.php)
+            $image_result = $image_stmt->execute([
+                $project_id,
+                $image_info['unique_name'], // Store only filename, not full path
+                $image_info['file_size']
+            ]);
+
+            if (!$image_result) {
+                throw new Exception('Failed to insert image record: ' . $image_info['unique_name']);
+            }
+            
+            // Log the stored filename for debugging
+            error_log("Stored image filename in database: " . $image_info['unique_name']);
+        }
+    }
+
+        
+    // Insert project stages with stage_order - MODIFIED to include stage_order
     if (!empty($project_stages) && is_array($project_stages)) {
         $stage_sql = "INSERT INTO tbl_project_stages (
             project_id, 
+            stage_order,
             stage_name, 
             start_date, 
             end_date, 
             status, 
             created_at
-        ) VALUES (?, ?, ?, ?, ?, NOW())";
+        ) VALUES (?, ?, ?, ?, ?, ?, NOW())";
         
         $stage_stmt = $pdo->prepare($stage_sql);
-        
-        // Get current date for comparison
-        $current_date = date('Y-m-d');
         
         foreach ($project_stages as $index => $stage_name) {
             $stage_name = trim($stage_name);
             if (!empty($stage_name)) {
+                $stage_order = ($index + 1) * 10;
+                
                 if ($index === 0) {
-                    // First stage gets the project's start_date
-                    $stage_start_date = $start_date;
-                    $stage_end_date = '0000-00-00';
-                    
-                    // Check if start date is today or in the past
+                    // First stage logic based on project start date
                     if ($start_date <= $current_date) {
-                        $stage_status = 'In Progress';
+                        // Project starts today or in the past - first stage is Ongoing
+                        $stage_start_date = $start_date; // Use project's start date
+                        $stage_status = 'Ongoing';
                     } else {
+                        // Project starts in the future - first stage is Not Started
+                        $stage_start_date = '0000-00-00';
                         $stage_status = 'Not Started';
                     }
+                    $stage_end_date = '0000-00-00';
                 } else {
-                    // Other stages get default values
+                    // Other stages remain Not Started regardless
                     $stage_start_date = '0000-00-00';
                     $stage_end_date = '0000-00-00';
                     $stage_status = 'Not Started';
@@ -282,6 +285,7 @@ if (!empty($uploaded_images)) {
                 
                 $stage_result = $stage_stmt->execute([
                     $project_id,
+                    $stage_order, // NEW: Include stage order
                     $stage_name,
                     $stage_start_date,
                     $stage_end_date,
@@ -291,6 +295,9 @@ if (!empty($uploaded_images)) {
                 if (!$stage_result) {
                     throw new Exception('Failed to create project stage: ' . $stage_name);
                 }
+                
+                // Log the stage order for debugging
+                error_log("Created stage '{$stage_name}' with order: {$stage_order}");
             }
         }
     }
@@ -298,11 +305,25 @@ if (!empty($uploaded_images)) {
     // Commit transaction
     $pdo->commit();
     
+    // ADDED: Retrieve the created project with images to verify storage
+    $verify_sql = "SELECT pi.image_filename FROM tbl_project_images pi WHERE pi.project_id = ?";
+    $verify_stmt = $pdo->prepare($verify_sql);
+    $verify_stmt->execute([$project_id]);
+    $stored_images = $verify_stmt->fetchAll(PDO::FETCH_COLUMN);
+    
+    // ADDED: Retrieve created stages with their orders for verification
+    $verify_stages_sql = "SELECT stage_name, stage_order FROM tbl_project_stages WHERE project_id = ? ORDER BY stage_order";
+    $verify_stages_stmt = $pdo->prepare($verify_stages_sql);
+    $verify_stages_stmt->execute([$project_id]);
+    $created_stages = $verify_stages_stmt->fetchAll(PDO::FETCH_ASSOC);
+    
     echo json_encode([
         'success' => true,
         'message' => 'Project created successfully with all details',
         'project_id' => $project_id,
-        'uploaded_images' => $uploaded_images
+        'project_status' => $project_status,
+        'uploaded_images' => $uploaded_images,
+        'created_stages' => $created_stages // NEW: Include created stages info
     ]);
     
 } catch (PDOException $e) {

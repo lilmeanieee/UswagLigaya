@@ -10,7 +10,7 @@ require_once '../../php-handlers/connect.php';
 function getProjectsData($pdo) {
     $projects = [];
     
-    // Get all projects with category information
+    // Get all projects with category information - ORDER BY created_at DESC for last added first
     $stmt = $pdo->prepare("
         SELECT 
             p.project_id,
@@ -37,6 +37,9 @@ function getProjectsData($pdo) {
     $stmt->execute();
     $projectsResult = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
+    // Use array to maintain order instead of associative array with project_id as key
+    $orderedProjects = [];
+    
     foreach ($projectsResult as $project) {
         $projectId = $project['project_id'];
         
@@ -50,9 +53,8 @@ function getProjectsData($pdo) {
         $imagesStmt->execute([$projectId]);
         $project_images = $imagesStmt->fetchAll(PDO::FETCH_ASSOC);
         
-        // Format image data with proper URLs - using the same approach as admin side
+        // Format image data with proper URLs
         $formatted_images = [];
-        $baseUrl = '/UswagLigaya/uploads/brgy_projects/';
         
         foreach ($project_images as $image) {
             // Create the project folder name (clean version)
@@ -60,8 +62,8 @@ function getProjectsData($pdo) {
             $clean_project_name = preg_replace('/[^a-zA-Z0-9\-_\s]/', '', $project_name);
             $clean_project_name = str_replace(' ', '_', $clean_project_name);
             
-            // Create the image URL - simple and direct like your admin system
-            $image_url = $baseUrl . $clean_project_name . '/' . $image['image_filename'];
+            // Create the image URL - FIXED: Remove duplicate path segments
+            $image_url = '/UswagLigaya/uploads/brgy_projects/' . $clean_project_name . '/' . $image['image_filename'];
             
             $formatted_images[] = [
                 'image_id' => $image['image_id'],
@@ -78,7 +80,7 @@ function getProjectsData($pdo) {
             SELECT stage_name, start_date, end_date, status, created_at, updated_at
             FROM tbl_project_stages 
             WHERE project_id = ? 
-            ORDER BY start_date ASC
+            ORDER BY stage_order ASC
         ");
         $stagesStmt->execute([$projectId]);
         $stages = $stagesStmt->fetchAll(PDO::FETCH_ASSOC);
@@ -113,10 +115,11 @@ function getProjectsData($pdo) {
         // Ensure initial budget is numeric
         $project['initial_budget'] = is_numeric($project['initial_budget']) ? floatval($project['initial_budget']) : null;
         
-        $projects[$projectId] = $project;
+        // Add to ordered array instead of associative array
+        $orderedProjects[] = $project;
     }
     
-    return $projects;
+    return $orderedProjects;
 }
 
 try {

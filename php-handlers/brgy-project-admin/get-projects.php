@@ -22,6 +22,9 @@ try {
     $status = $_GET['status'] ?? '';
     $category = $_GET['category'] ?? '';
 
+    // Debug: Log the received status parameter
+    error_log("Received status filter: '" . $status . "'");
+
     // Base project query
     $sql = "SELECT 
                 p.project_id,
@@ -49,48 +52,43 @@ try {
         $params = array_fill(0, 3, $searchParam);
     }
 
+    // SIMPLIFIED: Direct status matching since frontend and database use same values
     if (!empty($status)) {
-        switch (strtolower($status)) {
-            case 'pending':
-                $sql .= " AND p.status = 'Planning'";
-                break;
-            case 'ongoing':
-                $sql .= " AND p.status IN ('In Progress', 'Ongoing')";
-                break;
-            case 'completed':
-                $sql .= " AND p.status = 'Completed'";
-                break;
-        }
+        $sql .= " AND TRIM(p.status) = ?";
+        $params[] = $status;
+        error_log("Status filter applied: '" . $status . "'");
     }
 
     if (!empty($category)) {
-        switch (strtolower($category)) {
-            case 'infrastructure':
-                $sql .= " AND c.category_name = 'Infrastructure'";
-                break;
-            case 'public-service':
-                $sql .= " AND c.category_name = 'Public Service'";
-                break;
-            case 'health':
-                $sql .= " AND c.category_name = 'Health & Wellness'";
-                break;
-            case 'education':
-                $sql .= " AND c.category_name = 'Education'";
-                break;
+        // Use category_id if it's numeric, otherwise use category_name
+        if (is_numeric($category)) {
+            $sql .= " AND c.category_id = ?";
+            $params[] = $category;
+        } else {
+            $sql .= " AND c.category_name = ?";
+            $params[] = $category;
         }
     }
 
     $sql .= " ORDER BY p.created_at DESC";
 
+    error_log("Final SQL: " . $sql);
+    error_log("Params: " . print_r($params, true));
+
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
     $projects = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    error_log("Found " . count($projects) . " projects");
 
     $processedProjects = [];
 
     foreach ($projects as $project) {
         $project_id = $project['project_id'];
         $project_name = $project['project_name'];
+
+        // Debug: Log each project's status
+        error_log("Project: " . $project_name . " - Status: '" . $project['status'] . "'");
 
         // Fetch related image data from tbl_project_images
         $image_stmt = $pdo->prepare("SELECT image_id, image_filename, file_size, upload_date FROM tbl_project_images WHERE project_id = ? ORDER BY upload_date ASC");
@@ -129,13 +127,9 @@ try {
         $formattedBudget = !empty($project['initial_budget']) ? 
             '₱' . number_format($project['initial_budget'], 0) : 'N/A';
 
-        // Status class
-        $statusClass = match (strtolower($project['status'])) {
-            'planning' => 'status-pending',
-            'in progress', 'ongoing' => 'status-ongoing',
-            'completed' => 'status-completed',
-            default => 'status-pending'
-        };
+        // Use status directly since frontend and database match
+        $status = trim($project['status']);
+        $statusClass = getStatusClass($status);
 
         // Format dates
         $startDate = (!empty($project['start_date']) && $project['start_date'] !== '0000-00-00') ?
@@ -155,7 +149,7 @@ try {
             'formatted_budget' => $formattedBudget,
             'funding_source' => $project['funding_source'],
             'responsible_person' => $project['responsible_person'],
-            'status' => $project['status'],
+            'status' => $status, // Use status directly
             'status_class' => $statusClass,
             'progress_percentage' => $project['progress_percentage'],
             'remaining_days' => $remainingDays,
@@ -168,7 +162,14 @@ try {
     echo json_encode([
         'success' => true,
         'projects' => $processedProjects,
-        'total' => count($processedProjects)
+        'total' => count($processedProjects),
+        'debug' => [
+            'search' => $search,
+            'status' => $status,
+            'category' => $category,
+            'sql' => $sql,
+            'params' => $params
+        ]
     ]);
 } catch (PDOException $e) {
     error_log("Database error in get-projects.php: " . $e->getMessage());
@@ -176,5 +177,25 @@ try {
 } catch (Exception $e) {
     error_log("General error in get-projects.php: " . $e->getMessage());
     echo json_encode(['success' => false, 'message' => 'An unexpected error occurred: ' . $e->getMessage()]);
+}
+
+// Simplified function to get status class based on actual database status values
+function getStatusClass($status) {
+    switch (trim($status)) {
+        case 'Not Started':
+            return 'status-pending';
+        case 'Ongoing':
+            return 'status-ongoing';
+        case 'Delayed':
+            return 'status-warning';
+        case 'On Hold':
+            return 'status-info';
+        case 'Completed':
+            return 'status-completed';
+        case 'Cancelled':
+            return 'status-danger';
+        default:
+            return 'status-pending';
+    }
 }
 ?>
