@@ -141,3 +141,8 @@
   min-width:150px;
   max-width: 500px;
 }
+
+/* notification dropdown */
+.notif-item:hover {
+  background-color: #d5d5d592;
+}

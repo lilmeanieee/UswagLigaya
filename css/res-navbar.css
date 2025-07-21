@@ -20,9 +20,10 @@ body {
   height: 40px;
   margin-inline-end: 8px;
 }
+
 .navbar-brand {
   color: #ffd803;
-  font-size: 24px;
+  font-size: 1.3rem;
   font-weight: 500;
   transition: 0.3s color;
 }
@@ -76,6 +77,7 @@ body {
     visibility: visible;
   }
 }
+
 .user-dropdown {
   margin-right: 10px;
 }
@@ -115,4 +117,48 @@ body {
 /* footer */
 footer {
   margin-top: auto;
+}
+
+/* user-icon dropdown */
+.user-icon-rounded {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Dropdown arrow circle overlay */
+.dropdown-arrow-icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: #818080;
+    border-radius: 50%;
+    padding: 2px;
+    color: white;
+    font-size: 10px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid white;
+}
+
+/* Hover on the whole button area */
+.user-dropdown button:hover {
+    border-radius: 50%; /* optional: to match circular style */
+    transition: background-color 0.3s ease;
+}
+
+.user-dropdown button:hover img {
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
+    background-color: #a04848;
+}
+
+/* animate the arrow slightly on hover */
+.user-dropdown button:hover .dropdown-arrow-icon {
+    background-color: #666;
 }
