@@ -1,3 +1,13 @@
 Array
 (
+    [upEvent_file] => Array
+        (
+            [name] => Models of social group work .png
+            [full_path] => Models of social group work .png
+            [type] => image/png
+            [tmp_name] => C:\xampp\tmp\php112.tmp
+            [error] => 0
+            [size] => 88047
+        )
+
 )

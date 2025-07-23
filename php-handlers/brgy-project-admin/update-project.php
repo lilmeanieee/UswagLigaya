@@ -35,6 +35,9 @@ $progress_percentage = $_POST['progress_percentage'] ?? 0;
 $funding_source = trim($_POST['funding_source'] ?? '');
 $responsible_person = trim($_POST['responsible_person'] ?? '');
 $removed_images = $_POST['removed_images'] ?? '';
+$cancelled_reason = '';
+
+error_log("Received progress_percentage from frontend: " . var_export($progress_percentage, true));
 
 // Stage data
 $stage_ids = $_POST['stage_ids'] ?? [];
@@ -109,6 +112,12 @@ if (!empty($errors)) {
         'message' => implode(', ', $errors)
     ]);
     exit;
+}
+
+if ($status === 'Cancelled' && isset($_POST['cancelled_reason'])) {
+    $cancelled_reason = trim($_POST['cancelled_reason']);
+} else {
+    $cancelled_reason = ''; // reset if not cancelled
 }
 
 try {
@@ -264,8 +273,277 @@ try {
             }
         }
     }
+
+    // ENHANCED: Server-side progress calculation function
+    function calculateServerSideProgress($new_stage_status, $existing_stage_status) {
+        $all_statuses = array_merge($new_stage_status, $existing_stage_status);
+        $total_stages = count($all_statuses);
+        
+        if ($total_stages === 0) {
+            return 0;
+        }
+        
+        $completed_stages = 0;
+        foreach ($all_statuses as $status) {
+            if ($status === 'Completed') {
+                $completed_stages++;
+            }
+        }
+        
+        return round(($completed_stages / $total_stages) * 100);
+    }
+
+    // Stage calculation function
+    function calculateStageDates($old_status, $new_status, $old_start, $old_end, $current_date) {
+        $result = [
+            'start' => $old_start,
+            'end' => $old_end
+        ];
+        
+        // Handle new stages (no old status)
+        if (empty($old_status)) {
+            switch ($new_status) {
+                case 'Not Started':
+                case 'On Hold':
+                case 'Delayed':
+                    $result['start'] = '0000-00-00';
+                    $result['end'] = '0000-00-00';
+                    break;
+                case 'Ongoing':
+                    $result['start'] = $current_date;
+                    $result['end'] = '0000-00-00';
+                    break;
+                case 'Completed':
+                    $result['start'] = $current_date;
+                    $result['end'] = $current_date;
+                    break;
+            }
+            return $result;
+        }
+        
+        // Handle status transitions for existing stages
+        switch ($old_status) {
+            case 'Not Started':
+                switch ($new_status) {
+                    case 'Ongoing':
+                        $result['start'] = $current_date;
+                        $result['end'] = '0000-00-00';
+                        break;
+                    case 'Completed':
+                        $result['start'] = $current_date;
+                        $result['end'] = $current_date;
+                        break;
+                    case 'On Hold':
+                    case 'Delayed':
+                        $result['start'] = '0000-00-00';
+                        $result['end'] = '0000-00-00';
+                        break;
+                }
+                break;
+                
+            case 'Ongoing':
+                switch ($new_status) {
+                    case 'Completed':
+                        $result['end'] = $current_date;
+                        break;
+                    case 'On Hold':
+                    case 'Delayed':
+                        $result['end'] = '0000-00-00';
+                        break;
+                }
+                break;
+                
+            case 'On Hold':
+            case 'Delayed':
+                switch ($new_status) {
+                    case 'Ongoing':
+                        if ($old_start === '0000-00-00') {
+                            $result['start'] = $current_date;
+                        }
+                        $result['end'] = '0000-00-00';
+                        break;
+                    case 'Completed':
+                        if ($old_start === '0000-00-00') {
+                            $result['start'] = $current_date;
+                        }
+                        $result['end'] = $current_date;
+                        break;
+                }
+                break;
+        }
+        
+        return $result;
+    }
+
+    // Handle project stages
+    try {
+        $current_date = date('Y-m-d');
+        
+        // Get the stage data from the form
+        $existing_stage_ids = isset($_POST['existing_stage_ids']) ? $_POST['existing_stage_ids'] : [];
+        $existing_stage_names = isset($_POST['existing_stage_names']) ? $_POST['existing_stage_names'] : [];
+        $existing_stage_status = isset($_POST['existing_stage_status']) ? $_POST['existing_stage_status'] : [];
+        $existing_stage_order = isset($_POST['existing_stage_order']) ? $_POST['existing_stage_order'] : [];
+        
+        $new_stage_names = isset($_POST['new_stage_names']) ? $_POST['new_stage_names'] : [];
+        $new_stage_status = isset($_POST['new_stage_status']) ? $_POST['new_stage_status'] : [];
+        $new_stage_order = isset($_POST['new_stage_order']) ? $_POST['new_stage_order'] : [];
+        
+        error_log("Existing stages: " . print_r($existing_stage_ids, true));
+        error_log("New stages: " . print_r($new_stage_names, true));
+        
+        // ENHANCED: Calculate server-side progress as fallback
+        $server_calculated_progress = calculateServerSideProgress($new_stage_status, $existing_stage_status);
+        
+        // Use frontend-calculated progress if valid, otherwise use server calculation
+        if (!is_numeric($progress_percentage) || $progress_percentage < 0 || $progress_percentage > 100) {
+            $progress_percentage = $server_calculated_progress;
+            error_log("Using server-calculated progress: {$progress_percentage}% (frontend value was invalid)");
+        } else {
+            error_log("Using frontend-calculated progress: {$progress_percentage}%");
+            error_log("Server would have calculated: {$server_calculated_progress}%");
+        }
+        
+        // Process existing stages (updates)
+        if (!empty($existing_stage_ids) && is_array($existing_stage_ids)) {
+            for ($i = 0; $i < count($existing_stage_ids); $i++) {
+                if (!isset($existing_stage_names[$i]) || empty(trim($existing_stage_names[$i]))) {
+                    continue;
+                }
+                
+                $stage_id = intval($existing_stage_ids[$i]);
+                $stage_name = trim($existing_stage_names[$i]);
+                $stage_status = isset($existing_stage_status[$i]) ? $existing_stage_status[$i] : 'Not Started';
+                $stage_order = isset($existing_stage_order[$i]) ? intval($existing_stage_order[$i]) : $i + 1;
+                
+                // Get current stage data
+                $current_stage_sql = "SELECT status, start_date, end_date FROM tbl_project_stages WHERE stage_id = ? AND project_id = ?";
+                $current_stage_stmt = $pdo->prepare($current_stage_sql);
+                $current_stage_stmt->execute([$stage_id, $project_id]);
+                $current_stage_data = $current_stage_stmt->fetch(PDO::FETCH_ASSOC);
+                
+                if ($current_stage_data) {
+                    $old_status = $current_stage_data['status'];
+                    $old_start_date = $current_stage_data['start_date'];
+                    $old_end_date = $current_stage_data['end_date'];
+                    
+                    // Calculate new dates based on status change
+                    $new_dates = calculateStageDates($old_status, $stage_status, $old_start_date, $old_end_date, $current_date);
+                    
+                    // Update existing stage
+                    $update_stage_sql = "UPDATE tbl_project_stages SET 
+                                       stage_name = ?, 
+                                       status = ?, 
+                                       start_date = ?, 
+                                       end_date = ?, 
+                                       stage_order = ?,
+                                       updated_at = NOW()
+                                       WHERE stage_id = ? AND project_id = ?";
+                    
+                    $update_stage_stmt = $pdo->prepare($update_stage_sql);
+                    $update_result = $update_stage_stmt->execute([
+                        $stage_name,
+                        $stage_status,
+                        $new_dates['start'],
+                        $new_dates['end'],
+                        $stage_order,
+                        $stage_id,
+                        $project_id
+                    ]);
+                    
+                    if ($update_result) {
+                        error_log("Successfully updated stage: $stage_name (ID: $stage_id)");
+                    } else {
+                        error_log("Failed to update stage: $stage_name (ID: $stage_id)");
+                        error_log("Update error: " . print_r($update_stage_stmt->errorInfo(), true));
+                    }
+                } else {
+                    error_log("Stage not found: ID $stage_id for project $project_id");
+                }
+            }
+            
+            // Remove stages that are no longer in the form
+            $keep_stage_ids = array_map('intval', $existing_stage_ids);
+            $keep_stage_ids = array_filter($keep_stage_ids, function($id) { return $id > 0; });
+            
+            if (!empty($keep_stage_ids)) {
+                $placeholders = str_repeat('?,', count($keep_stage_ids) - 1) . '?';
+                $delete_stages_sql = "DELETE FROM tbl_project_stages WHERE project_id = ? AND stage_id NOT IN ($placeholders)";
+                $delete_stages_stmt = $pdo->prepare($delete_stages_sql);
+                $delete_result = $delete_stages_stmt->execute(array_merge([$project_id], $keep_stage_ids));
+                
+                if ($delete_result) {
+                    error_log("Successfully cleaned up removed stages");
+                } else {
+                    error_log("Failed to clean up removed stages");
+                }
+            }
+        } else {
+            // If no existing stages, remove all stages for this project
+            $delete_all_stages_sql = "DELETE FROM tbl_project_stages WHERE project_id = ?";
+            $delete_all_stages_stmt = $pdo->prepare($delete_all_stages_sql);
+            $delete_all_result = $delete_all_stages_stmt->execute([$project_id]);
+            
+            if ($delete_all_result) {
+                error_log("Removed all existing stages for project $project_id");
+            }
+        }
+        
+        // Process new stages (inserts)
+        if (!empty($new_stage_names) && is_array($new_stage_names)) {
+            for ($i = 0; $i < count($new_stage_names); $i++) {
+                if (!isset($new_stage_names[$i]) || empty(trim($new_stage_names[$i]))) {
+                    continue;
+                }
+                
+                $stage_name = trim($new_stage_names[$i]);
+                $stage_status = isset($new_stage_status[$i]) ? $new_stage_status[$i] : 'Not Started';
+                $stage_order = isset($new_stage_order[$i]) ? intval($new_stage_order[$i]) : $i + 1;
+                
+                // Calculate initial dates for new stage
+                $new_dates = calculateStageDates('', $stage_status, '0000-00-00', '0000-00-00', $current_date);
+                
+                // Insert new stage
+                $insert_stage_sql = "INSERT INTO tbl_project_stages (
+                                   project_id, 
+                                   stage_name, 
+                                   status, 
+                                   start_date, 
+                                   end_date, 
+                                   stage_order,
+                                   created_at,
+                                   updated_at
+                                   ) VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())";
+                
+                $insert_stage_stmt = $pdo->prepare($insert_stage_sql);
+                $insert_result = $insert_stage_stmt->execute([
+                    $project_id,
+                    $stage_name,
+                    $stage_status,
+                    $new_dates['start'],
+                    $new_dates['end'],
+                    $stage_order
+                ]);
+                
+                if ($insert_result) {
+                    $new_stage_id = $pdo->lastInsertId();
+                    error_log("Successfully inserted new stage: '$stage_name' with ID: $new_stage_id");
+                } else {
+                    error_log("Failed to insert new stage: '$stage_name'");
+                    error_log("Insert error: " . print_r($insert_stage_stmt->errorInfo(), true));
+                    throw new Exception("Failed to insert new stage: $stage_name");
+                }
+            }
+        }
+        
+        error_log("Stage processing completed successfully");
+        
+    } catch (Exception $e) {
+        error_log("Error handling stages: " . $e->getMessage());
+        error_log("Stack trace: " . $e->getTraceAsString());
+        throw $e;
+    }
     
-    // Update project (removed project_image from update)
     $update_sql = "UPDATE tbl_projects SET 
                    project_name = ?, 
                    category_id = ?, 
@@ -278,6 +556,7 @@ try {
                    progress_percentage = ?,
                    funding_source = ?, 
                    responsible_person = ?, 
+                   `cancelled_reason` = ?,
                    updated_at = NOW()
                    WHERE project_id = ?";
 
@@ -292,254 +571,16 @@ try {
         $start_date,
         $expected_completion,
         !empty($initial_budget) ? floatval($initial_budget) : null,
-        floatval($progress_percentage),
+        floatval($progress_percentage), 
         $funding_source,
         $responsible_person,
+        $cancelled_reason,
         $project_id
     ]);
     
     if (!$result) {
         throw new Exception('Failed to update project');
     }
-
-    function calculateStageDates($old_status, $new_status, $old_start, $old_end, $current_date) {
-    $result = [
-        'start' => $old_start,
-        'end' => $old_end
-    ];
-    
-    // Handle new stages (no old status)
-    if (empty($old_status)) {
-        switch ($new_status) {
-            case 'Not Started':
-            case 'On Hold':
-            case 'Delayed':
-                $result['start'] = '0000-00-00';
-                $result['end'] = '0000-00-00';
-                break;
-            case 'Ongoing':
-                $result['start'] = $current_date;
-                $result['end'] = '0000-00-00';
-                break;
-            case 'Completed':
-                $result['start'] = $current_date;
-                $result['end'] = $current_date;
-                break;
-        }
-        return $result;
-    }
-    
-    // Handle status transitions for existing stages
-    switch ($old_status) {
-        case 'Not Started':
-            switch ($new_status) {
-                case 'Ongoing':
-                    $result['start'] = $current_date;
-                    $result['end'] = '0000-00-00';
-                    break;
-                case 'Completed':
-                    $result['start'] = $current_date;
-                    $result['end'] = $current_date;
-                    break;
-                case 'On Hold':
-                case 'Delayed':
-                    $result['start'] = '0000-00-00';
-                    $result['end'] = '0000-00-00';
-                    break;
-            }
-            break;
-            
-        case 'Ongoing':
-            switch ($new_status) {
-                case 'Completed':
-                    $result['end'] = $current_date;
-                    break;
-                case 'On Hold':
-                case 'Delayed':
-                    $result['end'] = '0000-00-00';
-                    break;
-            }
-            break;
-            
-        case 'On Hold':
-        case 'Delayed':
-            switch ($new_status) {
-                case 'Ongoing':
-                    if ($old_start === '0000-00-00') {
-                        $result['start'] = $current_date;
-                    }
-                    $result['end'] = '0000-00-00';
-                    break;
-                case 'Completed':
-                    if ($old_start === '0000-00-00') {
-                        $result['start'] = $current_date;
-                    }
-                    $result['end'] = $current_date;
-                    break;
-            }
-            break;
-    }
-    
-    return $result;
-}
-
-// Handle project stages
-try {
-    $current_date = date('Y-m-d');
-    
-    // Get the stage data from the form
-    $existing_stage_ids = isset($_POST['existing_stage_ids']) ? $_POST['existing_stage_ids'] : [];
-    $existing_stage_names = isset($_POST['existing_stage_names']) ? $_POST['existing_stage_names'] : [];
-    $existing_stage_status = isset($_POST['existing_stage_status']) ? $_POST['existing_stage_status'] : [];
-    $existing_stage_order = isset($_POST['existing_stage_order']) ? $_POST['existing_stage_order'] : [];
-    
-    $new_stage_names = isset($_POST['new_stage_names']) ? $_POST['new_stage_names'] : [];
-    $new_stage_status = isset($_POST['new_stage_status']) ? $_POST['new_stage_status'] : [];
-    $new_stage_order = isset($_POST['new_stage_order']) ? $_POST['new_stage_order'] : [];
-    
-    error_log("Existing stages: " . print_r($existing_stage_ids, true));
-    error_log("New stages: " . print_r($new_stage_names, true));
-    
-    // Process existing stages (updates)
-    if (!empty($existing_stage_ids) && is_array($existing_stage_ids)) {
-        for ($i = 0; $i < count($existing_stage_ids); $i++) {
-            if (!isset($existing_stage_names[$i]) || empty(trim($existing_stage_names[$i]))) {
-                continue;
-            }
-            
-            $stage_id = intval($existing_stage_ids[$i]);
-            $stage_name = trim($existing_stage_names[$i]);
-            $stage_status = isset($existing_stage_status[$i]) ? $existing_stage_status[$i] : 'Not Started';
-            $stage_order = isset($existing_stage_order[$i]) ? intval($existing_stage_order[$i]) : $i + 1;
-            
-            // Get current stage data
-            $current_stage_sql = "SELECT status, start_date, end_date FROM tbl_project_stages WHERE stage_id = ? AND project_id = ?";
-            $current_stage_stmt = $pdo->prepare($current_stage_sql);
-            $current_stage_stmt->execute([$stage_id, $project_id]);
-            $current_stage_data = $current_stage_stmt->fetch(PDO::FETCH_ASSOC);
-            
-            if ($current_stage_data) {
-                $old_status = $current_stage_data['status'];
-                $old_start_date = $current_stage_data['start_date'];
-                $old_end_date = $current_stage_data['end_date'];
-                
-                // Calculate new dates based on status change
-                $new_dates = calculateStageDates($old_status, $stage_status, $old_start_date, $old_end_date, $current_date);
-                
-                // Update existing stage
-                $update_stage_sql = "UPDATE tbl_project_stages SET 
-                                   stage_name = ?, 
-                                   status = ?, 
-                                   start_date = ?, 
-                                   end_date = ?, 
-                                   stage_order = ?,
-                                   updated_at = NOW()
-                                   WHERE stage_id = ? AND project_id = ?";
-                
-                $update_stage_stmt = $pdo->prepare($update_stage_sql);
-                $update_result = $update_stage_stmt->execute([
-                    $stage_name,
-                    $stage_status,
-                    $new_dates['start'],
-                    $new_dates['end'],
-                    $stage_order,
-                    $stage_id,
-                    $project_id
-                ]);
-                
-                if ($update_result) {
-                    error_log("Successfully updated stage: $stage_name (ID: $stage_id)");
-                } else {
-                    error_log("Failed to update stage: $stage_name (ID: $stage_id)");
-                    error_log("Update error: " . print_r($update_stage_stmt->errorInfo(), true));
-                }
-            } else {
-                error_log("Stage not found: ID $stage_id for project $project_id");
-            }
-        }
-        
-        // Remove stages that are no longer in the form
-        $keep_stage_ids = array_map('intval', $existing_stage_ids);
-        $keep_stage_ids = array_filter($keep_stage_ids, function($id) { return $id > 0; });
-        
-        if (!empty($keep_stage_ids)) {
-            $placeholders = str_repeat('?,', count($keep_stage_ids) - 1) . '?';
-            $delete_stages_sql = "DELETE FROM tbl_project_stages WHERE project_id = ? AND stage_id NOT IN ($placeholders)";
-            $delete_stages_stmt = $pdo->prepare($delete_stages_sql);
-            $delete_result = $delete_stages_stmt->execute(array_merge([$project_id], $keep_stage_ids));
-            
-            if ($delete_result) {
-                error_log("Successfully cleaned up removed stages");
-            } else {
-                error_log("Failed to clean up removed stages");
-            }
-        }
-    } else {
-        // If no existing stages, remove all stages for this project
-        $delete_all_stages_sql = "DELETE FROM tbl_project_stages WHERE project_id = ?";
-        $delete_all_stages_stmt = $pdo->prepare($delete_all_stages_sql);
-        $delete_all_result = $delete_all_stages_stmt->execute([$project_id]);
-        
-        if ($delete_all_result) {
-            error_log("Removed all existing stages for project $project_id");
-        }
-    }
-    
-    // Process new stages (inserts)
-    if (!empty($new_stage_names) && is_array($new_stage_names)) {
-        for ($i = 0; $i < count($new_stage_names); $i++) {
-            if (!isset($new_stage_names[$i]) || empty(trim($new_stage_names[$i]))) {
-                continue;
-            }
-            
-            $stage_name = trim($new_stage_names[$i]);
-            $stage_status = isset($new_stage_status[$i]) ? $new_stage_status[$i] : 'Not Started';
-            $stage_order = isset($new_stage_order[$i]) ? intval($new_stage_order[$i]) : $i + 1;
-            
-            // Calculate initial dates for new stage
-            $new_dates = calculateStageDates('', $stage_status, '0000-00-00', '0000-00-00', $current_date);
-            
-            // Insert new stage
-            $insert_stage_sql = "INSERT INTO tbl_project_stages (
-                               project_id, 
-                               stage_name, 
-                               status, 
-                               start_date, 
-                               end_date, 
-                               stage_order,
-                               created_at,
-                               updated_at
-                               ) VALUES (?, ?, ?, ?, ?, ?, NOW(), NOW())";
-            
-            $insert_stage_stmt = $pdo->prepare($insert_stage_sql);
-            $insert_result = $insert_stage_stmt->execute([
-                $project_id,
-                $stage_name,
-                $stage_status,
-                $new_dates['start'],
-                $new_dates['end'],
-                $stage_order
-            ]);
-            
-            if ($insert_result) {
-                $new_stage_id = $pdo->lastInsertId();
-                error_log("Successfully inserted new stage: '$stage_name' with ID: $new_stage_id");
-            } else {
-                error_log("Failed to insert new stage: '$stage_name'");
-                error_log("Insert error: " . print_r($insert_stage_stmt->errorInfo(), true));
-                throw new Exception("Failed to insert new stage: $stage_name");
-            }
-        }
-    }
-    
-    error_log("Stage processing completed successfully");
-    
-} catch (Exception $e) {
-    error_log("Error handling stages: " . $e->getMessage());
-    error_log("Stack trace: " . $e->getTraceAsString());
-    throw $e;
-}
-
     
     // Delete removed image files from filesystem
     if (!empty($images_to_remove)) {
@@ -561,6 +602,7 @@ try {
         'success' => true,
         'message' => 'Project updated successfully',
         'project_id' => $project_id,
+        'calculated_progress' => floatval($progress_percentage), // Return the final progress value
         'new_images' => $new_uploaded_images,
         'removed_images' => $images_to_remove
     ]);

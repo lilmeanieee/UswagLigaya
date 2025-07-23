@@ -1,5 +1,3 @@
-// project-modal-handlers.js - Refactored and cleaned up version
-
 class ProjectModalHandler {
         constructor() {
         this.hasUnsavedChanges = false;
@@ -116,12 +114,18 @@ class ProjectModalHandler {
     }
 
     populateProjectDetailModal(project) {
-        const modal = document.getElementById('projectDetailModal');
-        const modalTitle = modal.querySelector('.modal-title');
-        const modalBody = modal.querySelector('.modal-body');
-        
-        modalTitle.textContent = `${project.project_name} - Project Details`;
-        
+    const modal = document.getElementById('projectDetailModal');
+    const modalTitle = modal.querySelector('.modal-title');
+    const modalBody = modal.querySelector('.modal-body');
+    
+    modalTitle.textContent = `${project.project_name} - Project Details`;
+
+        const completedStages = project.stages ? project.stages.filter(stage => stage.status === 'Completed').length : 0;
+        const totalStages = project.stages ? project.stages.length : 0;
+        const calculatedProgress = totalStages > 0 ? Math.round((completedStages / totalStages) * 100) : 0;
+
+        console.log(`View Modal Progress: ${completedStages}/${totalStages} = ${calculatedProgress}%`);
+
         modalBody.innerHTML = `
             <div class="mb-4">
                 <div class="mb-4">
@@ -139,9 +143,9 @@ class ProjectModalHandler {
             <div class="mb-3">
                 <h6>Progress Updates</h6>
                 <div class="progress mb-2" style="height: 20px;">
-                    <div class="progress-bar bg-info" style="width: ${project.progress_percentage}%"></div>
+                    <div class="progress-bar bg-info" style="width: ${calculatedProgress}%"></div>
                 </div>
-                <small class="text-muted">${project.progress_percentage}% Complete - Last updated: ${this.getLastUpdated(project)}</small>
+                <small class="text-muted progress-text">${calculatedProgress}% Complete (${completedStages}/${totalStages} stages) - Last updated: ${this.getLastUpdated(project)}</small>
             </div>
             <div class="mb-4">
                 <h6>Uploaded Project Images</h6>
@@ -153,6 +157,7 @@ class ProjectModalHandler {
         
         this.setupUpdateButton(modal, project.project_id);
     }
+
 
     generateProjectInfoTable(project) {
         const fields = [
@@ -384,11 +389,15 @@ class ProjectModalHandler {
                         <div class="mb-3">
                             <label class="form-label">Project Status</label>
                             <select class="form-select" id="projectStatus">
-                                <option value="Not Started" ${project.status === 'Not Started' ? 'selected' : ''}>Not Started</option>
+
+                                <div class="mb-3" id="cancelReasonGroup" style="display: none;">
+                                    <label class="form-label">Reason for Cancellation</label>
+                                    <textarea class="form-control" id="cancelledReason" rows="2" placeholder="Provide reason..."></textarea>
+                                </div>
+                                
                                 <option value="Ongoing" ${project.status === 'Ongoing' ? 'selected' : ''}>Ongoing</option>
-                                <option value="Delayed" ${project.status === 'Delayed' ? 'selected' : ''}>Delayed</option>
+                               
                                 <option value="On Hold" ${project.status === 'On Hold' ? 'selected' : ''}>On Hold</option>
-                                <option value="Completed" ${project.status === 'Completed' ? 'selected' : ''}>Completed</option>
                                 <option value="Cancelled" ${project.status === 'Cancelled' ? 'selected' : ''}>Cancelled</option>
                             </select>
                         </div>
@@ -524,9 +533,42 @@ class ProjectModalHandler {
         const currentStatus = selectElement.value;
         const stageId = stageItem.dataset.stageId;
         
+        console.log(`Status changed for stage ${stageId}: ${currentStatus}`);
+        
         // Apply restrictions based on current status
         this.applyStatusRestrictions(selectElement, currentStatus, stageId);
+        
+        // CRITICAL: Update progress immediately after status change
+        setTimeout(() => {
+            this.updateProgressDisplay();
+        }, 10); // Small delay to ensure DOM is updated
+        
+        this.hasUnsavedChanges = true;
     }
+
+    updateProgressDisplay() {
+    const progressPercentage = this.calculateProgressPercentageFromDOM();
+    
+    console.log(`Updating progress display to: ${progressPercentage}%`);
+    
+    // Update progress bars in update modal
+    const progressBars = document.querySelectorAll('#updateProjectModal .progress-bar');
+    const progressTexts = document.querySelectorAll('#updateProjectModal .progress-text');
+    
+    progressBars.forEach(bar => {
+        bar.style.width = `${progressPercentage}%`;
+        bar.setAttribute('aria-valuenow', progressPercentage);
+    });
+    
+    const completedStages = document.querySelectorAll('#sortableStages .stage-edit-item .select-status[value="Completed"]').length;
+    const totalStages = document.querySelectorAll('#sortableStages .stage-edit-item').length;
+    
+    progressTexts.forEach(text => {
+        text.textContent = `${progressPercentage}% Complete (${completedStages}/${totalStages} stages)`;
+    });
+    
+    console.log(`Progress display updated: ${progressPercentage}% (${completedStages}/${totalStages})`);
+}
 
     applyStatusRestrictions(selectElement, currentStatus, stageId) {
         const options = selectElement.querySelectorAll('option');
@@ -571,9 +613,37 @@ class ProjectModalHandler {
         this.initializeDragAndDrop();
         this.initializeChangeTracking();
 
-          setTimeout(() => {
-        this.applyInitialStatusRestrictions();
-    }, 100);
+        // FIXED: Ensure DOM is ready and calculate progress correctly
+        setTimeout(() => {
+            this.applyInitialStatusRestrictions();
+            
+            // CRITICAL: Recalculate and display progress after DOM is fully ready
+            const initialProgress = this.calculateProgressPercentageFromDOM();
+            console.log(`Initial progress calculated from DOM: ${initialProgress}%`);
+            this.updateProgressDisplay();
+            
+            // Store initial progress for comparison
+            this.initialProgress = initialProgress;
+        }, 150); // Increased timeout to ensure DOM stability
+
+        const statusSelect = document.getElementById('projectStatus');
+        const cancelReasonGroup = document.getElementById('cancelReasonGroup');
+        const cancelledReasonInput = document.getElementById('cancelledReason');
+
+        if (statusSelect && cancelReasonGroup) {
+            const toggleReasonField = () => {
+                if (statusSelect.value === 'Cancelled') {
+                    cancelReasonGroup.style.display = 'block';
+                } else {
+                    cancelReasonGroup.style.display = 'none';
+                    cancelledReasonInput.value = ''; // clear reason if not cancelled
+                }
+            };
+
+            statusSelect.addEventListener('change', toggleReasonField);
+            toggleReasonField(); // call once to initialize based on current value
+        }
+
     }
 
     initializeStageManagement() {
@@ -596,7 +666,7 @@ class ProjectModalHandler {
         });
     }
 
-     addNewStage(stageName) {
+    addNewStage(stageName) {
         const stagesContainer = document.getElementById('sortableStages');
         
         const tempId = 'new_' + Date.now();
@@ -637,7 +707,8 @@ class ProjectModalHandler {
             this.applyStatusRestrictions(statusSelect, 'Not Started', 'new');
         }
         this.updateStageOrders();
-        
+        this.updateProgressDisplay();
+    
         console.log('Added new stage:', stageName, 'with ID: new');
     }
 
@@ -824,11 +895,23 @@ updateStageOrders() {
     }
 
     initializeUpdateSubmission() {
-        const modal = document.getElementById('updateProjectModal');
-        const updateButton = modal.querySelector('.modal-footer .btn-primary');
-        
-        if (updateButton) {
-            updateButton.addEventListener('click', () => this.submitUpdateProject());
+        const updateForm = document.getElementById('updateProjectForm');
+        const submitBtn = document.querySelector('#updateProjectModal .modal-footer .btn-primary');
+
+         if (submitBtn) {
+            submitBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Call the submit method directly
+                this.submitUpdateProject();
+            });
+        }
+
+        if (updateForm) {
+            updateForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.submitUpdateProject();
+            });
         }
     }
 
@@ -857,9 +940,12 @@ updateStageOrders() {
         }
     });
 }
-
     collectFormData() {
     const formData = new FormData();
+
+    // CRITICAL: Calculate progress from current DOM state
+    const progressPercentage = this.calculateProgressPercentageFromDOM();
+    console.log(`Final progress calculation for submission: ${progressPercentage}%`);
     
     // Basic project data
     const fields = [
@@ -874,6 +960,11 @@ updateStageOrders() {
         'projectResponsible', 'projectStatus'
     ];
     
+    const cancelledReason = document.getElementById('cancelledReason');
+    if (cancelledReason && document.getElementById('projectStatus')?.value === 'Cancelled') {
+        formData.append('cancelled_reason', cancelledReason.value);
+    }
+
     fields.forEach((field, index) => {
         const element = document.getElementById(elementIds[index]);
         if (element) {
@@ -881,9 +972,10 @@ updateStageOrders() {
             console.log(`Added field ${field}:`, element.value);
         }
     });
-    
-    // Add progress percentage (default to 0 if not specified)
-    formData.append('progress_percentage', '0');
+
+    // CRITICAL: Add the correctly calculated progress
+    formData.append('progress_percentage', progressPercentage.toString());
+    console.log(`Progress percentage added to FormData: ${progressPercentage}%`);
     
     // Stages data
     this.appendStagesData(formData);
@@ -891,88 +983,82 @@ updateStageOrders() {
     // Images data
     this.appendImagesData(formData);
     
-    // Debug: Log all form data
-    console.log('Complete FormData being sent:');
-    for (let [key, value] of formData.entries()) {
-        console.log(key, value);
-    }
-    
     return formData;
 }
-    
-  appendStagesData(formData) {
-    const stageItems = document.querySelectorAll('.stage-edit-item');
-    
-    console.log('Processing', stageItems.length, 'stage items');
-    
-    const existingStages = [];
-    const newStages = [];
-    
-    stageItems.forEach((item, index) => {
-        const stageId = item.dataset.stageId;
-        const isNew = item.dataset.isNew === 'true' || stageId === 'new';
-        const stageLabelElement = item.querySelector('.stage-label');
-        const statusElement = item.querySelector('.select-status');
+
+    appendStagesData(formData) {
+        const stageItems = document.querySelectorAll('.stage-edit-item');
         
-        if (!stageLabelElement || !statusElement) {
-            console.warn('Missing stage elements, skipping stage item:', item);
-            return;
-        }
+        console.log('Processing', stageItems.length, 'stage items');
         
-        const stageName = stageLabelElement.textContent.trim();
-        const status = statusElement.value;
+        const existingStages = [];
+        const newStages = [];
         
-        if (!stageName) {
-            console.warn('Empty stage name, skipping');
-            return;
-        }
+        stageItems.forEach((item, index) => {
+            const stageId = item.dataset.stageId;
+            const isNew = item.dataset.isNew === 'true' || stageId === 'new';
+            const stageLabelElement = item.querySelector('.stage-label');
+            const statusElement = item.querySelector('.select-status');
+            
+            if (!stageLabelElement || !statusElement) {
+                console.warn('Missing stage elements, skipping stage item:', item);
+                return;
+            }
+            
+            const stageName = stageLabelElement.textContent.trim();
+            const status = statusElement.value;
+            
+            if (!stageName) {
+                console.warn('Empty stage name, skipping');
+                return;
+            }
+            
+            // **FIX: Use the data-order attribute set by drag-and-drop, fallback to DOM index**
+            const orderFromDragDrop = item.dataset.order ? parseInt(item.dataset.order) : (index + 1);
+            
+            const stageData = {
+                id: stageId,
+                name: stageName,
+                status: status,
+                order: orderFromDragDrop // This now uses the drag-and-drop order
+            };
+            
+            if (isNew) {
+                newStages.push(stageData);
+                console.log('New stage found:', stageData);
+            } else if (stageId && stageId !== 'new' && !isNaN(stageId) && parseInt(stageId) > 0) {
+                existingStages.push(stageData);
+                console.log('Existing stage found:', stageData);
+            } else {
+                newStages.push(stageData);
+                console.log('Invalid ID, treating as new stage:', stageData);
+            }
+        });
         
-        // **FIX: Use the data-order attribute set by drag-and-drop, fallback to DOM index**
-        const orderFromDragDrop = item.dataset.order ? parseInt(item.dataset.order) : (index + 1);
+        console.log('Existing stages:', existingStages);
+        console.log('New stages:', newStages);
         
-        const stageData = {
-            id: stageId,
-            name: stageName,
-            status: status,
-            order: orderFromDragDrop // This now uses the drag-and-drop order
-        };
+        // **IMPORTANT: Sort stages by order before appending to FormData**
+        existingStages.sort((a, b) => a.order - b.order);
+        newStages.sort((a, b) => a.order - b.order);
         
-        if (isNew) {
-            newStages.push(stageData);
-            console.log('New stage found:', stageData);
-        } else if (stageId && stageId !== 'new' && !isNaN(stageId) && parseInt(stageId) > 0) {
-            existingStages.push(stageData);
-            console.log('Existing stage found:', stageData);
-        } else {
-            newStages.push(stageData);
-            console.log('Invalid ID, treating as new stage:', stageData);
-        }
-    });
-    
-    console.log('Existing stages:', existingStages);
-    console.log('New stages:', newStages);
-    
-    // **IMPORTANT: Sort stages by order before appending to FormData**
-    existingStages.sort((a, b) => a.order - b.order);
-    newStages.sort((a, b) => a.order - b.order);
-    
-    existingStages.forEach(stage => {
-        formData.append('existing_stage_ids[]', stage.id);
-        formData.append('existing_stage_names[]', stage.name);
-        formData.append('existing_stage_status[]', stage.status);
-        formData.append('existing_stage_order[]', stage.order);
-    });
-    
-    newStages.forEach(stage => {
-        formData.append('new_stage_names[]', stage.name);
-        formData.append('new_stage_status[]', stage.status);
-        formData.append('new_stage_order[]', stage.order);
-    });
-    
-    console.log('Stage data appended to FormData');
-    console.log('Existing stages count:', existingStages.length);
-    console.log('New stages count:', newStages.length);
-}
+        existingStages.forEach(stage => {
+            formData.append('existing_stage_ids[]', stage.id);
+            formData.append('existing_stage_names[]', stage.name);
+            formData.append('existing_stage_status[]', stage.status);
+            formData.append('existing_stage_order[]', stage.order);
+        });
+        
+        newStages.forEach(stage => {
+            formData.append('new_stage_names[]', stage.name);
+            formData.append('new_stage_status[]', stage.status);
+            formData.append('new_stage_order[]', stage.order);
+        });
+        
+        console.log('Stage data appended to FormData');
+        console.log('Existing stages count:', existingStages.length);
+        console.log('New stages count:', newStages.length);
+    }
     appendImagesData(formData) {
         // Removed images
         const removedImages = Array.from(document.querySelectorAll('.remove-image-btn'))
@@ -1314,8 +1400,6 @@ showRemoveStageConfirmation(stageElement, callback) {
                 </div>
             </div>
         `;
-        
-        // Remove existing confirmation modal if any
         const existingModal = document.getElementById('discardChangesModal');
         if (existingModal) {
             existingModal.remove();
@@ -1345,26 +1429,81 @@ showRemoveStageConfirmation(stageElement, callback) {
         });
     }
 
-    // Event delegation for dynamic content
     bindEvents() {
         document.addEventListener('click', (e) => {
-            // Remove stage button with confirmation
             if (e.target.classList.contains('remove-stage-btn') || e.target.closest('.remove-stage-btn')) {
                 const stageElement = e.target.closest('.stage-edit-item');
                 this.showRemoveStageConfirmation(stageElement, () => {
                     stageElement.remove();
                     this.hasUnsavedChanges = true;
-                    this.updateStageOrders(); // Update orders after removal
+                    this.updateStageOrders(); 
+                    this.updateProgressDisplay();
                 });
             }
             
-            // Remove image button
             if (e.target.classList.contains('remove-image-btn')) {
                 e.target.closest('.position-relative').remove();
                 this.hasUnsavedChanges = true;
             }
         });
+
+            document.addEventListener('change', (e) => {
+            if (e.target.classList.contains('select-status')) {
+                this.handleStatusChange(e.target);
+            }
+        });
     }
+
+    calculateProgressPercentage() {
+    const stageItems = document.querySelectorAll('.stage-edit-item');
+    
+    if (stageItems.length === 0) {
+        return 0;
+    }
+    
+    let completedStages = 0;
+    let totalStages = stageItems.length;
+    
+    stageItems.forEach(item => {
+        const statusSelect = item.querySelector('.select-status');
+        if (statusSelect && statusSelect.value === 'Completed') {
+            completedStages++;
+        }
+    });
+    
+    // Calculate percentage and round to nearest whole number
+    const percentage = Math.round((completedStages / totalStages) * 100);
+    console.log(`Progress calculation: ${completedStages}/${totalStages} stages completed = ${percentage}%`);
+    return this.calculateProgressPercentageFromDOM();
+}
+calculateProgressPercentageFromDOM() {
+    const stageItems = document.querySelectorAll('#sortableStages .stage-edit-item');
+
+    if (stageItems.length === 0) {
+        console.log('No stage items found in DOM');
+        return 0;
+    }
+    
+    let completedStages = 0;
+    let totalStages = stageItems.length;
+    
+    stageItems.forEach((item, index) => {
+        const statusSelect = item.querySelector('.select-status');
+        if (statusSelect) {
+            const status = statusSelect.value;
+            console.log(`Stage ${index + 1}: Status = "${status}"`);
+            if (status === 'Completed') {
+                completedStages++;
+            }
+        } else {
+            console.warn(`Stage ${index + 1}: No status select found`);
+        }
+    });
+    
+    const percentage = totalStages > 0 ? Math.round((completedStages / totalStages) * 100) : 0;
+    console.log(`DOM Progress calculation: ${completedStages}/${totalStages} stages completed = ${percentage}%`);
+    return percentage;
+}
 }
 
 const styleSheet = document.createElement('style');
@@ -1383,11 +1522,6 @@ styleSheet.textContent = `
     }
 `;
 document.head.appendChild(styleSheet);
-
-
-// Initialize the class
-const projectModalHandler = new ProjectModalHandler();
-// Export functions for global access
-window.loadProjectDetails = (projectId) => projectModalHandler.loadProjectDetails(projectId);
+const projectModalHandler = new ProjectModalHandler(); // Initialize the class
+window.loadProjectDetails = (projectId) => projectModalHandler.loadProjectDetails(projectId); // Export functions for global access
 window.loadProjectForUpdate = (projectId) => projectModalHandler.loadProjectForUpdate(projectId);
-//n

@@ -1,4 +1,4 @@
-// Enhanced display-project.js - Improved search and filter functionalities
+// Enhanced display-project.js - Improved search and filter functionalities with auto status update
 
 // Wait for both DOM and jQuery to be ready
 function initializeProjectDisplay() {
@@ -39,8 +39,10 @@ function initializeProjectDisplay() {
                 showLoadingIndicator(false);
                 
                 if (response.success) {
-                    displayProjects(response.projects);
-                    updateResultsCount(response.projects.length, search, status, category);
+                    // Process projects to update status based on remaining days
+                    const processedProjects = processProjectsStatus(response.projects);
+                    displayProjects(processedProjects);
+                    updateResultsCount(processedProjects.length, search, status, category);
                 } else {
                     console.error('Failed to load projects:', response.message);
                     showAlert('error', response.message || 'Failed to load projects');
@@ -52,6 +54,70 @@ function initializeProjectDisplay() {
                 showLoadingIndicator(false);
                 showAlert('error', 'Failed to load projects. Please try again.');
                 displayProjects([]); // Show empty state
+            }
+        });
+    }
+    
+    // New function to process projects and update status based on remaining days
+    function processProjectsStatus(projects) {
+        const updatedProjects = [];
+        const projectsToUpdate = [];
+        
+        projects.forEach(function(project) {
+            let updatedProject = { ...project };
+            
+            // Check if project is overdue and not already completed or cancelled
+            if (updatedProject.remaining_days !== undefined && 
+                updatedProject.remaining_days <= 0 && 
+                updatedProject.status !== 'Completed' && 
+                updatedProject.status !== 'Cancelled' &&
+                updatedProject.status !== 'Delayed') {
+                
+                // Update status to Delayed
+                updatedProject.status = 'Delayed';
+                
+                // Add to list of projects that need database update
+                projectsToUpdate.push({
+                    project_id: updatedProject.project_id,
+                    status: 'Delayed'
+                });
+                
+                console.log(`Project ${updatedProject.project_name} status updated to Delayed (${updatedProject.remaining_days} days remaining)`);
+            }
+            
+            updatedProjects.push(updatedProject);
+        });
+        
+        // Update database for projects that changed status
+        if (projectsToUpdate.length > 0) {
+            updateProjectsStatusInDatabase(projectsToUpdate);
+        }
+        
+        return updatedProjects;
+    }
+    
+    // Function to update project status in database
+    function updateProjectsStatusInDatabase(projectsToUpdate) {
+        $.ajax({
+            url: '../../php-handlers/brgy-project-admin/update-project-status.php',
+            method: 'POST',
+            data: {
+                projects: JSON.stringify(projectsToUpdate)
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.success) {
+                    console.log(`Successfully updated ${projectsToUpdate.length} project(s) status to Delayed`);
+                    
+                    // Show notification to user
+                    const projectNames = projectsToUpdate.map(p => p.project_name).join(', ');
+                    showAlert('info', `${projectsToUpdate.length} overdue project(s) automatically updated to "Delayed" status.`);
+                } else {
+                    console.error('Failed to update project status:', response.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('Error updating project status:', error);
             }
         });
     }
@@ -712,8 +778,10 @@ function initializeProjectDisplay() {
     
     // Alert function
     function showAlert(type, message, container = null) {
-        const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
-        const alertIcon = type === 'success' ? 'bi-check-circle' : 'bi-exclamation-triangle';
+        const alertClass = type === 'success' ? 'alert-success' : 
+                          type === 'info' ? 'alert-info' : 'alert-danger';
+        const alertIcon = type === 'success' ? 'bi-check-circle' : 
+                         type === 'info' ? 'bi-info-circle' : 'bi-exclamation-triangle';
         
         const alertHtml = `
             <div class="alert ${alertClass} alert-dismissible fade show" role="alert">
@@ -769,6 +837,8 @@ function initializeProjectDisplay() {
     window.showAlert = showAlert;
     window.loadProjects = loadProjects;
     window.cleanupModal = cleanupModal;
+    window.processProjectsStatus = processProjectsStatus;
+    window.updateProjectsStatusInDatabase = updateProjectsStatusInDatabase;
 }
 
 // Initialize when DOM is ready
