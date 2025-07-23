@@ -9,11 +9,7 @@ let currentStatus = ''; // '', 'Pending', 'Approved', 'Rejected'
 
 // Load document requests
 function loadRequests(page = 1, search = '', status = '') {
-<<<<<<< HEAD
   fetch(`../../php-handlers/fetch-document-requests.php?page=${page}&search=${encodeURIComponent(search)}&status=${encodeURIComponent(status)}`)
-=======
-  fetch(`/UswagLigaya/php-handlers/fetch-document-requests.php?page=${page}&search=${encodeURIComponent(search)}&status=${encodeURIComponent(status)}`)
->>>>>>> origin/main
 
     .then(response => response.json())
     .then(data => {
@@ -121,12 +117,8 @@ function attachActionListeners() {
     button.addEventListener('click', () => {
       const requestId = button.dataset.id;
       // Open the PHP generator that outputs the Word doc
-<<<<<<< HEAD
       // window.open(`../../php-handlers/generate-document.php?request_id=${requestId}`, '_blank');
       window.open(`../../php-handlers/generate-printable-pdf.php?request_id=${requestId}`, '_blank');
-=======
-      window.open(`/UswagLigaya/php-handlers/generate-document.php?request_id=${requestId}`, '_blank');
->>>>>>> origin/main
     });
   }); */
 }
@@ -178,11 +170,7 @@ function openViewDetailsModal(id) {
   const viewModal = new bootstrap.Modal(document.getElementById('viewDetailsModal'));
   viewModal.show();
 
-<<<<<<< HEAD
     fetch(`../../php-handlers/get-document-request-details.php?id=${id}`)
-=======
-    fetch(`/UswagLigaya/php-handlers/get-document-request-details.php?id=${id}`)
->>>>>>> origin/main
     .then(response => response.json())
     .then(data => {
       const actualContent = document.getElementById('modalActualContent');
@@ -249,5 +237,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
   loadRequests();
 });
-
-
