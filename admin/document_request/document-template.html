@@ -248,37 +248,34 @@
                                             <label class="form-label">Required Fields</label>
                                             <div class="d-flex align-items-center mb-2">
                                                 <div class="form-check me-3">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        id="editFullNameField" checked disabled/>
-                                                    <label class="form-check-label" for="editFullNameField">Full
-                                                        Name</label>
-                                                </div>
-                                                <div class="form-check me-3">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        id="editAddressField" checked disabled />
-                                                    <label class="form-check-label"
-                                                        for="editAddressField">Address</label>
+                                                    <input class="form-check-input" type="checkbox" id="editFullNameField" checked disabled />
+                                                    <label class="form-check-label" for="editFullNameField">Requester's Full Name</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox"
-                                                        id="editBirthdateField" checked />
-                                                    <label class="form-check-label"
-                                                        for="editBirthdateField">Birthdate</label>
+                                                    <input class="form-check-input" type="checkbox" id="editPurposeRequestField" checked disabled />
+                                                    <label class="form-check-label" for="editPurposeRequestField">Purpose of Request</label>
                                                 </div>
                                             </div>
                                             <div id="editAdditionalFields">
-                                                <!-- Additional fields will be populated here -->
-                                            </div>
-                                            <button type="button" class="btn btn-outline-primary btn-sm mt-2"
-                                                id="editAddFieldBtn">
+                                                </div>
+                                            <button type="button" class="btn btn-outline-primary btn-sm mt-2" id="editAddFieldBtn">
                                                 <i class="bi bi-plus"></i> Add Custom Field
                                             </button>
                                         </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Upload Template (.doc/.docx)</label>
-                                            <input type="file" class="form-control" id="addTemplateFile"
-                                                accept=".docx" required>
-                                        </div>
+                                        <div class="mb-3">                                        
+                                        <div class="alert alert-info py-2" role="alert">
+                                            <strong>Tip:</strong> Use placeholders (e.g., <code>$(field_name)</code>) in your document template to dynamically insert data from the document request.<br><br>
+                                            <strong>Here's how to map the custom fields to placeholders:</strong><br>
+                                            <ul>
+                                                <li>For any <strong>"Custom Field"</strong> you add, use the exact name you provide as the placeholder: 
+                                                e.g., if you add a custom field named "child_name", use <code>$(child_name)</code>)</li>
+                                                <li>For the <strong>current date</strong>, use the placeholder: <code>$(current_date)</code> to automatically insert today's date</li>
+                                            </ul>
+                                        </div>                                        
+                                        <label class="form-label">Upload Template (.doc/.docx)</label>
+                                        <input type="file" class="form-control" id="addTemplateFile" accept=".docx">
+                                    </div>
+
                                     </form>
                                 </div>
                                 <div class="modal-footer">
@@ -318,35 +315,29 @@
                                                 step="1" required>
                                         </div>
                                         <div class="mb-3">
+                                            <div class="mb-3">
                                             <label class="form-label">Required Fields</label>
                                             <div class="d-flex align-items-center mb-2">
                                                 <div class="form-check me-3">
-                                                    <input class="form-check-input" type="checkbox" id="fullNameField">
-                                                    <label class="form-check-label" for="fullNameField">Full
-                                                        Name</label>
-                                                </div>
-                                                <div class="form-check me-3">
-                                                    <input class="form-check-input" type="checkbox" id="addressField">
-                                                    <label class="form-check-label" for="addressField">Address</label>
+                                                    <input class="form-check-input" type="checkbox" id="fullNameField" checked disabled>
+                                                    <label class="form-check-label" for="fullNameField">Recipient's Full Name</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="birthdateField">
-                                                    <label class="form-check-label"
-                                                        for="birthdateField">Birthdate</label>
+                                                    <input class="form-check-input" type="checkbox" id="purposeRequestField" checked disabled>
+                                                    <label class="form-check-label" for="purposeRequestField">Purpose of Request</label>
                                                 </div>
                                             </div>
                                             <div id="additionalFields">
-                                                <!-- Additional fields will be added here -->
-                                            </div>
-                                            <button type="button" class="btn btn-outline-primary btn-sm mt-2"
-                                                id="addFieldBtn">
+                                                </div>
+                                            <button type="button" class="btn btn-outline-primary btn-sm mt-2" id="addFieldBtn">
                                                 <i class="bi bi-plus"></i> Add Custom Field
                                             </button>
                                         </div>
+                                        </div>
                                         <div class="mb-3">
-                                            <label class="form-label">Upload Template (.doc/.docx)</label>
-                                            <input type="file" class="form-control" id="editTemplateFile"
-                                                accept=".doc,.docx" required>
+                                            <label class="form-label">Uploaded Template (.doc/.docx)</label>
+                                            <p class="small text-muted mb-1">Current file: <span id="editFileHint">–</span></p>
+                                            <input type="file" class="form-control" id="editTemplateFile" accept=".doc,.docx">
                                         </div>
                                     </form>
                                 </div>
