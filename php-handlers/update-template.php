@@ -64,11 +64,31 @@ try {
         $file_path = $uploadPath;
     }
 
+     $stmt = $conn->prepare(
+        "UPDATE tbl_document_templates
+         SET is_archived = 1
+         WHERE id = ?"
+    );
+    $stmt->bind_param("i", $oldId);
+    $stmt->execute();
+    $stmt->close();
+
+
+    if (!$file_name || !$file_path) {
+        $fetchQuery = "SELECT file_name, file_path FROM tbl_document_templates WHERE id = ?";
+        $stmt = $conn->prepare($fetchQuery);
+        $stmt->bind_param("i", $oldId);
+        $stmt->execute();
+        $stmt->bind_result($file_name, $file_path);
+        $stmt->fetch();
+        $stmt->close();
+    }
+
     // Insert new template record
-    $insertQuery = "INSERT INTO tbl_document_templates (name, description, fee, file_name, file_path, is_archived) 
-                    VALUES (?, ?, ?, ?, ?, 0)";
+    $insertQuery = "INSERT INTO tbl_document_templates (name, description, fee, file_name, file_path, is_archived, parent_id) VALUES (?, ?, ?, ?, ?, 0, ?)";
     $stmt = $conn->prepare($insertQuery);
-    $stmt->bind_param("ssdss", $name, $description, $fee, $file_name, $file_path);
+    $stmt->bind_param("ssdssi", $name, $description, $fee, $file_name, $file_path, $oldId);
+
     $stmt->execute();
     $newTemplateId = $stmt->insert_id;
     $stmt->close();

@@ -258,13 +258,28 @@
                 </div>
             <!-- Filled dynamically -->
             </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
         </div>
 
     </div>
-  
+    
+    <!-- Print Options Modal -->
+     <div class="modal fade" id="printOptionsModal" tabindex="-1" aria-labelledby="printOptionsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="printOptionsModalLabel">Choose Document Format</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Would you like to download the editable Word document or print the PDF?</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button id="downloadDocxBtn" type="button" class="btn btn-primary me-2">Download DOCX</button>
+                    <button id="printPdfBtn" type="button" class="btn btn-secondary">Print PDF</button>
+                    </div>
+            </div>
+        </div>
+    </div>
 
 
     <!-- Bootstrap Bundle with Popper -->
@@ -275,6 +290,7 @@
     <script src="../../js/sidebar-script.js"></script>
     <script src="../../js/logout-script.js"></script>
     <script src="../../js/document-requests-script.js"></script>
+    <script src="../../js/document-print-options.js"></script>
 </body>
 
 </html>

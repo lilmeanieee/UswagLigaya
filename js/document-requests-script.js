@@ -9,7 +9,7 @@ let currentStatus = ''; // '', 'Pending', 'Approved', 'Rejected'
 
 // Load document requests
 function loadRequests(page = 1, search = '', status = '') {
-  fetch(`/php-handlers/fetch-document-requests.php?page=${page}&search=${encodeURIComponent(search)}&status=${encodeURIComponent(status)}`)
+  fetch(`../../php-handlers/fetch-document-requests.php?page=${page}&search=${encodeURIComponent(search)}&status=${encodeURIComponent(status)}`)
 
     .then(response => response.json())
     .then(data => {
@@ -36,7 +36,7 @@ function loadRequests(page = 1, search = '', status = '') {
               <button class="btn btn-sm btn-success approve-btn" data-id="${request.id}" title="Approve Request"><i class="bi bi-check-lg"></i></button>
               <button class="btn btn-sm btn-danger reject-btn" data-id="${request.id}" title="Reject Request"><i class="bi bi-x-lg"></i></button>
             ` : request.status === "Approved" ? `
-              <button class="btn btn-sm btn-secondary print-btn" data-id="${request.id}" title="Print Document"><i class="bi bi-printer"></i></button>
+              <button class="btn btn-sm btn-secondary print-button" data-request-id="${request.id}" title="Print Document"><i class="bi bi-printer"></i></button>
             ` : ""}
           </td>
         `;
@@ -113,18 +113,19 @@ function attachActionListeners() {
     });
   });
 
-  document.querySelectorAll('.print-btn').forEach(button => {
+  /*document.querySelectorAll('.print-btn').forEach(button => {
     button.addEventListener('click', () => {
       const requestId = button.dataset.id;
       // Open the PHP generator that outputs the Word doc
-      window.open(`/php-handlers/generate-document.php?request_id=${requestId}`, '_blank');
+      // window.open(`../../php-handlers/generate-document.php?request_id=${requestId}`, '_blank');
+      window.open(`../../php-handlers/generate-printable-pdf.php?request_id=${requestId}`, '_blank');
     });
-  });
+  }); */
 }
 
 // Update request status (approve/reject)
 function updateRequestStatus(id, status) {
-  fetch("/php-handlers/update-document-status.php", {
+  fetch("../../php-handlers/update-document-status.php", {
     method: "POST",
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
@@ -169,13 +170,12 @@ function openViewDetailsModal(id) {
   const viewModal = new bootstrap.Modal(document.getElementById('viewDetailsModal'));
   viewModal.show();
 
-    fetch(`/php-handlers/get-document-request-details.php?id=${id}`)
+    fetch(`../../php-handlers/get-document-request-details.php?id=${id}`)
     .then(response => response.json())
     .then(data => {
       const actualContent = document.getElementById('modalActualContent');
       let html = `
         <h6><strong>Document:</strong> ${data.document_name}</h6>
-        <h6><strong>Requested For:</strong> ${data.full_name}</h6> 
         <h6><strong>Requested By:</strong> ${data.resident_name}</h6>
         <h6><strong>Purpose:</strong> ${data.purpose}</h6>
         <hr>

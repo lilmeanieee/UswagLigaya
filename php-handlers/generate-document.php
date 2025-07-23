@@ -1,113 +1,94 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-include 'connect.php';
-
-// --- Load PHPWord manually ---
-require_once '/lib/PhpOffice/PhpWord/Autoloader.php';
-\PhpOffice\PhpWord\Autoloader::register();
+// utoload PHPWord (adjust if you're using composer.phar instead)
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use PhpOffice\PhpWord\TemplateProcessor;
-use PhpOffice\PhpWord\IOFactory;
 
-// --- Helper function ---
-function getDayWithSuffix($day) {
-    if (!in_array(($day % 100), [11, 12, 13])) {
-        switch ($day % 10) {
-            case 1: return $day . 'st';
-            case 2: return $day . 'nd';
-            case 3: return $day . 'rd';
-        }
-    }
-    return $day . 'th';
+//Get Request ID from URL
+$requestId = $_GET['request_id'] ?? null;
+if (!$requestId || !is_numeric($requestId)) {
+    die("Invalid or missing request ID.");
 }
 
-function getFormattedDate() {
-    $day = date('j');
-    $month = date('F');
-    $year = date('Y');
-    return getDayWithSuffix($day) . " day of " . $month . ", " . $year;
+//Connect to the Database
+$mysqli = new mysqli("localhost", "root", "", "u722205397_dbfiles"); // adjust if needed
+if ($mysqli->connect_error) {
+    die("Database connection failed: " . $mysqli->connect_error);
 }
 
-// Validate request
-if (!isset($_GET['request_id'])) {
-    die("Request ID is required.");
+//Fetch Template File Path
+$templatePath = '';
+$stmt = $mysqli->prepare("
+    SELECT dt.file_path
+    FROM tbl_document_requests dr
+    JOIN tbl_document_templates dt ON dr.template_id = dt.id
+    WHERE dr.id = ?
+");
+$stmt->bind_param("i", $requestId);
+$stmt->execute();
+$stmt->bind_result($templatePath);
+$stmt->fetch();
+$stmt->close();
+
+if (empty($templatePath)) {
+    die("No template found for this request.");
 }
 
-$request_id = intval($_GET['request_id']);
+$fullPath = realpath(__DIR__ . '/../uploads/document_templates/' . basename($templatePath));
+if (!file_exists($fullPath)) {
+    die("Template file not found: $fullPath");
+}
 
-include 'connect.php'; // Your database connection
 
-// Fetch document request and template info
-$query = "
-SELECT r.*, t.name AS document_name, t.file_path
-FROM tbl_document_requests r
-JOIN tbl_document_templates t ON r.template_id = t.id
-WHERE r.id = ?
-";
-
-$stmt = $conn->prepare($query);
-$stmt->bind_param('i', $request_id);
+// Fetch Field Values
+$fieldValues = [];
+$stmt = $mysqli->prepare("SELECT field_key, field_value FROM tbl_request_field_values WHERE request_id = ?");
+$stmt->bind_param("i", $requestId);
 $stmt->execute();
 $result = $stmt->get_result();
+while ($row = $result->fetch_assoc()) {
+    $fieldValues[$row['field_key']] = $row['field_value'];
+}
+$stmt->close();
+$mysqli->close();
 
-if ($result->num_rows === 0) {
-    die("No such document request found.");
+if (strpos(file_get_contents($fullPath), '${current_date}') !== false) {
+    $templateProcessor->setValue('current_date', date("F j, Y"));
 }
 
-$request = $result->fetch_assoc();
+// Load the template
+$templateProcessor = new TemplateProcessor($fullPath);
 
-// Build values array
-$values = [
-    'name' => $request['resident_name'],
-    'formatted_date' => getFormattedDate(),
-    'purpose' => $request['purpose'] ?? ''
-];
-
-// Fetch and merge custom fields
-$queryFields = "SELECT field_key, field_value FROM tbl_request_field_values WHERE request_id = ?";
-$stmtFields = $conn->prepare($queryFields);
-$stmtFields->bind_param('i', $request_id);
-$stmtFields->execute();
-$resultFields = $stmtFields->get_result();
-
-while ($field = $resultFields->fetch_assoc()) {
-    $values[$field['field_key']] = $field['field_value'];
+// Replace placeholders from DB
+foreach ($fieldValues as $key => $value) {
+    $templateProcessor->setValue($key, htmlspecialchars($value));
 }
 
-// Load template
-$templatePath = $request['file_path']; // Already contains ../uploads/document_templates/...
-if (!file_exists($templatePath)) {
-    die("Template file not found at: $templatePath");
+// Inject current_date if used in template (and only then)
+$templateProcessor->setValue('current_date', date("F j, Y"));
+
+
+//Generate Word Document
+try {
+    // Replace all placeholders
+    foreach ($fieldValues as $key => $value) {
+        $templateProcessor->setValue($key, htmlspecialchars($value));
+    }
+
+    // Prepare filename
+    $fileName = 'Request_' . $requestId . '.docx';
+
+    // Force download
+    header("Content-Description: File Transfer");
+    header('Content-Disposition: attachment; filename="' . $fileName . '"');
+    header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    header('Content-Transfer-Encoding: binary');
+    header('Cache-Control: must-revalidate');
+    header('Expires: 0');
+    ob_clean();
+    flush();
+
+    $templateProcessor->saveAs("php://output");
+} catch (Exception $e) {
+    die("Error generating document: " . $e->getMessage());
 }
-
-$template = new TemplateProcessor($templatePath);
-
-// Replace placeholders
-foreach ($values as $key => $val) {
-    $template->setValue($key, htmlspecialchars($val));
-}
-
-// Save generated .docx
-$cleanName = str_replace(' ', '-', $request['resident_name']);
-$cleanDocName = str_replace(' ', '-', $request['document_name']);
-$year = date('Y');
-
-$filenameDocx = "{$cleanName}-{$cleanDocName}-{$year}.docx";
-$filenameHtml = "{$cleanName}-{$cleanDocName}-{$year}.html";
-
-$generatedDocxPath = "../uploads/generated_documents/" . $filenameDocx;
-$generatedHtmlPath = "../uploads/generated_documents/" . $filenameHtml;
-
-// Save Word
-$template->saveAs($generatedDocxPath);
-
-// Convert to HTML
-$phpWord = IOFactory::load($generatedDocxPath);
-$htmlWriter = IOFactory::createWriter($phpWord, 'HTML');
-$htmlWriter->save($generatedHtmlPath);
-
-// ✅ Now Redirect Admin to Document Editor
-header("Location: /Web-based-Management-System-for-Barangay-Ligaya-with-Gamified-Features/admin/document_request/document-editor.html?file=" . urlencode($filenameHtml));
-exit;
-?>

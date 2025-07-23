@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let templates = [];
 
   // Fetch templates from backend
-  fetch('/php-handlers/get-templates.php')
+  fetch('../php-handlers/get-templates.php')
     .then(res => res.json())
     .then(data => {
       templates = data;

@@ -70,7 +70,7 @@ function makeRowsClickable() {
 }
 
 function populateEventDropdown() {
-    fetch('/php-handlers/fetch-upcoming-event.php')
+    fetch('../php-handlers/fetch-upcoming-event.php')
         .then(res => res.json())
         .then(events => {
             const dropdown = document.getElementById('event-filter');
@@ -82,7 +82,7 @@ function populateEventDropdown() {
 }
 
 function fetchParticipants(eventId = 'all') {
-    fetch(`/php-handlers/fetch-volunteer-attendance.php?event_id=${eventId}`)
+    fetch(`../php-handlers/fetch-volunteer-attendance.php?event_id=${eventId}`)
         .then(res => res.json())
         .then(data => {
             const tbody = document.querySelector("#participants-table tbody");
@@ -152,7 +152,7 @@ function updateAttendance(status) {
         });
     });
 
-    fetch('/php-handlers/update-volunteer-attendance.php', {
+    fetch('../php-handlers/update-volunteer-attendance.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
