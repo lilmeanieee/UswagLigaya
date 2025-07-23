@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="../../css/admin-project-style.css">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
 
 </head>
 
@@ -28,7 +30,7 @@
                 <div class="logo pt-4 pb-1  mb-auto text-center">
                     <a href="#" class="text-white text-decoration-none">
                         <img src="../../asset/img/brgy logo.png" alt="">
-                        <span class="fs-4 d-none d-lg-inline">Brgy Ligaya</span>
+                        <span class="fs-4 d-none d-lg-inline">BLMS</span>
                     </a>
                 </div>
                 <hr class="text-white">
@@ -90,9 +92,6 @@
                         </a>
                     </li>
 
-                    <!-- Community-->
-
-
                     <!-- Manage Leaderboards-->
                     <li class="nav-item dropdown">
                         <!-- Popover for Mobile -->
@@ -141,7 +140,7 @@
                     <!-- Brgy Projects -->
                     <li class="nav-item ">
                         <a href="projects.html" class="nav-link active text-white">
-                            <i class="bi bi-balloon-heart me-2"></i>
+                            <i class="bi bi-building me-2"></i>
                             <span class="d-none d-lg-inline">Brgy Project</span>
                         </a>
                     </li>
@@ -168,15 +167,13 @@
 
             <!-- Main Content -->
             <div class="main-content  col min-vh-100">
-                <div class="container content-header">
-                    <!-- Content Header Title -->
-                    <div class="d-flex justify-content-between align-items-center bg-dark text-white p-3">
-                        <h4 class="mb-0">Project Management</h4>
-                    </div>
-                    <!-- End Content Header Title -->
+                <!-- Content Header Title -->
+                <div class="d-flex justify-content-between align-items-center bg-dark text-white p-3">
+                    <h4 class="mb-0">Project Management</h4>
                 </div>
+
                 <!--  Content -->
-                <div class="container mx-3">
+                <div class="container mx-2">
                     <div
                         class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                         <h3 class=" ">Projects</h3>
@@ -206,7 +203,11 @@
                                 <option value="">All Status</option>
                                 <option value="pending">Not Started</option>
                                 <option value="ongoing">Ongoing</option>
+                                <option value="delayed">Delayed</option>
+                                <option value="on-hold">On Hold</option>
                                 <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+
                             </select>
                         </div>
                         <!-- Categories Dropdown -->
@@ -223,215 +224,52 @@
 
                     <!-- Projects Grid -->
                     <div class="row">
-                        <!-- Project Card 1 -->
-                        <div class="col-lg-6 col-xl-4 mb-4">
-                            <div class="card project-card border-0 shadow-sm h-100">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-start mb-3">
-                                        <h5 class="card-title mb-0">Barangay Hall Renovation</h5>
-                                        <span class="status-badge status-ongoing">Ongoing</span>
-                                    </div>
-                                    <p class="card-text text-muted mb-3">Complete renovation of the main barangay
-                                        hall including electrical, plumbing, and structural improvements.</p>
-
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between mb-1">
-                                            <small class="text-muted">Progress</small>
-                                            <small class="text-muted">75%</small>
-                                        </div>
-                                        <div class="progress progress-indicator">
-                                            <div class="progress-bar bg-info" style="width: 75%"></div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row text-center mb-3">
-                                        <div class="col-4">
-                                            <div class="text-primary">₱450,000</div>
-                                            <small class="text-muted">Budget</small>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="text-success">₱337,500</div>
-                                            <small class="text-muted">Used</small>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="text-warning">15 days</div>
-                                            <small class="text-muted">Remaining</small>
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex gap-2">
-                                        <button class="btn btn-outline-primary btn-sm flex-fill" data-bs-toggle="modal"
-                                            data-bs-target="#projectDetailModal">
-                                            <i class="bi bi-eye me-1"></i>View
-                                        </button>
-                                        <button class="btn btn-primary btn-sm flex-fill" data-bs-toggle="modal"
-                                            data-bs-target="#editProjectModal">
-                                            <i class="bi bi-edit me-1"></i>Edit
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Project Card 2 -->
-                        <div class="col-lg-6 col-xl-4 mb-4">
-                            <div class="card project-card border-0 shadow-sm h-100">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-start mb-3">
-                                        <h5 class="card-title mb-0">Road Improvement Project</h5>
-                                        <span class="status-badge status-pending">Pending</span>
-                                    </div>
-                                    <p class="card-text text-muted mb-3">Concrete road construction for Main Street
-                                        covering 2.5 kilometers with proper drainage system.</p>
-
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between mb-1">
-                                            <small class="text-muted">Progress</small>
-                                            <small class="text-muted">0%</small>
-                                        </div>
-                                        <div class="progress progress-indicator">
-                                            <div class="progress-bar bg-warning" style="width: 0%"></div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row text-center mb-3">
-                                        <div class="col-4">
-                                            <div class="text-primary">₱1,200,000</div>
-                                            <small class="text-muted">Budget</small>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="text-success">₱0</div>
-                                            <small class="text-muted">Used</small>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="text-warning">120 days</div>
-                                            <small class="text-muted">Duration</small>
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex gap-2">
-                                        <button class="btn btn-outline-primary btn-sm flex-fill">
-                                            <i class="bi bi-eye me-1"></i>View
-                                        </button>
-                                        <button class="btn btn-primary btn-sm flex-fill">
-                                            <i class="bi bi-edit me-1"></i>Edit
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Project Card 3 -->
-                        <div class="col-lg-6 col-xl-4 mb-4">
-                            <div class="card project-card border-0 shadow-sm h-100">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-start mb-3">
-                                        <h5 class="card-title mb-0">Community Center</h5>
-                                        <span class="status-badge status-completed">Completed</span>
-                                    </div>
-                                    <p class="card-text text-muted mb-3">Construction of multi-purpose community
-                                        center with meeting halls and recreational facilities.</p>
-
-                                    <div class="mb-3">
-                                        <div class="d-flex justify-content-between mb-1">
-                                            <small class="text-muted">Progress</small>
-                                            <small class="text-muted">100%</small>
-                                        </div>
-                                        <div class="progress progress-indicator">
-                                            <div class="progress-bar bg-success" style="width: 100%"></div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row text-center mb-3">
-                                        <div class="col-4">
-                                            <div class="text-primary">₱800,000</div>
-                                            <small class="text-muted">Budget</small>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="text-success">₱780,000</div>
-                                            <small class="text-muted">Used</small>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="text-info">Completed</div>
-                                            <small class="text-muted">Status</small>
-                                        </div>
-                                    </div>
-
-                                    <div class="d-flex gap-2">
-                                        <button class="btn btn-outline-primary btn-sm flex-fill">
-                                            <i class="bi bi-eye me-1"></i>View
-                                        </button>
-                                        <button class="btn btn-outline-secondary btn-sm flex-fill">
-                                            <i class="bi bi-download me-1"></i>Report
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Project Card here -->
                     </div>
 
                 </div>
             </div>
-            <!-- Project Detail Modal -->
+            <!-- Project Detail Modal – View -->
             <div class="modal fade" id="projectDetailModal" tabindex="-1">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Barangay Hall Renovation - Project Details</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="row mb-4">
-                                <div class="col-md-6">
-                                    <h6>Project Information</h6>
-                                    <table class="table table-sm">
-                                        <tr>
-                                            <td class="fw-bold">Category:</td>
-                                            <td>Infrastructure</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold">Start Date:</td>
-                                            <td>March 15, 2024</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold">Expected Completion:</td>
-                                            <td>July 30, 2024</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold">Responsible Person:</td>
-                                            <td>Engr. Juan Dela Cruz</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold">Funding Source:</td>
-                                            <td>Municipal Budget</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                                <div class="col-md-6">
-                                    <h6>Budget Information</h6>
-                                    <table class="table table-sm">
-                                        <tr>
-                                            <td class="fw-bold">Total Budget:</td>
-                                            <td>₱450,000.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold">Amount Used:</td>
-                                            <td>₱337,500.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold">Remaining:</td>
-                                            <td>₱112,500.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="fw-bold">Utilization:</td>
-                                            <td>75%</td>
-                                        </tr>
-                                    </table>
-                                </div>
+                            <div class="mb-4">
+                                <h6>Project Information</h6>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td class="fw-bold">Category:</td>
+                                        <td>Infrastructure</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Start Date:</td>
+                                        <td>March 15, 2024</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Expected Completion:</td>
+                                        <td>July 30, 2024</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Responsible Person:</td>
+                                        <td>Engr. Juan Dela Cruz</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Total Budget:</td>
+                                        <td>₱450,000.00</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="fw-bold">Funding Source:</td>
+                                        <td>Municipal Budget</td>
+                                    </tr>
+                                </table>
                             </div>
 
                             <div class="mb-4">
-                                <h6>Project Timeline & Milestones</h6>
+                                <h6>Project Timeline & Stages</h6>
                                 <div class="timeline-item">
                                     <div class="d-flex justify-content-between">
                                         <div>
@@ -481,12 +319,31 @@
 
                             <div class="mb-3">
                                 <h6>Progress Updates</h6>
-                                <div class="progress mb-2" style="height: 10px;">
+                                <div class="progress mb-2 progress-height">
                                     <div class="progress-bar bg-info" style="width: 75%"></div>
                                 </div>
                                 <small class="text-muted">75% Complete - Last updated: June 15, 2024</small>
                             </div>
+
+                            <div class="mb-4">
+                                <h6>Uploaded Project Images</h6>
+                                <div class="d-flex flex-wrap gap-2">
+                                    <img src="../../asset/img/neighborhood-illustration.png" alt="Project Image Sample"
+                                        class="img-thumbnail preview-thumb" data-bs-toggle="modal"
+                                        data-bs-target="#imagePreviewModal"
+                                        data-img-src="../../asset/img/neighborhood-illustration.png">
+                                    <img src="../../asset/img/neighborhood-illustration.png" alt="Project Image Sample"
+                                        class="img-thumbnail preview-thumb" data-bs-toggle="modal"
+                                        data-bs-target="#imagePreviewModal"
+                                        data-img-src="../../asset/img/neighborhood-illustration.png">
+                                    <img src="../../asset/img/neighborhood-illustration.png" alt="Project Image Sample"
+                                        class="img-thumbnail preview-thumb" data-bs-toggle="modal"
+                                        data-bs-target="#imagePreviewModal"
+                                        data-img-src="../../asset/img/neighborhood-illustration.png">
+                                </div>
+                            </div>
                         </div>
+
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-primary">Update Progress</button>
@@ -495,75 +352,180 @@
                 </div>
             </div>
 
-            <!-- Edit Project Modal -->
-            <div class="modal fade" id="editProjectModal" tabindex="-1">
+            <!-- Image Preview Modal -->
+            <div class="modal fade" id="imagePreviewModal" tabindex="-1">
+                <div class="modal-dialog modal-dialog-centered modal-xl">
+                    <div class="modal-content bg-transparent border-0 position-relative">
+                        <img id="largePreviewImage" src="" class="img-fluid rounded"
+                            style="max-height: 90vh; object-fit: contain; margin: auto;">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Update Project Modal -->
+            <div class="modal fade" id="updateProjectModal" tabindex="-1">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Edit Project - Barangay Hall Renovation</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            <h5 class="modal-title">Update Project - Barangay Hall Renovation</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Project Name</label>
-                                        <input type="text" class="form-control" value="Barangay Hall Renovation">
+                            <!-- Proj Details -->
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h5 class="mb-0"> Project Details</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Project Name</label>
+                                                <input type="text" class="form-control"
+                                                    value="Barangay Hall Renovation">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Category</label>
+                                                <select class="form-select">
+                                                    <option selected>Infrastructure</option>
+                                                    <option>Public Service</option>
+                                                    <option>Health & Wellness</option>
+                                                    <option>Education</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Description</label>
+                                            <textarea class="form-control"
+                                                rows="3">Complete renovation of the main barangay hall including electrical, plumbing, and structural improvements.</textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Location</label>
+                                            <input type="text" class="form-control" value="Purok 5, Barangay Ligaya">
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Start Date</label>
+                                                <input type="date" class="form-control" value="2024-03-15">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Expected Completion</label>
+                                                <input type="date" class="form-control" value="2024-07-30">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Budget</label>
+                                                <input type="number" class="form-control" value="450000.00">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Funding Source</label>
+                                                <input type="text" class="form-control" value="Municipal Budget">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Assign Responsible Personnel</label>
+                                            <input type="text" class="form-control" value="Engr. Juan Dela Cruz">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- Project Stages -->
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Project Stages</h5>
+                                </div>
+                                <div class="card-body" id="projectStagesContainerUpdate">
+                                    <div class="sortable-stages" id="sortableStages">
+                                        <!-- Stage Item 1 -->
+                                        <div
+                                            class="stage-edit-item d-flex align-items-center justify-content-between bg-light p-2 rounded mb-2">
+                                            <div class="fw-semibold stage-label">Site Survey & Planning</div>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <select class="form-select select-status w-auto"
+                                                    aria-label="Stage Status">
+                                                    <option>Not Started</option>
+                                                    <option selected>In Progress</option>
+                                                    <option>Completed</option>
+                                                </select>
+                                                <button type="button" class="btn-close btn-sm remove-stage-btn"
+                                                    aria-label="Remove"></button>
+                                            </div>
+                                        </div>
+                                        <!-- Stage Item 2 -->
+                                        <div
+                                            class="stage-edit-item d-flex align-items-center justify-content-between bg-light p-2 rounded mb-2">
+                                            <div class="fw-semibold stage-label">Material Procurement</div>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <select class="form-select select-status w-auto"
+                                                    aria-label="Stage Status">
+                                                    <option>Not Started</option>
+                                                    <option selected>Completed</option>
+                                                    <option>In Progress</option>
+                                                </select>
+                                                <button type="button" class="btn-close btn-sm remove-stage-btn"
+                                                    aria-label="Remove"></button>
+                                            </div>
+                                        </div>
+                                        <!-- Stage Item 3 -->
+                                        <div
+                                            class="stage-edit-item d-flex align-items-center justify-content-between bg-light p-2 rounded mb-2">
+                                            <div class="fw-semibold stage-label">Final Inspection</div>
+                                            <div class="d-flex align-items-center gap-2">
+                                                <select class="form-select select-status w-auto"
+                                                    aria-label="Stage Status">
+                                                    <option selected>Not Started</option>
+                                                    <option>In Progress</option>
+                                                    <option>Completed</option>
+                                                </select>
+                                                <button type="button" class="btn-close btn-sm remove-stage-btn"
+                                                    aria-label="Remove"></button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Category</label>
-                                        <select class="form-select">
-                                            <option selected>Infrastructure</option>
-                                            <option>Public Service</option>
-                                            <option>Health & Wellness</option>
-                                            <option>Education</option>
-                                        </select>
+
+
+                                    <!-- Input and Add Button for new stage-->
+                                    <div class="input-group mt-3">
+                                        <input type="text" id="newStageInputUpdate" class="form-control"
+                                            placeholder="Enter other project stage">
+                                        <button type="button" class="btn btn-outline-primary" id="addStageBtnUpdate">
+                                            <i class="bi bi-plus me-1"></i>Add Stage
+                                        </button>
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Description</label>
-                                    <textarea class="form-control"
-                                        rows="3">Complete renovation of the main barangay hall including electrical, plumbing, and structural improvements.</textarea>
+                            </div>
+                            <!-- Proj Images Upload -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Project Images</h5>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <label class="form-label">Progress (%)</label>
-                                        <input type="number" class="form-control" value="75" min="0" max="100">
+                                <div class="card-body">
+                                    <div id="drop-area" class="upload-box text-center p-4">
+                                        <p class="mb-2 fw-semibold">Drag & Drop image file<br><span
+                                                class="text-primary">or Browse</span></p>
+                                        <p class="text-muted small">Supports: JPEG, PNG, GIF, TIFF</p>
+                                        <input type="file" id="fileInput" accept="image/*" multiple hidden>
                                     </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label class="form-label">Status</label>
-                                        <select class="form-select">
-                                            <option>Pending</option>
-                                            <option selected>Ongoing</option>
-                                            <option>Completed</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-4 mb-3">
-                                        <label class="form-label">Fund Utilization</label>
-                                        <input type="number" class="form-control" value="337500" step="0.01">
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Expected Completion Date</label>
-                                        <input type="date" class="form-control" value="2024-07-30">
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Responsible Person</label>
-                                        <input type="text" class="form-control" value="Engr. Juan Dela Cruz">
+                                    <!-- Preview Container with an existing image -->
+                                    <div id="imagePreviewContainer" class="d-flex flex-wrap gap-2 mt-3">
+                                        <div class="position-relative">
+                                            <img src="../../asset/img/default.png"
+                                                class="img-thumbnail project-image-thumb" alt="Default Project Image">
+                                            <button
+                                                class="btn-close position-absolute top-0 end-0 m-1 btn-sm bg-danger border rounded-circle"
+                                                title="Remove"></button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Progress Notes</label>
-                                    <textarea class="form-control" rows="3"
-                                        placeholder="Add notes about current progress..."></textarea>
-                                </div>
-                            </form>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                             <button type="button" class="btn btn-primary">Save Changes</button>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -574,61 +536,122 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Add New Project</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Project Name</label>
-                                        <input type="text" class="form-control" placeholder="Enter project name">
+                            <!-- Project Details -->
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Project Details</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Project Name</label>
+                                                <input type="text" class="form-control"
+                                                    placeholder="Enter project name">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Category</label>
+                                                <select class="form-select">
+                                                    <option value="">Select category...</option>
+                                                    <option value="1">Infrastructure</option>
+                                                    <option value="2">Public Service</option>
+                                                    <option value="3">Health & Wellness</option>
+                                                    <option value="4">Education</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Description</label>
+                                            <textarea class="form-control" rows="3"
+                                                placeholder="Project description..."></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Location</label>
+                                            <input type="text" class="form-control"
+                                                placeholder="Enter location of project">
+
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Start Date</label>
+                                                <input type="date" class="form-control">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Expected Completion</label>
+                                                <input type="date" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Budget</label>
+                                                <input type="number" class="form-control" placeholder="0.00"
+                                                    step="0.01">
+                                            </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">Funding Source</label>
+                                                <input type="text" class="form-control" placeholder="Source of funding">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Assign Responsible Personnel</label>
+                                            <input type="text" class="form-control"
+                                                placeholder="Enter responsible person">
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- Project Stages -->
+                            <div class="card mb-3">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Project Stages</h5>
+                                </div>
+                                <div class="card-body" id="projectStagesContainerAdd">
+                                    <div class="stage-edit-item mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" checked>
+                                            <label class="form-check-label">Site Survey & Planning</label>
+                                        </div>
                                     </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Category</label>
-                                        <select class="form-select">
-                                            <option>Select category...</option>
-                                            <option>Infrastructure</option>
-                                            <option>Public Service</option>
-                                            <option>Health & Wellness</option>
-                                            <option>Education</option>
-                                        </select>
+                                    <div class="stage-edit-item mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" checked>
+                                            <label class="form-check-label">Material Procurement</label>
+                                        </div>
+                                    </div>
+                                    <div class="stage-edit-item mb-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox">
+                                            <label class="form-check-label">Final Inspection</label>
+                                        </div>
+                                    </div>
+                                    <!-- Input and Add Button for new stage-->
+                                    <div class="input-group mt-3">
+                                        <input type="text" id="newStageInputAdd" class="form-control"
+                                            placeholder="Enter other project stage">
+                                        <button type="button" class="btn btn-outline-primary" id="addStageBtnAdd">
+                                            <i class="bi bi-plus me-1"></i>Add Stage
+                                        </button>
                                     </div>
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Description</label>
-                                    <textarea class="form-control" rows="3"
-                                        placeholder="Project description..."></textarea>
+                            </div>
+                            <!-- Proj Images Upload -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Upload Project Images</h5>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Start Date</label>
-                                        <input type="date" class="form-control">
+                                <div class="card-body">
+                                    <div id="drop-area" class="upload-box text-center p-4">
+                                        <p class="mb-2 fw-semibold">Drag & Drop image file<br><span
+                                                class="text-primary">or Browse</span></p>
+                                        <p class="text-muted small">Supports: JPEG, PNG, GIF, TIFF</p>
+                                        <input type="file" id="fileInput" accept="image/*" multiple hidden>
                                     </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Expected Completion</label>
-                                        <input type="date" class="form-control">
-                                    </div>
+                                    <div id="imagePreviewContainer" class="d-flex flex-wrap gap-2 mt-3"></div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Initial Budget</label>
-                                        <input type="number" class="form-control" placeholder="0.00" step="0.01">
-                                    </div>
-                                    <div class="col-md-6 mb-3">
-                                        <label class="form-label">Funding Source</label>
-                                        <input type="text" class="form-control" placeholder="Source of funding">
-                                    </div>
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Assign Responsible Personnel</label>
-                                    <input type="text" class="form-control" placeholder="Enter responsible person">
-                                </div>
-                                <div class="mb-3">
-                                    <label class="form-label">Milestones</label>
-                                    <textarea class="form-control" rows="3"
-                                        placeholder="List project milestones (one per line)..."></textarea>
-                                </div>
-                            </form>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -648,8 +671,8 @@
         crossorigin="anonymous"></script>
 
     <script src="../../js/sidebar-script.js"></script>
-    <script src="../../js/admin-project-script.js"></script>
-
+    <script src="../../js/brgy-project-admin/admin-project-script.js"></script>
+    <script src="../../js/brgy-project-admin/display-project.js"></script>
 </body>
 
 </html>

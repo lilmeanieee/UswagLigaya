@@ -117,7 +117,7 @@ function fetchParticipants(eventId = 'all') {
                                   'bg-warning';
 
                 tbody.innerHTML += `
-                    <tr>
+                    <tr data-resident-id="${item.resident_id}">
                         <td><input type="checkbox" class="row-checkbox" value="${item.participation_id}"></td>
                         <td>${item.name}</td>
                         <td>${item.event_title}</td>
@@ -140,15 +140,17 @@ function updateAttendance(status) {
 
     const participationData = [];
 
-    selectedCheckboxes.forEach(checkbox => {
-        const participationId = checkbox.value;
+        selectedCheckboxes.forEach(checkbox => {
         const row = checkbox.closest("tr");
+        const participationId = checkbox.value;
         const creditPoints = parseInt(row.cells[4].textContent);
-        
+        const residentId = row.dataset.residentId;
+
         participationData.push({
             id: participationId,
+            residentId: residentId,
             creditPoints: creditPoints,
-            status: status // Pass the status to the backend
+            status: status
         });
     });
 
@@ -163,6 +165,9 @@ function updateAttendance(status) {
     .then(res => res.json())
     .then(response => {
         if (response.success) {
+            // Badges are automatically awarded via database triggers
+            // No need for manual checking
+            
             // Show success message
             alert("✅ Attendance updated successfully!");
             
@@ -196,5 +201,29 @@ function updateAttendance(status) {
     .catch(err => {
         console.error("🔥 Error:", err);
         alert("❌ Error occurred while updating attendance.");
+    });
+}
+
+// Badge checking with improved error handling
+function checkAndAwardBadges(residentId) {
+    fetch('/UswagLigaya/php-handlers/manage-leaderboard/check-and-award-badges.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `resident_id=${residentId}`
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === 'success' && data.earned && data.earned.length > 0) {
+            data.earned.forEach(badge => {
+                // Only show popup if the function exists
+                if (typeof showBadgeEarnedPopup === 'function') {
+                    showBadgeEarnedPopup(badge);
+                }
+            });
+        }
+    })
+    .catch(err => {
+        console.warn("Badge check failed (this is non-critical):", err);
+        // Don't show alert for badge errors - they're not critical to attendance updating
     });
 }

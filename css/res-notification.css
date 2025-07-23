@@ -1,0 +1,141 @@
+.navbar-custom {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e9ecef;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.btn-custom {
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    color: #495057;
+}
+
+.btn-custom:hover {
+    border-color: #ffd862;
+    background-color: #fff6d9;
+    color: #495057;
+}
+
+.btn-custom.active {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #212529;
+    font-weight: 600;
+}
+
+.search-input {
+    background-color: #ffffff;
+    border: 1px solid #ced4da;
+    color: #495057;
+}
+
+.search-input:focus {
+    background-color: #ffffff;
+    border-color: #ffc107;
+    color: #495057;
+    box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+}
+
+.notification-item {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e9ecef;
+    padding: 16px;
+    transition: background-color 0.2s;
+}
+
+.notification-item:hover {
+    background-color: #f8f9fa;
+}
+
+.notification-checkbox {
+    width: 18px;
+    height: 18px;
+    margin-right: 12px;
+}
+
+.notification-icon {
+    margin-right: 8px;
+    width: 16px;
+    text-align: center;
+}
+
+.notification-title {
+    color: #495057;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.notification-title:hover {
+    color: #ffc107;
+}
+
+.notification-subtitle {
+    color: #6c757d;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.notification-meta {
+    color: #6c757d;
+    font-size: 12px;
+}
+
+.subscribed-badge {
+    color: #6c757d;
+    font-size: 12px;
+}
+
+.avatar-stack {
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-left: -4px;
+    border: 1px solid #dee2e6;
+}
+
+.avatar:first-child {
+    margin-left: 0;
+}
+
+.footer-info {
+    color: #6c757d;
+    font-size: 12px;
+    padding: 16px;
+    background-color: #343a40;
+    border-top: 1px solid #e9ecef;
+}
+
+.pagination-info {
+    color: #6c757d;
+    font-size: 12px;
+}
+
+.dropdown-toggle::after {
+    margin-left: 8px;
+}
+
+.form-select-custom {
+    background-color: #ffffff;
+    border: 1px solid #ced4da;
+    color: #495057;
+}
+
+.form-select-custom:focus {
+    background-color: #ffffff;
+    border-color: #ffc107;
+    color: #495057;
+    box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+}
+
+/* content */
+.search-icon {
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8b949e;
+}

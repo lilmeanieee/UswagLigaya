@@ -59,7 +59,7 @@ function toISODateFormat(dateString) {
 
 function sendToAddResidents(fullData) {
     // Send POST request
-fetch("/php-handlers/add-residents.php", {
+fetch("/UswagLigaya/php-handlers/add-residents.php", {
     method: "POST",
     headers: {
         "Content-Type": "application/json"
@@ -111,7 +111,7 @@ fetch("/php-handlers/add-residents.php", {
 
         localStorage.setItem("newResidentAdded", JSON.stringify(data.accounts));
         
-        fetch("/php-handlers/fetch-residents.php")
+        fetch("/UswagLigaya/php-handlers/fetch-residents.php")
         .then(res => res.json())
         .then(data => {
             if (data.residents) {
@@ -197,7 +197,7 @@ document.getElementById("btn_submit").addEventListener("click", function (e) {
         }))
     };
 
-    fetch("/php-handlers/check-duplicates.php", {
+    fetch("/UswagLigaya/php-handlers/check-duplicates.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ household })
@@ -240,7 +240,7 @@ document.getElementById("btn_submit").addEventListener("click", function (e) {
             }
 
             // Check member duplication
-            fetch("/php-handlers/check-member-duplicate.php", {
+            fetch("/UswagLigaya/php-handlers/check-member-duplicate.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(memberOnlyCheck)
@@ -262,7 +262,7 @@ document.getElementById("btn_submit").addEventListener("click", function (e) {
         }
         } else {
             // Household doesn't exist, check members before inserting
-            fetch("/php-handlers/check-member-duplicate.php", {
+            fetch("/UswagLigaya/php-handlers/check-member-duplicate.php", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(memberOnlyCheck)

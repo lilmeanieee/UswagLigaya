@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__ . '/connect.php'); // This must define $pdo
+require_once(__DIR__ . '/connect.php'); 
 
 date_default_timezone_set('Asia/Manila');
 $today = date('Y-m-d');

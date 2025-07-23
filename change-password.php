@@ -1,6 +1,7 @@
 <?php
 session_start();
-include '../php-handlers/connect.php';
+include __DIR__ . '/php-handlers/connect.php';
+
 
 // Check for both session and localStorage (via JavaScript check)
 if (!isset($_SESSION['user_id'])) {
@@ -66,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="../css/login-style.css">
+    <link rel="stylesheet" href="/UswagLigaya/css/login-style.css">
 </head>
 <body>
 
@@ -113,7 +114,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // Check if user is logged in via localStorage
             const userData = localStorage.getItem('userData');
             if (!userData) {
-                window.location.href = '../html/login.html';
+                window.location.href = 'http://localhost/UswagLigaya/';
             }
         });
         

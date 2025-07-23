@@ -10,9 +10,7 @@ if (!$conn) {
     die(json_encode(["error" => "Database connection failed."]));
 }
 
-$sql = "SELECT reward_id, reward_name, reward_type, description, points_required, image_url 
-        FROM tbl_rewards 
-        WHERE status = 'active'";
+$sql = "SELECT * FROM tbl_rewards WHERE is_archived = 0 ORDER BY reward_id ASC";
 
 $result = $conn->query($sql);
 
@@ -26,7 +24,7 @@ if ($result && $result->num_rows > 0) {
             "type" => $row["reward_type"],
             "description" => $row["description"],
             "points" => $row["points_required"],
-            "image" => "/uploads/rewards/" . $row["image_url"]  // Absolute path from root
+            "image" => "/UswagLigaya/uploads/rewards/" . $row["image_url"]  // Absolute path from root
         ];
     }
 }

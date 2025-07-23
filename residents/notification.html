@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/res-navbar.css">
+    <link rel="stylesheet" href="../css/res-profile-style.css">
+    <link rel="stylesheet" href="../css/res-notif-general.css">
+    <link rel="stylesheet" href="../css/res-notification.css">
+</head>
+
+<body>
+    <nav class="navbar bg-light ">
+        <div class="container-fluid p-0">
+            <!-- Hamburger menu and logo -->
+            <div class="d-flex align-items-center">
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" title="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-logo w-100 mb-2 mb-md-0">
+                    <a class="navbar-brand " href="#">Resident Portal</a>
+                </div>
+            </div>
+
+            <!-- Offcanvas menu content -->
+            <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
+                aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Resident Portal</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <ul class="navbar-nav justify-content-center flex-grow-1 pe-3">
+                        <!-- Nav items -->
+                        <li class="nav-item">
+                            <a class="nav-link" href="../index.html">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../about.html">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../index.html#service">Service</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../announcement.html">Announcement</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../leaderboard.html">Leaderboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="../project.html">Brgy Projects</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Profile & notification dropdown -->
+            <div class="d-flex align-items-center">
+                <!-- Notification Bell -->
+                <div class="nav-item dropdown " id="notificationIcon">
+                    <button class="btn btn-outline-secondary position-relative" type="button" data-bs-toggle="dropdown"
+                        id="notificationBell">
+                        <i class="fas fa-bell"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                            id="notificationCount">
+                            3
+                        </span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end notification-dropdown" id="notificationDropdown">
+                        <div class="dropdown-header d-flex justify-content-between align-items-center">
+                            <span>Notifications</span>
+                            <button class="btn btn-sm btn-link text-decoration-none" onclick="markAllAsRead()">
+                                Mark all as read
+                            </button>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div id="notificationList">
+                            <!-- Notifications will be populated here -->
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-footer text-center">
+                            <a href="notification.html" class="text-decoration-none" id="seeAllNotifications">
+                                See All Notifications
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dropdown user-dropdown ms-2" id="userDropdown">
+                    <button class="btn p-0 border-0 bg-transparent position-relative" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <!-- Profile image -->
+                        <img src="../asset/img/default_acc_icon.png" alt="User" class="user-icon-rounded">
+
+                        <!-- Dropdown arrow overlay -->
+                        <span class="dropdown-arrow-icon">
+                            <i class="bi bi-chevron-down"></i>
+                        </span>
+                    </button>
+
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <h6 class="dropdown-header user-name" id="userName">User Name</h6>
+                        </li>
+                        <li><a class="dropdown-item" href="dashboard.html">Dashboard</a></li>
+                        <li><a class="dropdown-item" href="convert-points.html">Convert Points</a></li>
+                        <li><a class="dropdown-item" href="document-request.html">Document Requests</a></li>
+                        <li><a class="dropdown-item" href="">Submit Complaints</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="settings.html">Settings</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item" href="../index.html" id="logoutButton">Logout</a></li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- main content -->
+    <div class="container mt-4">
+        <nav class="navbar navbar-custom px-4">
+            <div class="container-fluid">
+                <div class="d-flex flex-wrap align-items-center justify-content-between w-100 gap-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="btn-group me-2" role="group" aria-label="Button group">
+                            <button class="btn btn-custom active">All</button>
+                            <button class="btn btn-custom ">Unread</button>
+                        </div>
+                        <!-- search bar -->
+                        <div class="position-relative">
+                            <i class="fas fa-search position-absolute search-icon"></i>
+                            <input type="text" class="form-control search-input ps-5" placeholder="Search notifications"
+                                id="searchNotifications">
+                        </div>
+                    </div>
+                    <div class=" " ">
+                        <label for=" filterType" class="form-label visually-hidden">Filter notification type</label>
+                        <select class="form-select" id="filterType">
+                            <option value="all">All Types</option>
+                            <option value="announcement">Announcements</option>
+                            <option value="document">Document Updates</option>
+                            <option value="complaint">Complaints</option>
+                            <option value="gamification">Gamification</option>
+                            <option value="forum">Forum Updates</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid p-0">
+            <div class="notification-item d-flex align-items-center">
+                <input type="checkbox" class="form-check-input notification-checkbox" id="selectAllCheckbox"
+                    title="Select all notifications">
+                <label for="selectAllCheckbox" class="notification-meta me-3 mb-0">Select all</label>
+                <!-- Hidden "Mark as Read" button -->
+                <button id="markAsReadBtn" class="btn btn-sm btn-outline-primary ms-2 d-none">Mark as Read</button>
+            </div>
+
+
+            <div id="allNotificationsList">
+                <div class="notification-item unread d-flex align-items-start gap-2" data-id="1"
+                    onclick="markAsRead(1)">
+                    <input type="checkbox" class="form-check-input individual-checkbox mt-2" id="notificationCheckbox"
+                        title="Select notification">
+                    <div class="flex-grow-1 d-flex">
+                        <div class="notification-icon icon-announcement me-2">
+                            <i class="fas fa-bullhorn"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="notification-header d-flex justify-content-between">
+                                <div class="notification-title">New Barangay Event</div>
+                                <div class="notification-time">2 hours ago</div>
+                            </div>
+                            <div class="notification-body">Join us for the annual Barangay Festival this Saturday at
+                                6:00 PM.</div>
+                            <div class="notification-meta">
+                                <span class="notification-type type-announcement">Announcement</span>
+                                <span class="notification-priority priority-medium">Medium</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notification-item unread d-flex align-items-start gap-2" data-id="2"
+                    onclick="markAsRead(2)">
+                    <input type="checkbox" class="form-check-input individual-checkbox mt-2" id="notificationCheckbox"
+                        title="Select notification">
+                    <div class="d-flex">
+                        <div class="notification-icon icon-document">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="notification-header">
+                                <div class="notification-title">Document Request Update</div>
+                                <div class="notification-time">1 day ago</div>
+                            </div>
+                            <div class="notification-body">Your Barangay Clearance is ready for pickup. Please bring
+                                valid ID.</div>
+
+                            <div class="notification-meta">
+                                <span class="notification-type type-document">
+                                    Document
+                                </span>
+                                <span class="notification-priority priority-high">
+                                    High
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notification-item read d-flex align-items-start gap-2 " data-id="3" onclick="markAsRead(3)">
+                    <input type="checkbox" class="form-check-input individual-checkbox mt-2" id="notificationCheckbox"
+                        title="Select notification">
+                    <div class="d-flex">
+                        <div class="notification-icon icon-gamification">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="notification-header">
+                                <div class="notification-title">Points Earned!</div>
+                                <div class="notification-time">3 days ago</div>
+                            </div>
+                            <div class="notification-body">You earned 50 points for attending the community meeting.
+                            </div>
+
+                            <div class="notification-meta">
+                                <span class="notification-type type-gamification">
+                                    Gamification
+                                </span>
+                                <span class="notification-priority priority-low">
+                                    Low
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="notification-item read d-flex align-items-start gap-2" data-id="3" onclick="markAsRead(4)">
+                    <input type="checkbox" class="form-check-input individual-checkbox mt-2" id="notificationCheckbox"
+                        title="Select notification">
+                    <div class="d-flex">
+                        <div class="notification-icon icon-gamification">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="notification-header">
+                                <div class="notification-title">Points Earned!</div>
+                                <div class="notification-time">on Apr 21</div>
+                            </div>
+                            <div class="notification-body">You earned 50 points for attending the community meeting.
+                            </div>
+
+                            <div class="notification-meta">
+                                <span class="notification-type type-gamification">
+                                    Gamification
+                                </span>
+                                <span class="notification-priority priority-low">
+                                    Low
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">&copy; 2025 Barangay Ligaya. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <a href="#" class="text-white me-2">Privacy Policy</a> |
+                    <a href="#" class="text-white me-2">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/resident-dashboard.js"></script>
+    <script src="../js/resident- .js"></script>
+    <script src="../js/login-status-script.js"></script>
+    <script src="../js/logout-script.js"></script>
+    <script src="../js/res-notification-script.js"></script>
+
+
+</body>
+
+</html>

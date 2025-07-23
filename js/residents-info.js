@@ -25,7 +25,7 @@ window.addNewResident = function(residentData) {
         <td>${residentData.address || ""}</td>
         <td>${residentData.mobile_no || ""}</td>
         <td>${residentData.status || ""}</td>
-        <td>
+        <td class="d-flex flex-column flex-sm-row gap-1">
             <button class="btn btn-info">View</button>
             <button class="btn btn-primary">Edit</button>
         </td>`;
@@ -85,7 +85,7 @@ function renderResidents(residents) {
 // Fetch and refresh the full list of residents
 function fetchResidents() {
     $.ajax({
-        url: "/php-handlers/fetch-residents.php",
+        url: "/UswagLigaya/php-handlers/fetch-residents.php",
         method: "GET",
         dataType: "json",
         success: function (data) {

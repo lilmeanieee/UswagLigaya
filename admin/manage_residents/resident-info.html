@@ -15,17 +15,11 @@
     <link rel="stylesheet" href="../../css/sidebar-style.css">
     <link rel="stylesheet" href="../../css/resident-info-style.css">
 
-
-
     <script src="../../js/residents-info.js"></script>
-
-
-
-
 </head>
 
 <body>
-    <div class="container-fluid">
+    <div class=" ">
         <div class="d-flex ">
             <!-- Sidebar -->
             <div class="sidebar min-vh-100 bg-dark text-white p-3">
@@ -131,7 +125,7 @@
                         </a>
                     </li>
 
-                    
+
                     <!-- Volunteer Drive -->
                     <li class="nav-item ">
                         <a href="../volunteer_drive/attendance-evaluation.html" class="nav-link text-white">
@@ -160,8 +154,8 @@
             </div>
 
             <!-- Main Content -->
-            <div class="main-content col min-vh-100">
-                <div class="container content-header">
+            <div class="container main-content col min-vh-100">
+                <div class=" ">
                     <!-- Content Header Title -->
                     <div class="d-flex justify-content-between align-items-center bg-dark text-white p-3">
                         <h4 class="mb-0"> Residents Profiling</h4>
@@ -169,66 +163,62 @@
                     <!-- End Content Header Title -->
                 </div>
                 <!--  Content -->
-                <div class="container px">
-                    <div class="container">
-                        <div
-                            class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                            <h3 class=" ">Resident List</h3>
-                            <div class="btn-toolbar mb-2 mb-md-0">
-                                <div class="btn-group me-2">
-                                    <a href="household_profiling.html" class="btn btn-primary">
-                                        <i class="bi bi-person-plus"></i>
-                                        Add Resident
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Filters Row -->
-                        <div class="d-flex flex-column flex-md-row gap-2 mb-4 filters-row">
-                            <!-- Search Bar -->
-                            <div class="flex-grow-1 search-bar">
-                                <div class="input-group">
-                                    <span class="input-group-text"><i class="bi bi-search"></i></span>
-                                    <input type="text" class="form-control" id="nameSearch"
-                                        placeholder="Search by name">
-                                </div>
-                            </div>
-
-                            <!-- Sort Dropdown -->
-                            <div class="sort-dropdown">
-                                <select class="form-select" id="sortOption" title="Sort by">
-                                    <option selected disabled>Sort by </option>
-                                    <option value="name">Sort by Name</option>
-                                    <option value="gender">Sort by Gender</option>
-                                    <option value="status">Sort by Status</option>
-                                </select>
+                <div class=" mx-2">
+                    <div
+                        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                        <h3 class=" ">Resident List</h3>
+                        <div class="btn-toolbar mb-2 mb-md-0">
+                            <div class="btn-group me-2">
+                                <a href="household_profiling.html" class="btn btn-primary">
+                                    <i class="bi bi-person-plus"></i>
+                                    Add Resident
+                                </a>
                             </div>
                         </div>
                     </div>
 
-                    <div class="container  mt-3">
-                        <!-- Table -->
-                        <div class="table-responsive res-table mt-3">
-                            <table class="table table-bordered" id="residentTable">
-                                <thead class="table-dark">
-                                    <tr>
-                                        <th>Resident Id</th>
-                                        <th>Last Name</th>
-                                        <th>First Name</th>
-                                        <th>Middle Name</th>
-                                        <th>Gender</th>
-                                        <th>Address</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="residentTableBody">
-
-
-                                </tbody>
-                            </table>
+                    <!-- Filters Row -->
+                    <div class="d-flex flex-column flex-md-row gap-2 mb-4 filters-row">
+                        <!-- Search Bar -->
+                        <div class="flex-grow-1 search-bar">
+                            <div class="input-group">
+                                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                <input type="text" class="form-control" id="nameSearch" placeholder="Search by name">
+                            </div>
                         </div>
+
+                        <!-- Sort Dropdown -->
+                        <div class="sort-dropdown">
+                            <select class="form-select" id="sortOption" title="Sort by">
+                                <option selected disabled>Sort by </option>
+                                <option value="name">Sort by Name</option>
+                                <option value="gender">Sort by Gender</option>
+                                <option value="status">Sort by Status</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Table -->
+                    <div class="table-responsive res-table mt-3">
+                        
+                        <table class="table table-bordered table-striped table-hover align-middle" id="residentTable">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Resident Id</th>
+                                    <th>Last Name</th>
+                                    <th>First Name</th>
+                                    <th>Middle Name</th>
+                                    <th>Gender</th>
+                                    <th>Address</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="residentTableBody">
+
+
+                            </tbody>
+                        </table>
                     </div>
 
                     <!-- Pagination -->

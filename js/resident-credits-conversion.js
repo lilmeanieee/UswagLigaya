@@ -18,7 +18,7 @@ $(document).ready(function() {
         }
     
         $.ajax({
-            url: '../php-handlers/get-convert-credits-data.php',
+            url: '/UswagLigaya/php-handlers/get-convert-credits-data.php',
             type: 'POST',
             dataType: 'json',
             data: { resident_id: residentId },
@@ -132,7 +132,7 @@ $(document).ready(function() {
         
         // Send conversion request to server
         $.ajax({
-            url: '../php-handlers/resident-convert-points.php',
+            url: '/UswagLigaya/php-handlers/resident-convert-points.php',
             type: 'POST',
             data: {
                 creditPoints: creditPoints,
