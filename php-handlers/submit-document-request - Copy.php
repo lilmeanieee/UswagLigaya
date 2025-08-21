@@ -3,21 +3,20 @@ include 'connect.php';
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 header('Content-Type: application/json');
-session_start(); // Start the session at the beginning
 
 try {
-// FIX: Get residentId from the secure session, NOT from POST data.
-$residentId = $_SESSION['resident_id'] ?? null;
-$templateId = $_POST['documentType'] ?? null;
-$purpose = $_POST['purpose'] ?? null;
- $customFields = json_decode($_POST['custom_fields'] ?? '{}', true);
+    // Get resident info
+    $residentId = $_POST['residentId'] ?? null;
+    $templateId = $_POST['documentType'] ?? null;
+    $purpose = $_POST['purpose'] ?? null;
+    $customFields = json_decode($_POST['custom_fields'] ?? '{}', true);
 
-if (!$residentId || !$templateId || !$purpose) {
- throw new Exception("Missing required fields or user not logged in.");
-}
+    if (!$residentId || !$templateId || !$purpose) {
+        throw new Exception("Missing required fields.");
+    }
 
     // Get resident's full name
-    $query = $conn->prepare("SELECT first_name, middle_name, last_name, suffix FROM tbl_household_members WHERE resident_id = ?");
+    $query = $conn->prepare("SELECT first_name, middle_name, last_name, suffix FROM tbl_household_members WHERE user_id = ?");
     $query->bind_param("i", $residentId);
     $query->execute();
     $query->bind_result($firstName, $middleName, $lastName, $suffix);

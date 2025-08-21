@@ -86,6 +86,15 @@ function renderPagination(total, limit, currentPage, search = '', status = '') {
   });
 }
 
+// Helper function to format snake_case labels
+function formatLabel(label) {
+  // Replace underscores with spaces and capitalize each word
+  return label
+    .split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
 // Attach action listeners (approve, reject, view)
 function attachActionListeners() {
   document.querySelectorAll('.approve-btn').forEach(button => {
@@ -146,11 +155,11 @@ function updateRequestStatus(id, status) {
   });
 }
 
-// Format date
+//Format date
 function formatDate(dateString) {
   const options = { year: 'numeric', month: 'short', day: 'numeric' };
   return new Date(dateString).toLocaleDateString(undefined, options);
-}
+} 
 
 // Render status badge
 function renderStatusBadge(status) {
@@ -185,7 +194,8 @@ function openViewDetailsModal(id) {
 
       if (data.custom_fields.length > 0) {
         data.custom_fields.forEach(field => {
-          html += `<li><strong>${field.label}:</strong> ${field.value}</li>`;
+          const formattedLabel = formatLabel(field.label);
+          html += `<li><strong>${formattedLabel}:</strong> ${field.value}</li>`;
         });
       } else {
         html += `<li>No custom fields submitted.</li>`;

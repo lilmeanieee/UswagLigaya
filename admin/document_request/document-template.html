@@ -191,7 +191,7 @@
                                 <div class="flex-grow-1 search-bar">
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi bi-search"></i></span>
-                                        <input type="text" class="form-control" id="docuSearch"
+                                        <input type="text" class="form-control" id="templateSearch"
                                             placeholder="Search document type">
                                     </div>
                                 </div>
@@ -252,8 +252,8 @@
                                                     <label class="form-check-label" for="editFullNameField">Requester's Full Name</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="editPurposeRequestField" checked disabled />
-                                                    <label class="form-check-label" for="editPurposeRequestField">Purpose of Request</label>
+                                                    <input class="form-check-input" type="checkbox" id="editRequestedFor" checked disabled>
+                                                    <label class="form-check-label" for="editRequestedFor">Requested for</label>
                                                 </div>
                                             </div>
                                             <div id="editAdditionalFields">
@@ -262,19 +262,18 @@
                                                 <i class="bi bi-plus"></i> Add Custom Field
                                             </button>
                                         </div>
-                                        <div class="mb-3">                                        
-                                        <div class="alert alert-info py-2" role="alert">
-                                            <strong>Tip:</strong> Use placeholders (e.g., <code>$(field_name)</code>) in your document template to dynamically insert data from the document request.<br><br>
-                                            <strong>Here's how to map the custom fields to placeholders:</strong><br>
-                                            <ul>
-                                                <li>For any <strong>"Custom Field"</strong> you add, use the exact name you provide as the placeholder: 
-                                                e.g., if you add a custom field named "child_name", use <code>$(child_name)</code>)</li>
-                                                <li>For the <strong>current date</strong>, use the placeholder: <code>$(current_date)</code> to automatically insert today's date</li>
-                                            </ul>
-                                        </div>                                        
-                                        <label class="form-label">Upload Template (.doc/.docx)</label>
-                                        <input type="file" class="form-control" id="addTemplateFile" accept=".docx">
-                                    </div>
+                                        <div class="mb-3">
+                                            <div class="alert alert-info py-2" role="alert">
+                                                <strong>Tip:</strong> Use placeholders in your document template to dynamically insert data from the document request.<br><br>
+                                                <strong>Here's how to map the custom fields to placeholders:</strong><br>
+                                                <ul>
+                                                    <li>For any <strong>"Custom Field"</strong> you add, use its field key as the placeholder. The field key is generated from the field name by converting it to lowercase and replacing spaces and special characters with underscores (e.g., a field named "Child's Name" would have the placeholder `child_s_name`).</li>
+                                                    <li>For the <strong>current date</strong>, use the placeholder: `${current_date}` to automatically insert today's date.</li>
+                                                </ul>
+                                            </div>
+                                            <label class="form-label">Upload Template (.doc/.docx)</label>
+                                            <input type="file" class="form-control" id="addTemplateFile" accept=".docx">
+                                        </div>
 
                                     </form>
                                 </div>
@@ -323,8 +322,8 @@
                                                     <label class="form-check-label" for="fullNameField">Recipient's Full Name</label>
                                                 </div>
                                                 <div class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="purposeRequestField" checked disabled>
-                                                    <label class="form-check-label" for="purposeRequestField">Purpose of Request</label>
+                                                    <input class="form-check-input" type="checkbox" id="RequestedFor" checked disabled>
+                                                    <label class="form-check-label" for="RequestedFor">Requested for</label>
                                                 </div>
                                             </div>
                                             <div id="additionalFields">
@@ -335,7 +334,7 @@
                                         </div>
                                         </div>
                                         <div class="mb-3">
-                                            <label class="form-label">Uploaded Template (.doc/.docx)</label>
+                                            <label class="form-label">Upload New Template (.doc/.docx)</label>
                                             <p class="small text-muted mb-1">Current file: <span id="editFileHint">–</span></p>
                                             <input type="file" class="form-control" id="editTemplateFile" accept=".doc,.docx">
                                         </div>

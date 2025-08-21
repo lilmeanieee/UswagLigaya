@@ -63,7 +63,7 @@ try {
     }
 
     // Modified query to handle potential column name differences
-    // Based on your screenshot, using the correct table name: tbl_document_requests
+    // using the correct table name: tbl_document_requests
     $sql = "SELECT dr.id, dr.created_at, dr.status, dr.resident_id, dr.template_id,
                    COALESCE(dt.name, 'Unknown Document') AS document_type_name
             FROM tbl_document_requests dr

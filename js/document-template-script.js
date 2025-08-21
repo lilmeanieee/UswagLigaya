@@ -147,9 +147,9 @@ function addCustomField(mode){
   container.appendChild(div);
 }
 
-function populateTable(){
+function populateTable(templatesToDisplay = documentTypes){
   const tb=$('#documentTypesTable tbody'); tb.innerHTML='';
-  documentTypes.forEach(t=>{
+  templatesToDisplay.forEach(t=>{
     const badges=(t.customFields||[]).map(f=>
       `<span class="badge me-1 ${f.is_required?'bg-primary':'bg-secondary'}">
          ${f.label}<small>(${f.is_required?'Req':'Opt'})</small>
@@ -168,6 +168,8 @@ function populateTable(){
   tb.querySelectorAll('.edit-btn').forEach(b=>b.onclick=()=>openEditModal(+b.dataset.id));
   tb.querySelectorAll('.delete-btn').forEach(b=>b.onclick=()=>openDeleteModal(+b.dataset.id));
 }
+
+
 
 /* ---------- Search ---------- */
 function handleSearch(e) {
