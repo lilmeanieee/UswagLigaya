@@ -22,7 +22,7 @@
     <div class="container-fluid">
         <div class="d-flex ">
             <!-- Sidebar -->
-            <div class="sidebar colmin-vh-100 bg-dark text-white p-3">
+            <div class="sidebar min-vh-100 bg-dark text-white p-3">
                 <div class="logo pt-4 pb-1  mb-auto text-center">
                     <a href="#" class="text-white text-decoration-none">
                         <img src="../../asset/img/brgy logo.png" alt="">
@@ -30,6 +30,7 @@
                     </a>
                 </div>
                 <hr class="text-white">
+
                 <ul class="nav nav-pills flex-column mb-auto">
                     <!-- Dashboard -->
                     <li class="nav-item ">
@@ -60,7 +61,7 @@
                             data-bs-toggle="popover" data-bs-html="true" data-bs-placement="right" data-bs-content='
                                 <ul class="list-unstyled mb-0">
                                     <li><a href="../document_request/document-request-list.html" class="nav-link text-white">Document Request</a></li>
-                                    <li><a href="../document_request/document-template.html" class="nav-link list text-white">Add Document Template</a></li>
+                                    <li><a href="../document_request/document-template.html" class="nav-link list text-white"> Document Template</a></li>
                                 </ul>'>
                             <i class="bi bi-file-earmark-text"></i>
                         </a>
@@ -75,7 +76,7 @@
                             <li><a href="../document_request/document-request-list.html"
                                     class="nav-link list text-white">Document Request</a></li>
                             <li><a href="../document_request/document-template.html"
-                                    class="nav-link list text-white">Add Document Template</a></li>
+                                    class="nav-link list text-white"> Document Template</a></li>
                         </ul>
                     </li>
 
@@ -125,6 +126,32 @@
                     </li>
                     
 
+                    <!-- Reward Management -->
+                    <li class="nav-item dropdown">
+                        <!-- Popover for Mobile -->
+                        <a href="#" class="nav-link text-white d-lg-none mobile-popover" title="Manage Rewards"
+                            data-bs-toggle="popover" data-bs-html="true" data-bs-placement="right" data-bs-content='
+                                <ul class="list-unstyled mb-0">
+                                    <li><a href="../reward_management/redemption-request.html" class="nav-link list text-white">Redemption Request</a></li>
+                                    <li><a href="../reward_management/rewards-incentives.html" class="nav-link list text-white">Incentives</a></li>
+                                </ul>'>
+                            <i class="bi bi-gift"></i>
+                        </a>
+
+                        <!-- Normal dropdown for larger screens -->
+                        <a href="#" class="nav-link text-white dropdown-toggle d-none d-lg-flex"
+                            data-bs-toggle="collapse" data-bs-target="#reward_Dropdown">
+                            <i class="bi bi-gift me-2"></i>
+                            <span class="d-none d-lg-inline">Manage Rewards</span>
+                        </a>
+                        <ul class="collapse list-unstyled" id="reward_Dropdown">
+                            <li><a href="../reward_management/redemption-request.html"
+                                    class="nav-link list text-white">Redemption Request</a></li>
+                            <li><a href="../reward_management/rewards-incentives.html"
+                                    class="nav-link list text-white">Incentives</a></li>
+                        </ul>
+                    </li>
+
                     <!-- Volunteer Drive -->
                     <li class="nav-item ">
                         <a href="attendance-evaluation.html" class="nav-link active text-white">
@@ -133,6 +160,14 @@
                         </a>
                     </li>
 
+
+                    <!-- Brgy Projects -->
+                    <li class="nav-item ">
+                        <a href="../brgy_project/projects.html" class="nav-link text-white">
+                            <i class="bi bi-building me-2"></i>
+                            <span class="d-none d-lg-inline">Brgy Project</span>
+                        </a>
+                    </li>
                 </ul>
                 <!-- Settings -->
                 <hr class="text-white">
@@ -158,6 +193,51 @@
                     <!-- Content Header Title -->
                     <div class="d-flex justify-content-between align-items-center bg-dark text-white p-3">
                         <h4 class="mb-0">Volunteer Drive</h4>
+
+                        <!-- Notification Dropdown -->
+                        <div class="dropdown">
+                            <button class="btn btn-dark position-relative dropdown-toggle" type="button"
+                                id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-bell fs-5"></i>
+                                <span
+                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    3
+                                    <span class="visually-hidden">unread messages</span>
+                                </span>
+                            </button>
+                            <!-- Dropdown Menu -->
+                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start p-2 shadow"
+                                aria-labelledby="notificationDropdown" style="width: 300px;  overflow-y: auto;">
+                                <li class="fw-bold px-2 pb-1">Notifications</li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                
+                                <li class="mb-2">
+                                    <a class="dropdown-item small notif-item" href="#">
+                                        📄 Your Barangay Clearance is now ready for pickup.
+                                        <div class="text-muted small" id="notif-item-time">2 hrs ago</div>
+                                    </a>
+                                </li>
+                                <li class="mb-2">
+                                    <a class="dropdown-item small notif-item" href="#">
+                                        🎖️ You earned 10 points from a clean-up drive!
+                                        <div class="text-muted small" id="notif-item-time">Yesterday</div>
+                                    </a>
+                                </li>
+                                <li class="mb-2">
+                                    <a class="dropdown-item small notif-item" href="#">
+                                        🛠️ Complaint #00213 has been marked as resolved.
+                                        <div class="text-muted small" id="notif-item-time">3 days ago</div>
+                                    </a>
+                                </li>
+
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li><a class="dropdown-item text-center text-primary" href="notification.html">See all</a></li>
+                            </ul>
+                        </div>
                     </div>
                     <!-- End Content Header Title -->
 
