@@ -358,43 +358,120 @@ function gatherFullFormData() {
 
 //print the account info
 function printAccountInfo() {
-    const printContent = document.getElementById("accountInfoContent").innerHTML;
+    // Get the account data from localStorage or from the modal content
+    const newResidentData = JSON.parse(localStorage.getItem("newResidentAdded") || "[]");
+    
+    // If no new resident data, fallback to the modal content
+    let accountData = newResidentData;
+    if (!accountData.length) {
+        const tableRows = document.querySelectorAll("#accountInfoContent tbody tr");
+        accountData = Array.from(tableRows).map(row => {
+            const cells = row.querySelectorAll("td");
+            return {
+                residentCode: cells[0]?.textContent || "",
+                fullName: cells[1]?.textContent || "",
+                email: cells[2]?.textContent || "",
+                password: cells[3]?.textContent || ""
+            };
+        });
+    }
 
+    
+    let printContent = `
+        <div style="text-align: center; margin-bottom: 40px;">
+            <h2 style="font-weight: bold; text-transform: uppercase; margin-bottom: 20px; font-size: 18px;">
+                HOUSEHOLD ACCOUNT INFORMATION
+            </h2>
+        </div>
+        
+        <div style="margin-bottom: 30px; line-height: 1.6;">
+            <p>You may log in to your resident account at <u><strong>www.uswagligaya.com</strong></u>. Below are your account credentials:</p>
+        </div>
+        
+        <div style="margin-bottom: 30px;">
+    `;
+
+    
+    accountData.forEach((account, index) => {
+        if (index > 0) {
+            printContent += `<br><br>`;
+        }
+        
+        printContent += `
+            <div style="margin-bottom: 15px; line-height: 1.8;">
+                <p style="margin: 5px 0;"><strong>Resident's Name:</strong> ${account.fullName}</p>
+                <p style="margin: 5px 0;"><strong>Email:</strong> ${account.email}</p>
+                <p style="margin: 5px 0;"><strong>Password:</strong> ${account.password}</p>
+            </div>
+        `;
+    });
+
+    
+    printContent += `
+        </div>
+        
+        <div style="margin-top: 40px; padding-top: 20px; border-top: 1px solid #ccc;">
+            <p style="margin-bottom: 15px; font-weight: bold;">**Note:**</p>
+            <ul style="margin-left: 20px; line-height: 1.6;">
+                <li style="margin-bottom: 8px;">Please keep this information confidential.</li>
+                <li style="margin-bottom: 8px;">If you have any issues logging in, please proceed to the Barangay Hall and contact the IT personnel.</li>
+            </ul>
+        </div>
+    `;
+
+    // Create and open print window
     const printWindow = window.open('', '', 'width=800,height=600');
     printWindow.document.write(`
         <html>
         <head>
-            <title>Resident Account Information</title>
+            <title>Household Account Information</title>
             <style>
                 body {
                     font-family: Arial, sans-serif;
-                    margin: 20px;
+                    margin: 40px;
+                    font-size: 14px;
+                    line-height: 1.5;
+                    color: #333;
                 }
                 h2 {
-                    text-align: center;
-                    color: green;
+                    color: #000;
+                    margin: 0;
+                    padding: 0;
                 }
-                table {
-                    width: 100%;
-                    border-collapse: collapse;
-                    margin-top: 20px;
+                p {
+                    margin: 8px 0;
+                    color: #333;
                 }
-                th, td {
-                    border: 1px solid #333;
-                    padding: 8px;
-                    text-align: center;
+                strong {
+                    color: #000;
+                    font-weight: bold;
                 }
-                th {
-                    background-color: #f2f2f2;
+                ul {
+                    margin: 10px 0;
+                    padding-left: 0;
+                }
+                li {
+                    list-style-type: disc;
+                    margin-left: 20px;
+                    color: #333;
+                }
+                @media print {
+                    body {
+                        margin: 30px;
+                    }
+                    * {
+                        -webkit-print-color-adjust: exact !important;
+                        color-adjust: exact !important;
+                    }
                 }
             </style>
         </head>
         <body>
-            <h2>Resident Account Information</h2>
             ${printContent}
         </body>
         </html>
     `);
+    
     printWindow.document.close();
     printWindow.focus();
     printWindow.print();
@@ -405,10 +482,8 @@ function emphasizeModal(modalId) {
     const modal = document.getElementById(modalId);
     if (!modal) return;
 
-    // Add shake animation
     modal.classList.add("shake");
 
-    // Remove it after animation ends
     setTimeout(() => {
         modal.classList.remove("shake");
     }, 400);

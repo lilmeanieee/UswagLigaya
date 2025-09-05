@@ -181,6 +181,42 @@
                         <span class="d-none d-lg-inline">Sign out</span>
                     </a>
                 </div>
+                <!-- Sign Out Confirmation Modal -->
+                <div class="modal fade" id="signoutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="signoutModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header bg-warning text-dark">
+                                <h5 class="modal-title" id="signoutModalLabel">
+                                    <i class="bi bi-exclamation-triangle me-2"></i>
+                                    Confirm Sign Out
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="text-center mb-3">
+                                    <i class="bi bi-box-arrow-left text-warning" style="font-size: 3rem;"></i>
+                                </div>
+                                <div class="alert alert-warning d-flex align-items-center" role="alert">
+                                    <i class="bi bi-info-circle-fill me-2"></i>
+                                    <div>
+                                        <strong>Are you sure you want to sign out?</strong>
+                                    </div>
+                                </div>
+                                <p class="text-center mb-0">You will be logged out of the Barangay Ligaya Management System and redirected to the login page.</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                    <i class="bi bi-x-circle me-1"></i>
+                                    Cancel
+                                </button>
+                                <button type="button" class="btn btn-warning" id="confirmSignoutBtn">
+                                    <i class="bi bi-box-arrow-left me-1"></i>
+                                    Sign Out
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
             </div>
@@ -248,6 +284,7 @@
     <script src="../../js/logout-script.js"></script>
     <script src="../../js/document_issuance-script.js"></script>
     <script src="../../js/print-document-script.js"></script>
+    <script src="../../js/admin-signout.js"></script>
 </body>
 
 </html>
