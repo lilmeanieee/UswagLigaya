@@ -26,7 +26,7 @@
 }
 
 /* Tablet styles */
-@media (max-width: 992px)  {
+@media (max-width: 992px) {
     .demographics-card {
         width: 100%;
     }
@@ -158,4 +158,124 @@
 canvas {
     width: 100% !important;
     height: 300px !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.form-section {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.access-module {
+    border: 2px solid #e9ecef;
+    border-radius: 6px;
+    padding: 10px;
+    margin: 5px 0;
+    transition: all 0.3s;
+}
+
+.access-module:hover {
+    border-color: #0d6efd;
+}
+
+.access-module input:checked+label {
+    background-color: #e7f3ff;
+}
+
+.generated-field {
+    background-color: #f8f9fa;
+    border: 1px dashed #dee2e6;
+}
+
+.badge-status {
+    font-size: 0.8rem;
+}
+
+.admin-table th {
+    background-color: #495057;
+    color: white;
+    font-weight: 600;
+}
+
+.admin-card {
+    transition: transform 0.2s;
+}
+
+.admin-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.profile-pic-upload {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    border: 3px solid #dee2e6;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.3s;
+}
+
+.profile-pic-upload:hover {
+    border-color: #0d6efd;
+}
+
+.profile-pic-upload img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-pic-upload .upload-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.profile-pic-upload:hover .upload-overlay {
+    opacity: 1;
+}
+
+.profile-pic-upload input[type="file"] {
+    display: none;
+}
+
+.password-strength {
+    margin-top: 5px;
+}
+
+.password-strength .progress {
+    height: 5px;
+}
+
+.strength-weak {
+    background-color: #dc3545;
+}
+
+.strength-fair {
+    background-color: #fd7e14;
+}
+
+.strength-good {
+    background-color: #ffc107;
+}
+
+.strength-strong {
+    background-color: #28a745;
 }
