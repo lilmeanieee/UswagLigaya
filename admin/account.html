@@ -9,7 +9,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
@@ -19,29 +19,29 @@
             width: 280px;
             transition: width 0.3s;
         }
-        
+
         @media (max-width: 992px) {
             .sidebar {
                 width: 60px;
             }
         }
-        
+
         .main-content {
             margin-left: 0;
             padding: 0;
         }
-        
+
         .hidden {
             display: none !important;
         }
-        
+
         .form-section {
             background: #f8f9fa;
             border-radius: 8px;
             padding: 1.5rem;
             margin-bottom: 1rem;
         }
-        
+
         .access-module {
             border: 2px solid #e9ecef;
             border-radius: 6px;
@@ -49,37 +49,37 @@
             margin: 5px 0;
             transition: all 0.3s;
         }
-        
+
         .access-module:hover {
             border-color: #0d6efd;
         }
-        
-        .access-module input:checked + label {
+
+        .access-module input:checked+label {
             background-color: #e7f3ff;
         }
-        
+
         .generated-field {
             background-color: #f8f9fa;
             border: 1px dashed #dee2e6;
         }
-        
+
         .badge-status {
             font-size: 0.8rem;
         }
-        
+
         .admin-table th {
             background-color: #495057;
             color: white;
             font-weight: 600;
         }
-        
+
         .admin-card {
             transition: transform 0.2s;
         }
-        
+
         .admin-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
         }
 
         .profile-pic-upload {
@@ -110,7 +110,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0, 0, 0, 0.5);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -135,278 +135,250 @@
             height: 5px;
         }
 
-        .strength-weak { background-color: #dc3545; }
-        .strength-fair { background-color: #fd7e14; }
-        .strength-good { background-color: #ffc107; }
-        .strength-strong { background-color: #28a745; }
+        .strength-weak {
+            background-color: #dc3545;
+        }
+
+        .strength-fair {
+            background-color: #fd7e14;
+        }
+
+        .strength-good {
+            background-color: #ffc107;
+        }
+
+        .strength-strong {
+            background-color: #28a745;
+        }
     </style>
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="d-flex ">
-            <!-- Sidebar -->
-            <div class="sidebar min-vh-100 bg-dark text-white p-3">
-                <div class="logo pt-4 pb-1 mb-auto text-center">
-                    <a href="#" class="text-white text-decoration-none" title="Barangay Ligaya Management System">
-                        <img src="../asset/img/brgy logo.png" alt="">
-                        <span class="fs-4 d-none d-lg-inline">BLMS</span>
+    <!-- Sidebar -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <!-- Sidebar Wrapper -->
+    <div class="sidebar-wrapper" id="sidebarWrapper">
+        <div class="sidebar bg-dark">
+            <button class="close-sidebar d-lg-none" id="closeSidebar" aria-label="Close sidebar" title="Close sidebar">
+                <i class="bi bi-x-lg"></i>
+            </button>
+
+            <div class="logo pt-4 pb-1 mb-auto text-center">
+                <a href="#" class="text-white text-decoration-none" title="Barangay Ligaya Management System">
+                    <span class="fs-4 d-block mt-2">BLMS</span>
+                </a>
+            </div>
+            <hr class="text-white">
+
+            <ul class="nav flex-column mb-auto">
+                <!-- Dashboard -->
+                <li class="nav-item">
+                    <a href="dashboard.html" class="nav-link">
+                        <i class="bi bi-grid"></i>
+                        <span>Dashboard</span>
                     </a>
-                </div>
-                <hr class="text-white">
-                <ul class="nav nav-pills flex-column mb-auto">
-                    <!-- Dashboard -->
-                    <li class="nav-item">
-                        <a href="dashboard.html" class="nav-link text-white">
-                            <i class="bi bi-grid me-2"></i>
-                            <span class="d-none d-lg-inline">Dashboard</span>
-                        </a>
-                    </li>
+                </li>
 
-                    <!-- Account -->
-                    <li class="nav-item ">
-                        <a href="account.html" class="nav-link active text-white">
-                            <i class="bi bi-person-vcard-fill me-2"></i>
-                            <span class="d-none d-lg-inline">Account</span>
-                        </a>
-                    </li>
-                   <!-- Manage Residents -->
-                    <li class="nav-item">
-                        <a href="manage_residents/resident-info.html" class="nav-link text-white ">
-                            <i class="bi bi-people me-2"></i>
-                            <span class="d-none d-lg-inline">Manage Residents</span>
-                        </a>
-                    </li>
-
-                    <!-- Document Issuance-->
-                    <li class="nav-item dropdown">
-                        <!-- Popover for Mobile -->
-                        <a href="#" class="nav-link text-white d-lg-none mobile-popover" title="Document Issuance"
-                            data-bs-toggle="popover" data-bs-html="true" data-bs-placement="right" data-bs-content='
-                                <ul class="list-unstyled mb-0">
-                                    <li><a href="document_request/document-request-list.html" class="nav-link text-white">Document Request</a></li>
-                                    <li><a href="document_request/document-template.html" class="nav-link list text-white">Add Document Template</a></li>
-                                </ul>'>
-                            <i class="bi bi-file-earmark-text"></i>
-                        </a>
-
-                        <!-- Normal dropdown for larger screens -->
-                        <a href="#" class="nav-link text-white dropdown-toggle d-none d-lg-flex"
-                            data-bs-toggle="collapse" data-bs-target="#servicesDropdown">
-                            <i class="bi bi-file-earmark-text me-2"></i>
-                            <span class="d-none d-lg-inline">Document Issuance</span>
-                        </a>
-                        <ul class="collapse list-unstyled " id="servicesDropdown">
-                            <li><a href="document_request/document-request-list.html"
-                                    class="nav-link list text-white">Document Request</a></li>
-                            <li><a href="document_request/document-template.html" class="nav-link list text-white">Add
-                                    Document Template</a></li>
-                        </ul>
-                    </li>
-
-                    <!-- Announcement -->
-                    <li class="nav-item">
-                        <a href="announcement_admin.html" class="nav-link text-white">
-                            <i class="bi bi-megaphone me-2"></i>
-                            <span class="d-none d-lg-inline">Announcement</span>
-                        </a>
-                    </li>
-
-                    <!-- Manage Leaderboards -->
-                    <li class="nav-item dropdown">
-                        <!-- Popover for Mobile -->
-                        <a href="#" class="nav-link text-white d-lg-none mobile-popover" title="Manage Leaderboards"
-                            data-bs-toggle="popover" data-bs-html="true" data-bs-placement="right" data-bs-content='
-                                <ul class="list-unstyled mb-0">
-                                    <li><a href="manage_leaderboards/view-leaderboard.html" class="nav-link text-white">View Leaderboard</a></li>
-                                    <li><a href="manage_leaderboards/achievement&badges.html" class="nav-link text-white">Achievements & Badges</a></li>
-                                </ul>'>
-                            <i class="bi bi-trophy"></i>
-                        </a>
-
-                        <!-- Normal dropdown for larger screens -->
-                        <a href="#" class="nav-link text-white dropdown-toggle d-none d-lg-flex"
-                            data-bs-toggle="collapse" data-bs-target="#manageLB_Dropdown">
-                            <i class="bi bi-trophy me-2"></i>
-                            <span class="d-none d-lg-inline">Manage Leaderboards</span>
-                        </a>
-                        <ul class="collapse list-unstyled" id="manageLB_Dropdown">
-                            <li><a href="manage_leaderboards/view-leaderboard.html"
-                                    class="nav-link list text-white">View
-                                    Leaderboard</a></li>
-                            <li><a href="manage_leaderboards/achievement&badges.html"
-                                    class="nav-link list text-white">Achievements &
-                                    Badges</a></li>
-                        </ul>
-                    </li>
-
-                    <!-- Credit & Redeemable Points Conversion -->
-                    <li class="nav-item">
-                        <a href="credit_and_redeemable_point_system/conversion-settings.html"
-                            class="nav-link text-white ">
-                            <i class="bi bi-wallet me-2"></i>
-                            <span class="d-none d-lg-inline">Credit Points Conversion</span>
-                        </a>
-                    </li>
-
-
-                    <!-- Reward Management -->
-                    <li class="nav-item dropdown">
-                        <!-- Popover for Mobile -->
-                        <a href="#" class="nav-link text-white d-lg-none mobile-popover" title="Manage Rewards"
-                            data-bs-toggle="popover" data-bs-html="true" data-bs-placement="right" data-bs-content='
-                                <ul class="list-unstyled mb-0">
-                                    <li><a href="reward_management/redemption-request.html" class="nav-link list text-white">Redemption Request</a></li>
-                                    <li><a href="reward_management/rewards-incentives.html" class="nav-link list text-white">Incentives</a></li>
-                                </ul>'>
-                            <i class="bi bi-gift"></i>
-                        </a>
-
-                        <!-- Normal dropdown for larger screens -->
-                        <a href="#" class="nav-link text-white dropdown-toggle d-none d-lg-flex"
-                            data-bs-toggle="collapse" data-bs-target="#reward_Dropdown">
-                            <i class="bi bi-gift me-2"></i>
-                            <span class="d-none d-lg-inline">Manage Rewards</span>
-                        </a>
-                        <ul class="collapse list-unstyled" id="reward_Dropdown">
-                            <li><a href="reward_management/redemption-request.html"
-                                    class="nav-link list text-white">Redemption Request</a></li>
-                            <li><a href="reward_management/rewards-incentives.html"
-                                    class="nav-link list text-white">Incentives</a></li>
-                        </ul>
-                    </li>
-
-                    <!-- Volunteer Drive -->
-                    <li class="nav-item ">
-                        <a href="volunteer_drive/attendance-evaluation.html" class="nav-link text-white">
-                            <i class="bi bi-balloon-heart me-2"></i>
-                            <span class="d-none d-lg-inline">Volunteer Drive</span>
-                        </a>
-                    </li>
-
-
-                    <!-- Brgy Projects Tracking -->
-                    <li class="nav-item dropdown">
-                        <!-- Popover for Mobile -->
-                        <a href="#" class="nav-link text-white d-lg-none mobile-popover" title="Project Tracking"
-                            data-bs-toggle="popover" data-bs-html="true" data-bs-placement="right" data-bs-content='
-                                <ul class="list-unstyled mb-0">
-                                     <li><a href="brgy_project/projects.html"class="nav-link list text-white">Projects</a></li>
-                                   
-                                </ul>'>
-                            <i class="bi bi-building"></i>
-                        </a>
-
-                        <!-- Normal dropdown for larger screens -->
-                        <a href="#" class="nav-link text-white dropdown-toggle d-none d-lg-flex"
-                            data-bs-toggle="collapse" data-bs-target="#project_Dropdown">
-                            <i class="bi bi-building me-2"></i>
-                            <span class="d-none d-lg-inline">Project Tracking</span>
-                        </a>
-                        <ul class="collapse list-unstyled" id="project_Dropdown">
-                            <li><a href="brgy_project/projects.html" class="nav-link list text-white">Projects</a></li>
-                        </ul>
-                    </li>
-                </ul>
-
-
-                <!-- Settings -->
-                <hr class="text-white">
-                <div class="pt-4 pb-1 mb-auto">
-                    <a href="#" class="nav-link text-white">
-                        <i class="bi bi-gear me-2"></i>
-                        <span class="d-none d-lg-inline">Settings</span>
+                <!-- Account -->
+                <li class="nav-item">
+                    <a href="account.html" class="nav-link active">
+                        <i class="bi bi-person-vcard-fill"></i>
+                        <span>Account</span>
                     </a>
-                </div>
-                <!-- Sign out -->
-                <hr class="text-white">
-                <div class="pt-4 pb-1  mb-auto">
-                    <a href="#" class="nav-link text-white" id="logoutBtn">
-                        <i class="bi bi-box-arrow-left me-2"></i>
-                        <span class="d-none d-lg-inline">Sign out</span>
+                </li>
+
+                <!-- Manage Residents -->
+                <li class="nav-item">
+                    <a href="manage_residents/resident-info.html" class="nav-link ">
+                        <i class="bi bi-people"></i>
+                        <span>Manage Residents</span>
                     </a>
-                </div>
+                </li>
+
+                <!-- Document Issuance -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse"
+                        data-bs-target="#servicesDropdown">
+                        <i class="bi bi-file-earmark-text"></i>
+                        <span>Document Issuance</span>
+                    </a>
+                    <ul class="collapse list-unstyled" id="servicesDropdown">
+                        <li><a href="document_request/document-request-list.html" class="nav-link">Document Request</a>
+                        </li>
+                        <li><a href="document_request/document-template.html" class="nav-link">Document Template</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Announcement -->
+                <li class="nav-item">
+                    <a href="announcement_admin.html" class="nav-link">
+                        <i class="bi bi-megaphone"></i>
+                        <span>Announcement</span>
+                    </a>
+                </li>
+
+                <!-- Manage Leaderboards -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse"
+                        data-bs-target="#manageLB_Dropdown">
+                        <i class="bi bi-trophy"></i>
+                        <span>Manage Leaderboards</span>
+                    </a>
+                    <ul class="collapse list-unstyled" id="manageLB_Dropdown">
+                        <li><a href="manage_leaderboards/view-leaderboard.html" class="nav-link">View Leaderboard</a>
+                        </li>
+                        <li><a href="manage_leaderboards/achievement&badges.html" class="nav-link">Achievements &
+                                Badges</a></li>
+                    </ul>
+                </li>
+
+                <!-- Credit Points Conversion -->
+                <li class="nav-item">
+                    <a href="credit_and_redeemable_point_system/conversion-settings.html" class="nav-link">
+                        <i class="bi bi-wallet"></i>
+                        <span>Credit Points Conversion</span>
+                    </a>
+                </li>
+
+                <!-- Reward Management -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse"
+                        data-bs-target="#reward_Dropdown">
+                        <i class="bi bi-gift"></i>
+                        <span>Manage Rewards</span>
+                    </a>
+                    <ul class="collapse list-unstyled" id="reward_Dropdown">
+                        <li><a href="reward_management/redemption-request.html" class="nav-link">Redemption Request</a>
+                        </li>
+                        <li><a href="reward_management/rewards-incentives.html" class="nav-link">Incentives</a></li>
+                    </ul>
+                </li>
+
+                <!-- Volunteer Drive -->
+                <li class="nav-item">
+                    <a href="volunteer_drive/attendance-evaluation.html" class="nav-link">
+                        <i class="bi bi-balloon-heart"></i>
+                        <span>Volunteer Drive</span>
+                    </a>
+                </li>
+
+                <!-- Brgy Projects -->
+                <li class="nav-item">
+                    <a href="brgy_project/projects.html" class="nav-link">
+                        <i class="bi bi-building"></i>
+                        <span>Brgy Project</span>
+                    </a>
+                </li>
+
+                <!-- Manage Complaints -->
+                <li class="nav-item">
+                    <a href="complaints.html" class="nav-link">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        <span>Manage Complaints</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Settings -->
+            <hr class="text-white">
+            <div class="mb-auto">
+                <a href="#" class="nav-link">
+                    <i class="bi bi-gear"></i>
+                    <span>Settings</span>
+                </a>
             </div>
 
-
-            <!-- Main Content -->
-            <div class="main-content col min-vh-100">
-                <!-- Content Header Title -->
-                <div class="d-flex justify-content-between align-items-center bg-dark text-white p-3">
-                    <h4 class="mb-0">Administrator Account Management</h4>
-                </div>
-
-                <!-- Content -->
-                <div class="container-fluid p-4">
-                    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                        <h3>Administrator Accounts</h3>
-                        <div class="btn-toolbar mb-2 mb-md-0">
-                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createAdminModal">
-                                <i class="bi bi-person-plus me-2"></i>Create Administrator Account
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Filters Row -->
-                    <div class="d-flex flex-column flex-md-row gap-2 mb-4">
-                        <!-- Search Bar -->
-                        <div class="flex-grow-1">
-                            <div class="input-group">
-                                <span class="input-group-text"><i class="bi bi-search"></i></span>
-                                <input type="text" class="form-control" id="nameSearch" placeholder="Search by name or employee ID">
-                            </div>
-                        </div>
-
-                        <!-- Filter Dropdown -->
-                        <div class="dropdown">
-                            <select class="form-select" id="filterRole">
-                                <option value="">All Roles</option>
-                                <option value="Admin">Admin</option>
-                                <option value="Sub-admin">Sub-admin</option>
-                            </select>
-                        </div>
-
-                        <!-- Status Filter -->
-                        <div class="dropdown">
-                            <select class="form-select" id="filterStatus">
-                                <option value="">All Status</option>
-                                <option value="Active">Active</option>
-                                <option value="Suspended">Suspended</option>
-                                <option value="Deactivated">Deactivated</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Administrator Accounts Table (Desktop) -->
-                    <div class="d-none d-lg-block">
-                        <div class="table-responsive">
-                            <table class="table table-bordered table-striped table-hover align-middle admin-table">
-                                <thead>
-                                    <tr>
-                                        <th>Employee ID</th>
-                                        <th>Full Name</th>
-                                        <th>Position</th>
-                                        <th>Email</th>
-                                        <th>Contact</th>
-                                        <th>Role</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="adminTableBody">
-                                    <!-- Table content populated by JavaScript -->
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    <!-- Mobile Card Layout -->
-                    <div class="d-lg-none" id="adminCardsContainer">
-                        <!-- Cards populated by JavaScript -->
-                    </div>
-                </div>
+            <!-- Sign out -->
+            <hr class="text-white">
+            <div class="mb-auto">
+                <a href="#" class="nav-link" id="logoutBtn">
+                    <i class="bi bi-box-arrow-left"></i>
+                    <span>Sign out</span>
+                </a>
             </div>
         </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content col min-vh-100">
+        <!-- Content Header Title -->
+        <div class="d-flex justify-content-between align-items-center bg-dark text-white p-3">
+            <h4 class="mb-0">Administrator Account Management</h4>
+        </div>
+
+        <!-- Content -->
+        <div class="container-fluid p-4">
+            <div
+                class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h3>Administrator Accounts</h3>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createAdminModal">
+                        <i class="bi bi-person-plus me-2"></i>Create Administrator Account
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filters Row -->
+            <div class="d-flex flex-column flex-md-row gap-2 mb-4 filters-row">
+                <!-- Search Bar -->
+                <div class="flex-grow-1 search-bar">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" id="nameSearch" placeholder="Search by name">
+                    </div>
+                </div>
+
+                <!-- Filter Dropdown -->
+                <div class="dropdown">
+                    <select class="form-select" id="filterRole">
+                        <option value="">All Roles</option>
+                        <option value="Admin">Admin</option>
+                        <option value="Sub-admin">Sub-admin</option>
+                    </select>
+                </div>
+
+                <!-- Status Filter -->
+                <div class="dropdown">
+                    <select class="form-select" id="filterStatus">
+                        <option value="">All Status</option>
+                        <option value="Active">Active</option>
+                        <option value="Suspended">Suspended</option>
+                        <option value="Deactivated">Deactivated</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Administrator Accounts Table (Desktop) -->
+            <div class="d-none d-lg-block">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-striped table-hover align-middle admin-table">
+                        <thead>
+                            <tr>
+                                <th>Employee ID</th>
+                                <th>Full Name</th>
+                                <th>Position</th>
+                                <th>Email</th>
+                                <th>Contact</th>
+                                <th>Role</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminTableBody">
+                            <!-- Table content populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Mobile Card Layout -->
+            <div class="d-lg-none" id="adminCardsContainer">
+                <!-- Cards populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+    </div>
     </div>
 
     <!-- Create Administrator Modal -->
@@ -422,7 +394,8 @@
                         <!-- Profile Picture Upload -->
                         <div class="text-center mb-4">
                             <div class="profile-pic-upload" onclick="document.getElementById('profilePic').click()">
-                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23dee2e6' viewBox='0 0 16 16'%3E%3Cpath d='M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z'/%3E%3Cpath fill-rule='evenodd' d='M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z'/%3E%3C/svg%3E" alt="Profile" id="profilePreview">
+                                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%23dee2e6' viewBox='0 0 16 16'%3E%3Cpath d='M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z'/%3E%3Cpath fill-rule='evenodd' d='M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z'/%3E%3C/svg%3E"
+                                    alt="Profile" id="profilePreview">
                                 <div class="upload-overlay">
                                     <i class="bi bi-camera-fill fs-4"></i>
                                 </div>
@@ -434,7 +407,7 @@
                         <!-- Basic Information -->
                         <div class="form-section">
                             <h6 class="mb-3"><i class="bi bi-person-circle me-2"></i>Basic Information</h6>
-                            
+
                             <div class="row">
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">First Name *</label>
@@ -463,11 +436,11 @@
                                         <option value="Records Officer">Records Officer</option>
                                     </select>
                                 </div>
-                               <div class="col-md-6 mb-3">
+                                <div class="col-md-6 mb-3">
                                     <label class="form-label">Committee</label>
                                     <select class="form-select" id="committee" name="committee">
                                         <option value="">Select Committee</option>
-                                        
+
                                     </select>
                                 </div>
                             </div>
@@ -475,11 +448,13 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Employee ID *</label>
-                                    <input type="text" class="form-control" id="employeeId" name="employeeId" placeholder="e.g., BRG2024001A" required>
+                                    <input type="text" class="form-control" id="employeeId" name="employeeId"
+                                        placeholder="e.g., BRG2024001A" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">Contact Number *</label>
-                                    <input type="tel" class="form-control" id="contactNumber" name="contactNumber" pattern="[0-9]{11}" placeholder="09XXXXXXXXX" required>
+                                    <input type="tel" class="form-control" id="contactNumber" name="contactNumber"
+                                        pattern="[0-9]{11}" placeholder="09XXXXXXXXX" required>
                                 </div>
                             </div>
                         </div>
@@ -487,7 +462,7 @@
                         <!-- System Access -->
                         <div class="form-section">
                             <h6 class="mb-3"><i class="bi bi-shield-check me-2"></i>System Access</h6>
-                            
+
                             <div class="mb-3">
                                 <label class="form-label">Access Role *</label>
                                 <select class="form-select" id="accessRole" name="accessRole" required>
@@ -498,18 +473,19 @@
                             </div>
 
                             <!-- Module Access (for Sub-admin only) -->
-                            
+
                             <div id="moduleAccessSection" class="hidden">
                                 <label class="form-label">Assigned Modules *</label>
                                 <div class="row">
                                     <!-- Modules will be populated dynamically by JavaScript -->
                                 </div>
-                                <small class="form-text text-muted">Select at least one module for Sub-admin access</small>
+                                <small class="form-text text-muted">Select at least one module for Sub-admin
+                                    access</small>
                             </div>
                         </div>
                     </form>
                 </div>
-                
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     <button type="button" class="btn btn-primary" id="createAdminBtn">Create Account</button>
@@ -519,7 +495,8 @@
     </div>
 
     <!-- Password Verification Modal -->
-    <div class="modal fade" id="passwordVerificationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1">
+    <div class="modal fade" id="passwordVerificationModal" data-bs-backdrop="static" data-bs-keyboard="false"
+        tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header bg-warning text-dark">
@@ -528,17 +505,21 @@
                 <div class="modal-body">
                     <div class="alert alert-info">
                         <i class="bi bi-shield-lock me-2"></i>
-                        <strong>Security Check:</strong> Please enter your current password to create a new administrator account.
+                        <strong>Security Check:</strong> Please enter your current password to create a new
+                        administrator account.
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Current Password *</label>
-                        <input type="password" class="form-control" id="currentPassword" placeholder="Enter your current password">
+                        <input type="password" class="form-control" id="currentPassword"
+                            placeholder="Enter your current password">
                         <div class="invalid-feedback" id="passwordError"></div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" onclick="cancelPasswordVerification()">Cancel</button>
-                    <button type="button" class="btn btn-warning" id="verifyPasswordBtn">Verify & Create Account</button>
+                    <button type="button" class="btn btn-secondary"
+                        onclick="cancelPasswordVerification()">Cancel</button>
+                    <button type="button" class="btn btn-warning" id="verifyPasswordBtn">Verify & Create
+                        Account</button>
                 </div>
             </div>
         </div>
@@ -570,7 +551,8 @@
                             <div class="col-sm-4"><strong>Temporary Password:</strong></div>
                             <div class="col-sm-8">
                                 <span id="successPassword" class="font-monospace"></span>
-                                <button type="button" class="btn btn-sm btn-outline-secondary ms-2" onclick="copyPassword()" title="Copy Password">
+                                <button type="button" class="btn btn-sm btn-outline-secondary ms-2"
+                                    onclick="copyPassword()" title="Copy Password">
                                     <i class="bi bi-clipboard"></i>
                                 </button>
                             </div>
@@ -588,46 +570,49 @@
         </div>
     </div>
     <!-- Sign Out Confirmation Modal -->
-<div class="modal fade" id="signoutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="signoutModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header bg-warning text-dark">
-                <h5 class="modal-title" id="signoutModalLabel">
-                    <i class="bi bi-exclamation-triangle me-2"></i>
-                    Confirm Sign Out
-                </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="text-center mb-3">
-                    <i class="bi bi-box-arrow-left text-warning" style="font-size: 3rem;"></i>
+    <div class="modal fade" id="signoutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="signoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-warning text-dark">
+                    <h5 class="modal-title" id="signoutModalLabel">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        Confirm Sign Out
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="alert alert-warning d-flex align-items-center" role="alert">
-                    <i class="bi bi-info-circle-fill me-2"></i>
-                    <div>
-                        <strong>Are you sure you want to sign out?</strong>
+                <div class="modal-body">
+                    <div class="text-center mb-3">
+                        <i class="bi bi-box-arrow-left text-warning" style="font-size: 3rem;"></i>
                     </div>
+                    <div class="alert alert-warning d-flex align-items-center" role="alert">
+                        <i class="bi bi-info-circle-fill me-2"></i>
+                        <div>
+                            <strong>Are you sure you want to sign out?</strong>
+                        </div>
+                    </div>
+                    <p class="text-center mb-0">You will be logged out of the Barangay Ligaya Management System and
+                        redirected to the login page.</p>
                 </div>
-                <p class="text-center mb-0">You will be logged out of the Barangay Ligaya Management System and redirected to the login page.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                    <i class="bi bi-x-circle me-1"></i>
-                    Cancel
-                </button>
-                <button type="button" class="btn btn-warning" id="confirmSignoutBtn">
-                    <i class="bi bi-box-arrow-left me-1"></i>
-                    Sign Out
-                </button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle me-1"></i>
+                        Cancel
+                    </button>
+                    <button type="button" class="btn btn-warning" id="confirmSignoutBtn">
+                        <i class="bi bi-box-arrow-left me-1"></i>
+                        Sign Out
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-</body>
-
+    
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/account_admin-script.js"></script>
     <script src="../js/admin-signout.js"></script>
+</body>
+
 
 </html>

@@ -7,11 +7,15 @@
     <title>Rewards</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../css/res-navbar.css">
     <link rel="stylesheet" href="../css/res-redeem-rewards-style.css">
+    <link rel="stylesheet" href="../css/res-profile-style.css">
+    <link rel="stylesheet" href="../css/res-notif-general.css">
 </head>
 
 <body>
@@ -24,7 +28,8 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-logo">
-                    <a class="navbar-brand" href="#">Resident Portal</a>
+                    <img src="../asset/img/brgy_official_seal.png" alt="Barangay Ligaya official seal">
+                    <a class="me-auto navbar-brand " href="../index.html">Ligaya</a>
                 </div>
             </div>
 
@@ -60,21 +65,59 @@
                 </div>
             </div>
 
-            <!-- Profile dropdown -->
+            <!-- Profile & notification dropdown -->
             <div class="d-flex align-items-center">
-                <div class="dropdown user-dropdown" id="userDropdown">
-                    <button class="btn dropdown-toggle user-icon-button" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        <img src="/UswagLigaya/asset/img/default_acc_icon.png" alt="User" class="user-icon">
+                <!-- Notification Bell -->
+                <div class="nav-item dropdown " id="notificationIcon">
+                    <button class="btn btn-outline-secondary position-relative" type="button" data-bs-toggle="dropdown"
+                        id="notificationBell">
+                        <i class="fas fa-bell"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                            id="notificationCount">
+                            3
+                        </span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end notification-dropdown" id="notificationDropdown">
+                        <div class="dropdown-header d-flex justify-content-between align-items-center">
+                            <span>Notifications</span>
+                            <button class="btn btn-sm btn-link text-decoration-none" onclick="markAllAsRead()">
+                                Mark all as read
+                            </button>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div id="notificationList">
+                            <!-- Notifications will be populated here -->
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-footer text-center">
+                            <a href="notification.html" class="text-decoration-none" id="seeAllNotifications">
+                                See All Notifications
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dropdown user-dropdown ms-2" id="userDropdown">
+                    <button class="btn p-0 border-0 bg-transparent position-relative" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <!-- Profile image -->
+                        <img src="../asset/img/default_acc_icon.png" alt="User" class="user-icon-rounded">
+
+                        <!-- Dropdown arrow overlay -->
+                        <span class="dropdown-arrow-icon">
+                            <i class="bi bi-chevron-down"></i>
+                        </span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
                             <h6 class="dropdown-header user-name" id="userName">User Name</h6>
                         </li>
-                        <li><a class="dropdown-item" href="index.html">Dashboard</a></li>
+                        <li><a class="dropdown-item" href="dashboard.html">Dashboard</a></li>
                         <li><a class="dropdown-item" href="convert-points.html">Convert Points</a></li>
                         <li><a class="dropdown-item" href="redeem-rewards.html">Redeem Rewards</a></li>
-                        <li><a class="dropdown-item" href="document-request/document-request.html">Document Requests</a></li>
+                        <li><a class="dropdown-item" href="document-request/document-request.html">Document Requests</a>
+                        </li>
+                        <li><a class="dropdown-item" href="complaints.html">Submit Complaints</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -98,57 +141,116 @@
                     <div class="card-body">
                         <div class="row align-items-center">
                             <div class="col-md-6 ps-4">
-                                <h2 class="mb-1">Rewards Center</h2>
+                                <h2 class="mb-1">Rewards/Incentives Center</h2>
                                 <p class="text-muted">Redeem your points for exciting rewards!</p>
                             </div>
                             <div class="col-md-6">
                                 <div class="row text-center">
                                     <div class="col-6">
-                                        <div class="p-3 rounded bg-white shadow-sm h-100 d-flex flex-column justify-content-between">
+                                        <div
+                                            class="p-3 rounded bg-white shadow-sm h-100 d-flex flex-column justify-content-between">
                                             <div class="">
                                                 <h5 class="text-primary mb-1">Credit Points</h5>
-                                                <h3 class="mb-0" id="user-credit-points">0</h3>
+                                                <h3 class="mb-0" id="creditPoints">0</h3>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-6">
-                                        <div class="p-3 rounded bg-white shadow-sm h-100 d-flex flex-column justify-content-between">
+                                        <div
+                                            class="p-3 rounded bg-white shadow-sm h-100 d-flex flex-column justify-content-between">
                                             <div>
                                                 <h5 class="text-success mb-1">Redeemable Points</h5>
-                                                <h3 class="mb-0" id="user-redeemable-points">0</h3>
+                                                <h3 class="mb-0" id="redeemablePoints">0</h3>
                                             </div>
-                                            <button class="btn btn-sm btn-outline-success mt-2" data-bs-toggle="modal" data-bs-target="#convertPointsModal">
+                                            <button class="btn btn-sm btn-outline-success mt-2" data-bs-toggle="modal"
+                                                data-bs-target="#convertPointsModal">
                                                 <i class="fas fa-exchange-alt me-1"></i> Convert More
                                             </button>
                                         </div>
                                     </div>
                                 </div>
-                                
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
         <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <!-- goods -->
             <li class="nav-item" role="presentation">
                 <button class="nav-link active" id="home-tab" data-bs-toggle="tab"
                     data-bs-target="#availableRewards-tab-pane" type="button" role="tab"
-                    aria-controls="availableRewards-tab-pane" aria-selected="true">Available Rewards</button>
+                    aria-controls="availableRewards-tab-pane" aria-selected="true">Goods</button>
             </li>
+            <!-- ticket -->
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
-                    data-bs-target="#redeemedRewards-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane"
-                    aria-selected="false">Redeemed Rewards</button>
+                <button class="nav-link" id="ticket-tab" data-bs-toggle="tab" data-bs-target="#ticket-tab-pane"
+                    type="button" role="tab" aria-controls="ticket-tab" aria-selected="true">Ticket</button>
+            </li>
+            <!-- priority -->
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="priorityStab-tab" data-bs-toggle="tab"
+                    data-bs-target="#priorityStab-tab-pane" type="button" role="tab" aria-controls="priorityStab-tab"
+                    aria-selected="true">Priority Stab</button>
+            </li>
+            <!-- redeemed rewards -->
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="redeemedRewards-tab" data-bs-toggle="tab"
+                    data-bs-target="#redeemedRewards-tab-pane" type="button" role="tab"
+                    aria-controls="redeemedRewards-tab" aria-selected="false">Redeemed Rewards</button>
             </li>
         </ul>
-
-       
 
         <div id="rewards-container" class="rewards-grid">
             <div class="loading">Loading rewards...</div>
         </div>
 
+        <!-- ticket -->
+        <div class="tab-pane fade" id="ticket-tab-pane" role="tabpanel" aria-labelledby="ticket-tab" tabindex="0">
+            <!-- redeemed rewards card content -->
+            <div class="row mb-4">
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <span class="badge bg-success mb-2">75 Redeemable Points</span>
+                            <h5 class="card-title">Community Center Rental</h5>
+                            <p class="card-text">Free one-time rental of the community center for your private event (4
+                                hours).</p>
+                            <div class="d-grid">
+                                <button class="btn btn-success" disabled>
+                                    <i class="fas fa-gift me-1"></i> Redeemed
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- priority -->
+        <div class="tab-pane fade" id="priorityStab-tab-pane" role="tabpanel" aria-labelledby="priority-tab"
+            tabindex="0">
+            <!-- redeemed rewards card content -->
+            <div class="row mb-4">
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <span class="badge bg-success mb-2">75 Redeemable Points</span>
+                            <h5 class="card-title">Community Center Rental</h5>
+                            <p class="card-text">Free one-time rental of the community center for your private event (4
+                                hours).</p>
+                            <div class="d-grid">
+                                <button class="btn btn-success" disabled>
+                                    <i class="fas fa-gift me-1"></i> Redeemed
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
         <!-- redeemed rewards tab -->
         <div class="tab-pane fade" id="redeemedRewards-tab-pane" role="tabpanel" aria-labelledby="redeem-rewards-tab"
             tabindex="0">
@@ -173,8 +275,9 @@
             </div>
         </div>
 
-         <!-- Convert Points Modal -->
-         <div class="modal fade" id="convertPointsModal" tabindex="-1">
+        <!-- Convert Points Modal -->
+        <div class="modal fade" id="convertPointsModal" tabindex="-1" data-bs-backdrop="static"
+            data-bs-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -187,7 +290,7 @@
                                 <div class="card bg-light">
                                     <div class="card-body text-center">
                                         <h6>Available Credits</h6>
-                                        <h3 class="text-primary">350</h3>
+                                        <h3 class="text-primary" id="modalAvailableCredit"></h3>
                                     </div>
                                 </div>
                             </div>
@@ -195,7 +298,7 @@
                                 <div class="card bg-light">
                                     <div class="card-body text-center">
                                         <h6>Redeemable Points</h6>
-                                        <h3 class="text-success">120</h3>
+                                        <h3 class="text-success" id="modalRedeemablePoints"></h3>
                                     </div>
                                 </div>
                             </div>
@@ -203,16 +306,14 @@
 
                         <form>
                             <div class="mb-3">
-                                <label for="creditPoints" class="form-label">Credit Points to Convert</label>
-                                <input type="number" class="form-control" id="creditPoints" min="10" max="350"
+                                <label for="creditPointsToConvert" class="form-label">Credit Points to Convert</label>
+                                <input type="number" class="form-control" id="creditPointsToConvert" min="10" max="350"
                                     step="10">
-                                <div class="form-text">Minimum conversion: 10 points. Conversion rate: 1 credit = 0.5
-                                    redeemable points.</div>
                             </div>
                             <div class="mb-3">
                                 <label for="redeemableResult" class="form-label">You will receive</label>
                                 <input type="text" class="form-control" id="redeemableResult"
-                                    value="0 redeemable points" readonly>
+                                    value="0 redeemable points" disabled>
                             </div>
                         </form>
                     </div>
@@ -243,14 +344,18 @@
 
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="/UswagLigaya/js/redeem-reward-resident/get-rewards.js"></script>
-    <script src="/UswagLigaya/js/resident-dashboard.js"></script>
-    <script src="/UswagLigaya/js/resident-credits-conversion.js"></script>
-    <script src="/UswagLigaya/js/navbar-login-script.js"></script>
-    <script src="/UswagLigaya/js/login-status-script.js"></script>
-    <script src="/UswagLigaya/js/logout-script.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+    <script src="../js/redeem-reward-resident/get-rewards.js"></script>
+    <script src="../js/resident-dashboard.js"></script>
+    <script src="../js/resident-credits-conversion.js"></script>
+    <script src="../js/navbar-login-script.js"></script>
+    <script src="../js/login-status-script.js"></script>
+    <script src="../js/logout-script.js"></script>
+
+
 </body>
-    
+
 
 </html>

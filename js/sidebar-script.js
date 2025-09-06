@@ -1,18 +1,40 @@
+// Hamburger menu functionality
 document.addEventListener('DOMContentLoaded', function () {
-    // Only activate popovers if screen is small
-    if (window.innerWidth < 990) {
-        let popoverTriggerList = [].slice.call(document.querySelectorAll('.mobile-popover'))
-        popoverTriggerList.map(function (popoverTriggerEl) {
-            return new bootstrap.Popover(popoverTriggerEl)
-        })
-    }
-});
+    const hamburgerMenu = document.getElementById('hamburgerMenu');
+    const sidebarWrapper = document.getElementById('sidebarWrapper');
+    const sidebarOverlay = document.getElementById('sidebarOverlay');
+    const closeSidebar = document.getElementById('closeSidebar');
 
-document.addEventListener('DOMContentLoaded', function () {
-    if (window.innerWidth < 990) {
-        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-        tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl);
-        });
+    function openSidebar() {
+        sidebarWrapper.classList.add('show');
+        sidebarOverlay.classList.add('show');
+        document.body.style.overflow = 'hidden';
     }
+
+    function closeSidebarFn() {
+        sidebarWrapper.classList.remove('show');
+        sidebarOverlay.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    hamburgerMenu.addEventListener('click', openSidebar);
+    closeSidebar.addEventListener('click', closeSidebarFn);
+    sidebarOverlay.addEventListener('click', closeSidebarFn);
+
+    // Close sidebar when clicking on a navigation link (mobile)
+    const navLinks = document.querySelectorAll('.sidebar .nav-link:not(.dropdown-toggle)');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (window.innerWidth < 992) {
+                closeSidebarFn();
+            }
+        });
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', function () {
+        if (window.innerWidth >= 992) {
+            closeSidebarFn();
+        }
+    });
 });

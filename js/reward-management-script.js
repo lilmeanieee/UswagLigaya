@@ -1,8 +1,8 @@
 // Mock data for development purposes
 const mockPendingRequests = [
-    { id: 'REQ001', date: '2025-04-10', resident: 'Juan', reward: 'Barangay Certificate', points: 500, status: 'pending' },
-    { id: 'REQ002', date: '2025-04-11', resident: 'Jane Smith', reward: 'Barangay Certificate', points: 300, status: 'pending' },
-     { id: 'REQ004', date: '2025-04-13', resident: 'Anna Rose', reward: 'Grocery Voucher', points: 400, status: 'pending' },
+    { id: 'REQ001', date: '2025-04-10', resident: 'Juan', reward: 'Barangay Certificate', category: 'goods', points: 500, status: 'pending' },
+    { id: 'REQ002', date: '2025-04-11', resident: 'Jane Smith', reward: 'Barangay Certificate', category: 'goods', points: 300, status: 'pending' },
+     { id: 'REQ004', date: '2025-04-13', resident: 'Anna Rose', reward: 'Grocery Voucher', category: 'goods', points: 400, status: 'pending' },
  ];
 
 const mockRewards = [
@@ -85,6 +85,7 @@ function loadPendingRequests() {
             <td>${request.date}</td>
             <td>${request.resident}</td>
             <td>${request.reward}</td>
+            <td>${request.category}</td>
             <td>${request.points}</td>
             <td><span class="badge bg-warning text-dark">Pending</span></td>
             <td class="action-buttons">
