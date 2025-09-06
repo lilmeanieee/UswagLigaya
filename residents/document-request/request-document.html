@@ -7,11 +7,11 @@
     <title>Request a Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    </head>
+</head>
 
 <body>
-    <div class="container py-5">
-        <h2 class="mb-4 text-center"> Request a Barangay Document</h2>
+    <div class="container reqDocu-container py-5">
+        <h2 class="mb-4 text-center iframe-header"> Request a Barangay Document</h2>
 
         <form id="documentRequestForm" method="POST" enctype="multipart/form-data" class="card p-4 shadow-sm">
             <div class="mb-3">
@@ -24,7 +24,8 @@
             <div id="customFieldsSection" class="border p-3 mb-4 rounded" style="display: none;">
                 <div class="mb-3">
                     <p class="text-danger small">
-                        <i class="bi bi-info-circle-fill me-1"></i> The fields below will be directly inserted into your document. Please ensure accuracy to prevent rejections.
+                        <i class="bi bi-info-circle-fill me-1"></i> The fields below will be directly inserted into your
+                        document. Please ensure accuracy to prevent rejections.
                     </p>
                     <div id="customFieldsContainer"></div>
                 </div>
@@ -60,7 +61,40 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script src="../../js/res-request-document.js"></script>
-    
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if we're in an iframe
+            if (window.parent !== window) {
+                document.body.classList.add('in-iframe');
+            }
+            
+            // Handle form submission
+            const form = document.getElementById('documentRequestForm');
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Your form submission logic here
+                // For example: collect form data, send to server, etc.
+                
+                // Simulate form processing
+                console.log('Form submitted successfully');
+                
+                // After successful submission, notify parent window to close modal
+                if (window.parent !== window) {
+                    window.parent.postMessage({
+                        type: 'formSubmitted',
+                        data: 'success'
+                    }, '*');
+                }
+                
+                // Optional: Reset form for next use
+                form.reset();
+            });
+        });
+    </script>
+
+
 </body>
 
 </html>

@@ -17,333 +17,351 @@
 </head>
 
 <body>
-    <div class="container-fluid">
-        <div class="d-flex ">
-            <!-- Sidebar -->
-            <div class="sidebar min-vh-100 bg-dark text-white p-3">
-                <div class="logo pt-4 pb-1  mb-auto text-center">
-                    <a href="#" class="text-white text-decoration-none">
-                        <img src="../../asset/img/brgy logo.png" alt="">
-                        <span class="fs-4 d-none d-lg-inline">BLMS</span>
+    <!-- Sidebar -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <!-- Sidebar Wrapper -->
+    <div class="sidebar-wrapper" id="sidebarWrapper">
+        <div class="sidebar bg-dark">
+            <button class="close-sidebar d-lg-none" id="closeSidebar" aria-label="Close sidebar" title="Close sidebar">
+                <i class="bi bi-x-lg"></i>
+            </button>
+
+            <div class="logo pt-4 pb-1 mb-auto text-center">
+                <a href="#" class="text-white text-decoration-none" title="Barangay Ligaya Management System">
+                    <span class="fs-4 d-block mt-2">BLMS</span>
+                </a>
+            </div>
+            <hr class="text-white">
+
+            <ul class="nav flex-column mb-auto">
+                <!-- Dashboard -->
+                <li class="nav-item">
+                    <a href="../dashboard.html" class="nav-link ">
+                        <i class="bi bi-grid"></i>
+                        <span>Dashboard</span>
                     </a>
-                </div>
-                <hr class="text-white">
+                </li>
 
-                <ul class="nav nav-pills flex-column mb-auto">
-                    <!-- Dashboard -->
-                    <li class="nav-item ">
-                        <a href="../dashboard.html" class="nav-link text-white">
-                            <i class="bi bi-grid me-2"></i>
-                            <span class="d-none d-lg-inline">Dashboard</span>
-                        </a>
-                    </li>
-                    <!-- Account -->
-                    <li class="nav-item ">
-                        <a href="../account.html" class="nav-link text-white">
-                            <i class="bi bi-person-vcard-fill me-2"></i>
-                            <span class="d-none d-lg-inline">Account</span>
-                        </a>
-                    </li>
-                    <!-- Manage Residents -->
-                    <li class="nav-item ">
-                        <a href="../manage_residents/resident-info.html" class="nav-link text-white">
-                            <i class="bi bi-people me-2"></i>
-                            <span class="d-none d-lg-inline">Manage Residents</span>
-                        </a>
-                    </li>
-
-                    <!-- Document Issuance -->
-                    <li class="nav-item dropdown">
-                        <!-- Popover for Mobile -->
-                        <a href="#" class="nav-link active text-white d-lg-none mobile-popover"
-                            title="Document Issuance" data-bs-toggle="popover" data-bs-html="true"
-                            data-bs-placement="right" data-bs-content='
-                                <ul class="list-unstyled mb-0">
-                                    <li><a href="document-request-list.html" class="nav-link nav-link-active list text-white">Document Requests</a></li>
-                                    <li><a href="document-template.html" class="nav-link list text-white"> Document Template</a></li>
-                                </ul>'>
-                            <i class="bi bi-file-earmark-text"></i>
-                        </a>
-
-                        <!-- Normal dropdown for larger screens -->
-                        <a href="#" class="nav-link active text-white dropdown-toggle d-none d-lg-flex"
-                            data-bs-toggle="collapse" data-bs-target="#servicesDropdown">
-                            <i class="bi bi-file-earmark-text me-2"></i>
-                            <span class="d-none d-lg-inline">Document Issuance</span>
-                        </a>
-                        <ul class="collapse list-unstyled " id="servicesDropdown">
-                            <li><a href="document-request-list.html"
-                                    class="nav-link list nav-link-active text-white">Document Requests</a></li>
-                            <li><a href="document-template.html" class="nav-link list text-white"> Document
-                                    Template</a></li>
-                        </ul>
-                    </li>
-
-
-                    <!-- Announcement -->
-                    <li class="nav-item ">
-                        <a href="../announcement_admin.html" class="nav-link text-white">
-                            <i class="bi bi-megaphone me-2"></i>
-                            <span class="d-none d-lg-inline">Announcement</span>
-                        </a>
-                    </li>
-
-                    <!-- Community-->
-
-                    <!-- Manage Leaderboards-->
-                    <li class="nav-item dropdown">
-                        <!-- Popover for Mobile -->
-                        <a href="#" class="nav-link text-white d-lg-none mobile-popover" title="Manage Leaderboards"
-                            data-bs-toggle="popover" data-bs-html="true" data-bs-placement="right" data-bs-content='
-                                <ul class="list-unstyled mb-0">
-                                    <li><a href="../manage_leaderboards/view-leaderboard.html" class="nav-link text-white">View Leaderboard</a></li>
-                                   <li><a href="../manage_leaderboards/achievement&badges.html" class="nav-link text-white">Achievements & Badges</a></li>
-                                </ul>'>
-                            <i class="bi bi-trophy"></i>
-                        </a>
-
-                        <!-- Normal dropdown for larger screens -->
-                        <a href="#" class="nav-link text-white dropdown-toggle d-none d-lg-flex"
-                            data-bs-toggle="collapse" data-bs-target="#manageLB_Dropdown">
-                            <i class="bi bi-trophy me-2"></i>
-                            <span class="d-none d-lg-inline">Manage Leaderboards</span>
-                        </a>
-                        <ul class="collapse list-unstyled" id="manageLB_Dropdown">
-                            <li><a href="../manage_leaderboards/view-leaderboard.html"
-                                    class="nav-link list text-white">View
-                                    Leaderboard</a></li>
-                            <li><a href="../manage_leaderboards/achievement&badges.html"
-                                    class="nav-link list text-white">Achievements &
-                                    Badges</a></li>
-                        </ul>
-                    </li>
-
-                    <!-- Credit & Redeemable Points Conversion -->
-                    <li class="nav-item">
-                        <a href="../credit_and_redeemable_point_system/conversion-settings.html"
-                            class="nav-link text-white ">
-                            <i class="bi bi-wallet me-2"></i>
-                            <span class="d-none d-lg-inline">Credit Points Conversion</span>
-                        </a>
-                    </li>
-
-
-                    <!-- Reward Management -->
-                    <li class="nav-item dropdown">
-                        <!-- Popover for Mobile -->
-                        <a href="#" class="nav-link text-white d-lg-none mobile-popover" title="Manage Rewards"
-                            data-bs-toggle="popover" data-bs-html="true" data-bs-placement="right" data-bs-content='
-                                <ul class="list-unstyled mb-0">
-                                    <li><a href="../reward_management/redemption-request.html" class="nav-link list text-white">Redemption Request</a></li>
-                                    <li><a href="../reward_management/rewards-incentives.html" class="nav-link list text-white">Incentives</a></li>
-                                </ul>'>
-                            <i class="bi bi-gift"></i>
-                        </a>
-
-                        <!-- Normal dropdown for larger screens -->
-                        <a href="#" class="nav-link text-white dropdown-toggle d-none d-lg-flex"
-                            data-bs-toggle="collapse" data-bs-target="#reward_Dropdown">
-                            <i class="bi bi-gift me-2"></i>
-                            <span class="d-none d-lg-inline">Manage Rewards</span>
-                        </a>
-                        <ul class="collapse list-unstyled" id="reward_Dropdown">
-                            <li><a href="../reward_management/redemption-request.html"
-                                    class="nav-link list text-white">Redemption Request</a></li>
-                            <li><a href="../reward_management/rewards-incentives.html"
-                                    class="nav-link list text-white">Incentives</a></li>
-                        </ul>
-                    </li>
-
-                    <!-- Volunteer Drive -->
-                    <li class="nav-item ">
-                        <a href="../volunteer_drive/attendance-evaluation.html" class="nav-link text-white">
-                            <i class="bi bi-balloon-heart me-2"></i>
-                            <span class="d-none d-lg-inline">Volunteer Drive</span>
-                        </a>
-                    </li>
-
-
-                    <!-- Brgy Projects -->
-                    <li class="nav-item ">
-                        <a href="../brgy_project/projects.html" class="nav-link text-white">
-                            <i class="bi bi-building me-2"></i>
-                            <span class="d-none d-lg-inline">Brgy Project</span>
-                        </a>
-                    </li>
-                </ul>
-                <!-- Settings -->
-                <hr class="text-white">
-                <div class=" mb-auto">
-                    <a href="#" class="nav-link text-white">
-                        <i class="bi bi-gear me-2"></i>
-                        <span class="d-none d-lg-inline">Settings</span>
+                <!-- Account -->
+                <li class="nav-item">
+                    <a href="../account.html" class="nav-link">
+                        <i class="bi bi-person-vcard-fill"></i>
+                        <span>Account</span>
                     </a>
-                </div>
-                <!-- Sign out -->
-                <hr class="text-white">
-                <div class=" mb-auto">
-                    <a href="#" class="nav-link text-white" id="logoutBtn">
-                        <i class="bi bi-box-arrow-left me-2"></i>
-                        <span class="d-none d-lg-inline">Sign out</span>
+                </li>
+
+                <!-- Manage Residents -->
+                <li class="nav-item">
+                    <a href="../manage_residents/resident-info.html" class="nav-link">
+                        <i class="bi bi-people"></i>
+                        <span>Manage Residents</span>
                     </a>
-                </div>
+                </li>
+
+                <!-- Document Issuance -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link active dropdown-toggle" data-bs-toggle="collapse"
+                        data-bs-target="#servicesDropdown">
+                        <i class="bi bi-file-earmark-text"></i>
+                        <span>Document Issuance</span>
+                    </a>
+                    <ul class="collapse list-unstyled" id="servicesDropdown">
+                        <li><a href="document-request-list.html" class="nav-link active-item">Document
+                                Request</a>
+                        </li>
+                        <li><a href="document-template.html" class="nav-link">Document Template</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <!-- Announcement -->
+                <li class="nav-item">
+                    <a href="../announcement_admin.html" class="nav-link">
+                        <i class="bi bi-megaphone"></i>
+                        <span>Announcement</span>
+                    </a>
+                </li>
+
+                <!-- Manage Leaderboards -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse"
+                        data-bs-target="#manageLB_Dropdown">
+                        <i class="bi bi-trophy"></i>
+                        <span>Manage Leaderboards</span>
+                    </a>
+                    <ul class="collapse list-unstyled" id="manageLB_Dropdown">
+                        <li><a href="../manage_leaderboards/view-leaderboard.html" class="nav-link">View Leaderboard</a>
+                        </li>
+                        <li><a href="../manage_leaderboards/achievement&badges.html" class="nav-link">Achievements &
+                                Badges</a></li>
+                    </ul>
+                </li>
+
+                <!-- Credit Points Conversion -->
+                <li class="nav-item">
+                    <a href="../credit_and_redeemable_point_system/conversion-settings.html" class="nav-link">
+                        <i class="bi bi-wallet"></i>
+                        <span>Credit Points Conversion</span>
+                    </a>
+                </li>
+
+                <!-- Reward Management -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse"
+                        data-bs-target="#reward_Dropdown">
+                        <i class="bi bi-gift"></i>
+                        <span>Manage Rewards</span>
+                    </a>
+                    <ul class="collapse list-unstyled" id="reward_Dropdown">
+                        <li><a href="../reward_management/redemption-request.html" class="nav-link">Redemption
+                                Request</a>
+                        </li>
+                        <li><a href="../reward_management/rewards-incentives.html" class="nav-link">Incentives</a></li>
+                    </ul>
+                </li>
+
+                <!-- Volunteer Drive -->
+                <li class="nav-item">
+                    <a href="../volunteer_drive/attendance-evaluation.html" class="nav-link">
+                        <i class="bi bi-balloon-heart"></i>
+                        <span>Volunteer Drive</span>
+                    </a>
+                </li>
+
+                <!-- Brgy Projects -->
+                <li class="nav-item">
+                    <a href="../brgy_project/projects.html" class="nav-link">
+                        <i class="bi bi-building"></i>
+                        <span>Brgy Project</span>
+                    </a>
+                </li>
+
+                <!-- Manage Complaints -->
+                <li class="nav-item">
+                    <a href="../complaints.html" class="nav-link ">
+                        <i class="bi bi-exclamation-triangle"></i>
+                        <span>Manage Complaints</span>
+                    </a>
+                </li>
+            </ul>
+
+            <!-- Settings -->
+            <hr class="text-white">
+            <div class="mb-auto">
+                <a href="#" class="nav-link">
+                    <i class="bi bi-gear"></i>
+                    <span>Settings</span>
+                </a>
             </div>
 
-            <!-- Main Content -->
-            <div class="main-content col min-vh-100">
-                <div class="container content-header">
-                    <!-- Content Header Title -->
-                    <div class="d-flex justify-content-between align-items-center bg-dark text-white p-3">
-                        <h4 class="mb-0">Document Issuance</h4>
-
-                        <!-- Notification Dropdown -->
-                        <div class="dropdown">
-                            <button class="btn btn-dark position-relative dropdown-toggle" type="button"
-                                id="notificationDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="bi bi-bell fs-5"></i>
-                                <span
-                                    class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                    3
-                                    <span class="visually-hidden">unread messages</span>
-                                </span>
-                            </button>
-                            <!-- Dropdown Menu -->
-                            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-lg-start p-2 shadow"
-                                aria-labelledby="notificationDropdown" style="width: 300px;  overflow-y: auto;">
-                                <li class="fw-bold px-2 pb-1">Notifications</li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                
-                                <li class="mb-2">
-                                    <a class="dropdown-item small notif-item" href="#">
-                                        📄 Your Barangay Clearance is now ready for pickup.
-                                        <div class="text-muted small" id="notif-item-time">2 hrs ago</div>
-                                    </a>
-                                </li>
-                                <li class="mb-2">
-                                    <a class="dropdown-item small notif-item" href="#">
-                                        🎖️ You earned 10 points from a clean-up drive!
-                                        <div class="text-muted small" id="notif-item-time">Yesterday</div>
-                                    </a>
-                                </li>
-                                <li class="mb-2">
-                                    <a class="dropdown-item small notif-item" href="#">
-                                        🛠️ Complaint #00213 has been marked as resolved.
-                                        <div class="text-muted small" id="notif-item-time">3 days ago</div>
-                                    </a>
-                                </li>
-
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                                <li><a class="dropdown-item text-center text-primary" href="notification.html">See all</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <!-- End Content Header Title -->
-
-
-                    <div class="container">
-                        <div class="container no-print ">
-                            <div
-                                class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                                <h3 class=" ">Pending Document Requests </h3>
-                                <div class="btn-toolbar mb-2 mb-md-0">
-                                    
-                                </div>
-                            </div>
-
-                            <!-- Filters Row -->
-                            <div class="d-flex flex-column flex-md-row gap-2 mb-4 filters-row">
-                                <!-- Search Bar -->
-                                <div class="flex-grow-1 search-bar">
-                                    <div class="input-group">
-                                        <span class="input-group-text"><i class="bi bi-search"></i></span>
-                                        <input type="text" class="form-control" id="search"
-                                            placeholder="Search by name or document type">
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="status-filter btn-group mb-3">
-                                <button type="button" class="btn btn-outline-secondary active">All</button>
-                                <button type="button" class="btn btn-outline-secondary">Pending</button>
-                                <button type="button" class="btn btn-outline-secondary">Approved</button>
-                                <button type="button" class="btn btn-outline-secondary">Rejected</button>
-                            </div>
-
-                            <!-- Document Request List -->
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead class="table-dark">
-                                        <tr>
-                                            <!--The IDs of the file are not necessary in this context-->
-                                            <th>Request ID</th>
-                                            <th>Resident</th>
-                                            <th>Document Type</th>
-                                            <th>Date Requested</th>
-                                            <th>Purpose</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <!-- Pagination -->
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination justify-content-center">
-                                    <li class="page-item disabled">
-                                        <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
-                                    </li>
-                                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#">Next</a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
+            <!-- Sign out -->
+            <hr class="text-white">
+            <div class="mb-auto">
+                <a href="#" class="nav-link" id="logoutBtn">
+                    <i class="bi bi-box-arrow-left"></i>
+                    <span>Sign out</span>
+                </a>
             </div>
         </div>
     </div>
+
+    <!-- Main Content -->
+    <div class="main-content ">
+        <!-- Mobile Header -->
+        <div class="mobile-header bg-dark d-lg-none">
+            <button class="hamburger-menu" id="hamburgerMenu" aria-label="Open sidebar menu" title="Open sidebar menu">
+                <i class="bi bi-list"></i>
+            </button>
+            <h5 class="mb-0 flex-grow-1">Document Issuance</h5>
+            <!-- Notification Dropdown -->
+            <div class="dropdown">
+                <button class="btn btn-dark position-relative dropdown-toggle" type="button" id="notificationDropdown"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-bell fs-5"></i>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        3
+                        <span class="visually-hidden">unread messages</span>
+                    </span>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end p-2 shadow" style="width: 300px;">
+                    <li class="fw-bold px-2 pb-1">Notifications</li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li class="mb-2">
+                        <a class="dropdown-item small notif-item" href="#">
+                            📄 Your Barangay Clearance is now ready for pickup.
+                            <div class="text-muted small">2 hrs ago</div>
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a class="dropdown-item small notif-item" href="#">
+                            🎖️ You earned 10 points from a clean-up drive!
+                            <div class="text-muted small">Yesterday</div>
+                        </a>
+                    </li>
+                    <li class="mb-2">
+                        <a class="dropdown-item small notif-item" href="#">
+                            🛠️ Complaint #00213 has been marked as resolved.
+                            <div class="text-muted small">3 days ago</div>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item text-center text-primary" href="notification.html">See all</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Desktop Header -->
+        <div class="content-header d-none d-lg-block">
+            <div class="d-flex justify-content-between align-items-center bg-dark text-white p-3">
+                <h4 class="mb-0">Document Issuance</h4>
+                <!-- Notification Dropdown for Desktop -->
+                <div class="dropdown">
+                    <button class="btn btn-dark position-relative dropdown-toggle" type="button"
+                        id="notificationDropdownDesktop" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-bell fs-5"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            3
+                            <span class="visually-hidden">unread messages</span>
+                        </span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end p-2 shadow" style="width: 300px;">
+                        <li class="fw-bold px-2 pb-1">Notifications</li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li class="mb-2">
+                            <a class="dropdown-item small notif-item" href="#">
+                                📄 Your Barangay Clearance is now ready for pickup.
+                                <div class="text-muted small">2 hrs ago</div>
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a class="dropdown-item small notif-item" href="#">
+                                🎖️ You earned 10 points from a clean-up drive!
+                                <div class="text-muted small">Yesterday</div>
+                            </a>
+                        </li>
+                        <li class="mb-2">
+                            <a class="dropdown-item small notif-item" href="#">
+                                🛠️ Complaint #00213 has been marked as resolved.
+                                <div class="text-muted small">3 days ago</div>
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li><a class="dropdown-item text-center text-primary" href="notification.html">See all</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="container no-print ">
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h3 class=" ">Pending Document Requests </h3>
+                    <div class="btn-toolbar mb-2 mb-md-0">
+
+                    </div>
+                </div>
+
+                <!-- Filters Row -->
+                <div class="d-flex flex-column flex-md-row gap-2 mb-4 filters-row">
+                    <!-- Search Bar -->
+                    <div class="flex-grow-1 search-bar">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" class="form-control" id="search"
+                                placeholder="Search by name or document type">
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="status-filter btn-group mb-3">
+                    <button type="button" class="btn btn-outline-secondary active">All</button>
+                    <button type="button" class="btn btn-outline-secondary">Pending</button>
+                    <button type="button" class="btn btn-outline-secondary">Approved</button>
+                    <button type="button" class="btn btn-outline-secondary">Rejected</button>
+                </div>
+
+                <!-- Document Request List -->
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped">
+                        <thead class="table-dark">
+                            <tr>
+                                <!--The IDs of the file are not necessary in this context-->
+                                <th>Request ID</th>
+                                <th>Resident</th>
+                                <th>Document Type</th>
+                                <th>Date Requested</th>
+                                <th>Purpose</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                        </li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    </div>
+
 
     <!-- View Details Modal -->
-    <div class="modal fade" id="viewDetailsModal" tabindex="-1" aria-labelledby="viewDetailsModalLabel" aria-hidden="true">
+    <div class="modal fade" id="viewDetailsModal" tabindex="-1" aria-labelledby="viewDetailsModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="viewDetailsModalLabel">Request Details</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body" id="modalContent">       
-             <!-- Spinner shown while loading -->
-            <div id="modalLoadingSpinner" class="d-flex justify-content-center align-items-center modal-loading-spinner">
-            <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-            </div>
-            </div>
-            <!-- Content shown after loaded -->
-            <div id="modalActualContent" class="d-none">
-                <!-- The request details will be inserted here by JavaScript -->
-            </div>  
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewDetailsModalLabel">Request Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            <!-- Filled dynamically -->
+                <div class="modal-body" id="modalContent">
+                    <!-- Spinner shown while loading -->
+                    <div id="modalLoadingSpinner"
+                        class="d-flex justify-content-center align-items-center modal-loading-spinner">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    <!-- Content shown after loaded -->
+                    <div id="modalActualContent" class="d-none">
+                        <!-- The request details will be inserted here by JavaScript -->
+                    </div>
+                </div>
+                <!-- Filled dynamically -->
             </div>
         </div>
 
     </div>
-    
+
     <!-- Print Options Modal -->
-     <div class="modal fade" id="printOptionsModal" tabindex="-1" aria-labelledby="printOptionsModalLabel" aria-hidden="true">
+    <div class="modal fade" id="printOptionsModal" tabindex="-1" aria-labelledby="printOptionsModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -356,7 +374,7 @@
                 <div class="modal-footer justify-content-center">
                     <button id="downloadDocxBtn" type="button" class="btn btn-primary me-2">Download DOCX</button>
                     <button id="printPdfBtn" type="button" class="btn btn-secondary">Print PDF</button>
-                    </div>
+                </div>
             </div>
         </div>
     </div>

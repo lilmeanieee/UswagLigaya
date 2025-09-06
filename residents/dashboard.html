@@ -31,7 +31,8 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-logo">
-                    <a class="navbar-brand" href="#">Resident Portal</a>
+                    <img src="../asset/img/brgy_official_seal.png" alt="Barangay Ligaya official seal">
+                    <a class="me-auto navbar-brand " href="../index.html">Ligaya</a>
                 </div>
             </div>
 
@@ -39,7 +40,7 @@
             <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar"
                 aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Resident Portal</h5>
+                    <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Ligaya</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
@@ -116,8 +117,10 @@
                         </li>
                         <li><a class="dropdown-item" href="dashboard.html">Dashboard</a></li>
                         <li><a class="dropdown-item" href="convert-points.html">Convert Points</a></li>
-                        <li><a class="dropdown-item" href="document-request.html">Document Requests</a></li>
-                        <li><a class="dropdown-item" href="">Submit Complaints</a></li>
+                        <li><a class="dropdown-item" href="redeem-rewards.html">Redeem Rewards</a></li>
+                        <li><a class="dropdown-item" href="document-request/document-request.html">Document Requests</a>
+                        </li>
+                        <li><a class="dropdown-item" href="complaints.html">Submit Complaints</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
@@ -134,16 +137,16 @@
 
 
     <div class="container mt-4">
-        <!-- 1. Welcome Section -->
+        <!-- Welcome Section -->
         <div class="row mb-4">
-            <div class="col-md-8">
+            <!-- profile and points overview -->
+            <div class="col-md-8 order-1">
                 <div class="card mb-3">
                     <div class="card-body welcome-card">
                         <div class="d-flex align-items-center">
                             <div class="p-3">
                                 <img src="../asset/img/hero-bg.jpg" class="rounded-circle me-3 profile_pic"
                                     alt="Profile">
-
                             </div>
                             <div>
                                 <h2><span id="residentName"></span></h2>
@@ -170,9 +173,51 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- badges card -->
+                <div class="card mb-3">
+                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Badges</h5>
+                        <a href="#" class="text-decoration-none small" data-bs-toggle="modal"
+                            data-bs-target="#badgesModal">
+                            View All
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex flex-wrap gap-4 justify-content-start">
+                            <!-- Badge 1 -->
+                            <div class="text-center">
+                                <img src="../asset/img/hero-bg.jpg" alt="First Login Badge" class="img-fluid badge-img">
+                                <p class="mt-2 mb-0 badge-text">First Login</p>
+                            </div>
+                            <!-- Badge 2 -->
+                            <div class="text-center">
+                                <img src="../asset/img/hero-bg.jpg" alt="Document Master Badge"
+                                    class="img-fluid badge-img">
+                                <p class="mt-2 mb-0 badge-text">Document Master</p>
+                            </div>
+                            <!-- Badge 3 -->
+                            <div class="text-center">
+                                <img src="../asset/img/hero-bg.jpg" alt="Community Helper Badge"
+                                    class="img-fluid badge-img">
+                                <p class="mt-2 mb-0 badge-text">Community Helper</p>
+                            </div>
+                            <!-- Show more indicator -->
+                            <div class="text-center">
+                                <div class="badge-img d-flex align-items-center justify-content-center bg-light border"
+                                    style="color: #666;">
+                                    +9
+                                </div>
+                                <p class="mt-2 mb-0 badge-text">More...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-4">
-                <div class="card h-100">
+
+            <!-- quick actions -->
+            <div class="col-md-4 order-2 order-md-3">
+                <div class="card">
                     <div class="card-header bg-light">
                         <h5 class="mb-0">Quick Actions</h5>
                     </div>
@@ -190,11 +235,11 @@
                                 <i class="fas fa-gift me-2"></i>View Rewards
                             </a>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
+
 
 
 
@@ -322,7 +367,8 @@
         </div>
 
         <!-- Convert Points Modal -->
-        <div class="modal fade" id="convertPointsModal" tabindex="-1">
+        <div class="modal fade" id="convertPointsModal" tabindex="-1" data-bs-backdrop="static"
+            data-bs-keyboard="false">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -370,51 +416,40 @@
             </div>
         </div>
 
-        <!-- Document Request Modal -->
+        <!-- Document Request Modal iframe-->
         <div class="modal fade" id="documentRequestModal" tabindex="-1" aria-labelledby="documentRequestModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
+            data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+            <div class="modal-dialog modal-xl"> <!-- make it wide for better iframe view -->
                 <div class="modal-content">
-                    <form id="documentRequestForm" class="card shadow-sm">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="documentRequestModalLabel">Request a Document</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row mb-3">
-                                <div class="col-md-12">
-                                    <label for="fullName" class="form-label">Full Name</label>
-                                    <input type="text" class="form-control" id="fullName" required />
-                                </div>
-                            </div>
+                    <div class="modal-header">
+                        <h5 class="modal-title">Request a Document</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-0" style="height: 100vh;">
+                        <iframe id="documentIframe" src="document-request/request-document.html" frameborder="0"
+                            style="width:100%; height:100%; border:none;">
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                            <div class="mb-3">
-                                <label for="documentType" class="form-label">Select Document</label>
-                                <select class="form-select" id="documentType" required>
-                                    <option value="" disabled selected>Choose a document type</option>
-                                    <option value="Barangay Clearance">Barangay Clearance</option>
-                                    <option value="Certificate of Indigency">Certificate of Indigency</option>
-                                    <option value="Certificate of Residency">Certificate of Residency</option>
-                                    <!-- Add more types as needed -->
-                                </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="purpose" class="form-label">Purpose of Request</label>
-                                <input type="text" class="form-control" id="purpose" required />
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="supportingDocs" class="form-label">Upload Supporting Documents (if
-                                    needed)</label>
-                                <input type="file" class="form-control" id="supportingDocs" multiple />
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary px-4">Submit Request</button>
-                        </div>
-                    </form>
+        <!-- Badges Modal with iframe -->
+        <div class="modal fade" id="badgesModal" tabindex="-1" aria-labelledby="badgesModalLabel" aria-hidden="true"
+            data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+                <div class="modal-content" style="height: 80vh;">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="badgesModalLabel">All Badges</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body p-0">
+                        <iframe src="badges-shelf.html" width="100%" height="100%" frameborder="0"
+                            style="border:0; height:100%;"></iframe>
+                    </div>
+                    <div class="modal-footer bg-light">
+                    <small class="text-muted">Click on badges to see details • Collect more by using our services!</small>
+                </div>
                 </div>
             </div>
         </div>
@@ -444,6 +479,54 @@
     <script src="../js/login-status-script.js"></script>
     <script src="../js/logout-script.js"></script>
     <script src="../js/res-notification-script.js"></script>
+    <script src="../js/res-badges-shelf-script.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById('documentRequestModal');
+            const iframe = document.getElementById('documentIframe');
+
+            // When modal is about to show, load the iframe with fresh content
+            modal.addEventListener('show.bs.modal', function () {
+                // Add timestamp to prevent caching and ensure fresh load
+                const timestamp = new Date().getTime();
+                iframe.src = `document-request/request-document.html?t=${timestamp}`;
+            });
+
+            // When modal is hidden, clear the iframe src to reset it
+            modal.addEventListener('hidden.bs.modal', function () {
+                iframe.src = '';
+            });
+
+            // Listen for messages from the iframe (when form is submitted)
+            window.addEventListener('message', function (event) {
+                // Check if the message is from our iframe
+                if (event.source === iframe.contentWindow) {
+                    if (event.data.type === 'formSubmitted') {
+                        // Close the modal when form is submitted
+                        const modalInstance = bootstrap.Modal.getInstance(modal);
+                        modalInstance.hide();
+                    }
+                }
+            });
+
+            // Optional: Handle iframe load to hide the header
+            iframe.addEventListener('load', function () {
+                try {
+                    // Try to access iframe content (will only work if same-origin)
+                    const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                    const header = iframeDoc.querySelector('h2');
+                    if (header) {
+                        header.style.display = 'none';
+                    }
+                } catch (e) {
+                    // If cross-origin, we can't access iframe content directly
+                    // The iframe content should handle hiding its own header
+                    console.log('Cross-origin iframe detected, header hiding should be handled in iframe content');
+                }
+            });
+        });
+    </script>
 
 
 </body>

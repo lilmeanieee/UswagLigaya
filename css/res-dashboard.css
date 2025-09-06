@@ -3,3 +3,28 @@
     font-weight: 500;
     padding: 0.5rem 1rem;
 }
+
+.badge-img {
+     width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid #FFD700;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+.badge-img:hover {
+    transform: scale(1.1);
+}
+
+.badge-text {
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.iframe-header {
+    display: none;
+}
+
+.in-iframe .reqDocu-container{
+    margin: 0;
+}

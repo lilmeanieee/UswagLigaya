@@ -160,7 +160,7 @@ function populateTable(){
                   <td>${t.fee?`₱${t.fee.toFixed(2)}`:'<span class="text-success">Free</span>'}</td>
                   <td>${badges}</td>
                   <td>
-                    <button class="btn btn-sm btn-outline-primary edit-btn"  data-id="${t.id}"><i class="bi bi-pencil"></i></button>
+                    <button class="btn btn-sm btn-outline-warning edit-btn"  data-id="${t.id}"><i class="bi bi-pencil"></i></button>
                     <button class="btn btn-sm btn-outline-danger  delete-btn" data-id="${t.id}"><i class="bi bi-trash"></i></button>
                   </td>`;
     tb.appendChild(tr);
