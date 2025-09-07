@@ -6,10 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document Requests </title>
 
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
     <link rel="stylesheet" href="../../css/document-requests-style.css">
@@ -19,7 +17,6 @@
 <body>
     <div class="container-fluid">
         <div class="d-flex ">
-            <!-- Sidebar -->
             <div class="sidebar min-vh-100 bg-dark text-white p-3">
                 <div class="logo pt-4 pb-1  mb-auto text-center">
                     <a href="#" class="text-white text-decoration-none">
@@ -30,21 +27,18 @@
                 <hr class="text-white">
 
                 <ul class="nav nav-pills flex-column mb-auto">
-                    <!-- Dashboard -->
                     <li class="nav-item ">
                         <a href="../dashboard.html" class="nav-link text-white">
                             <i class="bi bi-grid me-2"></i>
                             <span class="d-none d-lg-inline">Dashboard</span>
                         </a>
                     </li>
-                    <!-- Account -->
                     <li class="nav-item ">
                         <a href="../account.html" class="nav-link text-white">
                             <i class="bi bi-person-vcard-fill me-2"></i>
                             <span class="d-none d-lg-inline">Account</span>
                         </a>
                     </li>
-                    <!-- Manage Residents -->
                     <li class="nav-item ">
                         <a href="../manage_residents/resident-info.html" class="nav-link text-white">
                             <i class="bi bi-people me-2"></i>
@@ -52,9 +46,7 @@
                         </a>
                     </li>
 
-                    <!-- Document Issuance -->
                     <li class="nav-item dropdown">
-                        <!-- Popover for Mobile -->
                         <a href="#" class="nav-link active text-white d-lg-none mobile-popover"
                             title="Document Issuance" data-bs-toggle="popover" data-bs-html="true"
                             data-bs-placement="right" data-bs-content='
@@ -65,7 +57,6 @@
                             <i class="bi bi-file-earmark-text"></i>
                         </a>
 
-                        <!-- Normal dropdown for larger screens -->
                         <a href="#" class="nav-link active text-white dropdown-toggle d-none d-lg-flex"
                             data-bs-toggle="collapse" data-bs-target="#servicesDropdown">
                             <i class="bi bi-file-earmark-text me-2"></i>
@@ -79,8 +70,6 @@
                         </ul>
                     </li>
 
-
-                    <!-- Announcement -->
                     <li class="nav-item ">
                         <a href="../announcement_admin.html" class="nav-link text-white">
                             <i class="bi bi-megaphone me-2"></i>
@@ -88,11 +77,7 @@
                         </a>
                     </li>
 
-                    <!-- Community-->
-
-                    <!-- Manage Leaderboards-->
                     <li class="nav-item dropdown">
-                        <!-- Popover for Mobile -->
                         <a href="#" class="nav-link text-white d-lg-none mobile-popover" title="Manage Leaderboards"
                             data-bs-toggle="popover" data-bs-html="true" data-bs-placement="right" data-bs-content='
                                 <ul class="list-unstyled mb-0">
@@ -102,7 +87,6 @@
                             <i class="bi bi-trophy"></i>
                         </a>
 
-                        <!-- Normal dropdown for larger screens -->
                         <a href="#" class="nav-link text-white dropdown-toggle d-none d-lg-flex"
                             data-bs-toggle="collapse" data-bs-target="#manageLB_Dropdown">
                             <i class="bi bi-trophy me-2"></i>
@@ -118,7 +102,6 @@
                         </ul>
                     </li>
 
-                    <!-- Credit & Redeemable Points Conversion -->
                     <li class="nav-item">
                         <a href="../credit_and_redeemable_point_system/conversion-settings.html"
                             class="nav-link text-white ">
@@ -127,24 +110,19 @@
                         </a>
                     </li>
 
-                    <!-- Volunteer Drive -->
                     <li class="nav-item ">
                         <a href="../volunteer_drive/attendance-evaluation.html" class="nav-link text-white">
                             <i class="bi bi-balloon-heart me-2"></i>
                             <span class="d-none d-lg-inline">Volunteer Drive</span>
                         </a>
                     </li>
-
-
                 </ul>
-                <!-- Settings -->
                 <div class=" mb-auto">
                     <a href="#" class="nav-link text-white">
                         <i class="bi bi-gear me-2"></i>
                         <span class="d-none d-lg-inline">Settings</span>
                     </a>
                 </div>
-                <!-- Sign out -->
                 <hr class="text-white">
                 <div class=" mb-auto">
                     <a href="#" class="nav-link text-white" id="logoutBtn">
@@ -154,29 +132,23 @@
                 </div>
             </div>
 
-            <!-- Main Content -->
             <div class="main-content col min-vh-100">
                 <div class="container content-header">
-                    <!-- Content Header Title -->
                     <div class="d-flex justify-content-between align-items-center bg-dark text-white p-3">
                         <h4 class="mb-0">Document Issuance</h4>
                     </div>
-                    <!-- End Content Header Title -->
-
-
                     <div class="container">
                         <div class="container no-print ">
                             <div
                                 class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                                 <h3 class=" ">Pending Document Requests </h3>
                                 <div class="btn-toolbar mb-2 mb-md-0">
-                                    
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#creditSettingsModal">
+                                        <i class="bi bi-gear me-2"></i> Credit Settings
+                                    </button>
                                 </div>
                             </div>
-
-                            <!-- Filters Row -->
                             <div class="d-flex flex-column flex-md-row gap-2 mb-4 filters-row">
-                                <!-- Search Bar -->
                                 <div class="flex-grow-1 search-bar">
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bi bi-search"></i></span>
@@ -185,21 +157,16 @@
                                     </div>
                                 </div>
                             </div>
-
-
                             <div class="status-filter btn-group mb-3">
                                 <button type="button" class="btn btn-outline-secondary active">All</button>
                                 <button type="button" class="btn btn-outline-secondary">Pending</button>
                                 <button type="button" class="btn btn-outline-secondary">Approved</button>
                                 <button type="button" class="btn btn-outline-secondary">Rejected</button>
                             </div>
-
-                            <!-- Document Request List -->
                             <div class="table-responsive">
                                 <table class="table table-hover">
                                     <thead class="table-dark">
                                         <tr>
-                                            <!--The IDs of the file are not necessary in this context-->
                                             <th>Request ID</th>
                                             <th>Resident</th>
                                             <th>Document Type</th>
@@ -214,8 +181,6 @@
                                     </tbody>
                                 </table>
                             </div>
-
-                            <!-- Pagination -->
                             <nav aria-label="Page navigation">
                                 <ul class="pagination justify-content-center">
                                     <li class="page-item disabled">
@@ -235,8 +200,32 @@
             </div>
         </div>
     </div>
-
-    <!-- View Details Modal -->
+    <div class="modal fade" id="creditSettingsModal" tabindex="-1" aria-labelledby="creditSettingsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="creditSettingsModalLabel">Global Credit Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Set the number of credits deducted for any document request, regardless of document type.</p>
+                    <div class="my-3">
+                        <h6>Universal Credit Deduction</h6>
+                        <p class="text-muted"><small>This setting applies to all document requests uniformly.</small></p>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text">Credits per Document Request</span>
+                            <input type="number" class="form-control text-center" id="creditDeductionInput" value="20" min="0">
+                        </div>
+                        <p class="text-muted"><small>Every document request will deduct exactly the specified credits from the resident's account.</small></p>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button id="saveCreditSettingsBtn" type="button" class="btn btn-primary"><i class="bi bi-save me-2"></i>Save Settings</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="viewDetailsModal" tabindex="-1" aria-labelledby="viewDetailsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
         <div class="modal-content">
@@ -245,25 +234,20 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="modalContent">       
-             <!-- Spinner shown while loading -->
-            <div id="modalLoadingSpinner" class="d-flex justify-content-center align-items-center modal-loading-spinner">
+             <div id="modalLoadingSpinner" class="d-flex justify-content-center align-items-center modal-loading-spinner">
             <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Loading...</span>
             </div>
             </div>
-            <!-- Content shown after loaded -->
             <div id="modalActualContent" class="d-none">
-                <!-- The request details will be inserted here by JavaScript -->
-            </div>  
+                </div>  
                 </div>
-            <!-- Filled dynamically -->
             </div>
         </div>
 
     </div>
     
-    <!-- Print Options Modal -->
-     <div class="modal fade" id="printOptionsModal" tabindex="-1" aria-labelledby="printOptionsModalLabel" aria-hidden="true">
+    <div class="modal fade" id="printOptionsModal" tabindex="-1" aria-labelledby="printOptionsModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
@@ -282,7 +266,6 @@
     </div>
 
 
-    <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>

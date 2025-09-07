@@ -16,7 +16,6 @@ $stmt->execute();
 $request = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
-// Custom Fields
 $fields = [];
 $fieldQuery = $conn->query("SELECT field_key, field_value FROM tbl_request_field_values WHERE request_id = $id");
 while ($row = $fieldQuery->fetch_assoc()) {
@@ -26,14 +25,12 @@ while ($row = $fieldQuery->fetch_assoc()) {
     ];
 }
 
-// Attachments
 $attachments = [];
 $attachmentQuery = $conn->query("SELECT id, file_name FROM tbl_document_request_attachments WHERE request_id = $id");
 while ($row = $attachmentQuery->fetch_assoc()) {
     $attachments[] = $row;
 }
 
-// Output final JSON
 echo json_encode([
     'document_name' => $request['document_name'],
     'full_name' => $request['resident_name'],

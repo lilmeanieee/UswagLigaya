@@ -100,7 +100,7 @@ function attachActionListeners() {
   document.querySelectorAll('.approve-btn').forEach(button => {
     button.addEventListener('click', () => {
       const requestId = button.dataset.id;
-      if (confirm("⚠️ You are about to approve this document request. Confirm?")) {
+      if (confirm("WARNING: You are about to approve this document request. Confirm?")) {
         updateRequestStatus(requestId, 'Approved');
       }
     });
@@ -109,7 +109,7 @@ function attachActionListeners() {
   document.querySelectorAll('.reject-btn').forEach(button => {
     button.addEventListener('click', () => {
       const requestId = button.dataset.id;
-      if (confirm("⚠️ You are about to reject this document request. Confirm?")) {
+      if (confirm("WARNING: You are about to reject this document request. Confirm?")) {
         updateRequestStatus(requestId, 'Rejected');
       }
     });
@@ -207,11 +207,11 @@ function openViewDetailsModal(id) {
         data.attachments.forEach(attachment => {
           const ext = attachment.file_name.split('.').pop().toLowerCase();
           if (["jpg", "jpeg", "png", "gif"].includes(ext)) {
-            html += `<img src="/UswagLigaya/php-handlers/view-doc-req-attachment.php?id=${attachment.id}" class="img-fluid mb-2" alt="Attachment Image">`;
+            html += `<img src="../php-handlers/view-doc-req-attachment.php?id=${attachment.id}" class="img-fluid mb-2" alt="Attachment Image">`;
           } else if (ext === "pdf") {
-            html += `<iframe src="/UswagLigaya/php-handlers/view-doc-req-attachment.php?id=${attachment.id}" width="100%" height="500px" class="mb-2"></iframe>`;
+            html += `<iframe src="../../php-handlers/view-doc-req-attachment.php?id=${attachment.id}" width="100%" height="500px" class="mb-2"></iframe>`;
           } else {
-            html += `<a href="/UswagLigaya/php-handlers/view-doc-req-attachment.php?id=${attachment.id}" target="_blank" class="btn btn-sm btn-outline-secondary mb-2">${attachment.file_name}</a><br>`;
+            html += `<a href="../../php-handlers/view-doc-req-attachment.php?id=${attachment.id}" target="_blank" class="btn btn-sm btn-outline-secondary mb-2">${attachment.file_name}</a><br>`;
           }
         });
       } else {
