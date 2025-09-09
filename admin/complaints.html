@@ -4,19 +4,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Leaderboard</title>
+    <title>Complaints</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
-    <link rel="stylesheet" href="../../css/view_leaderboard-style.css">
-    <link rel="stylesheet" href="../../css/sidebar-style.css">
+    <link rel="stylesheet" href="../css/admin-complaints-style.css">
+    <link rel="stylesheet" href="../css/sidebar-style.css">
 </head>
 
 <body>
+    <!-- Sidebar -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
     <!-- Sidebar Wrapper -->
     <div class="sidebar-wrapper" id="sidebarWrapper">
@@ -35,7 +38,7 @@
             <ul class="nav flex-column mb-auto">
                 <!-- Dashboard -->
                 <li class="nav-item">
-                    <a href="../dashboard.html" class="nav-link ">
+                    <a href="dashboard.html" class="nav-link ">
                         <i class="bi bi-grid"></i>
                         <span>Dashboard</span>
                     </a>
@@ -43,7 +46,7 @@
 
                 <!-- Account -->
                 <li class="nav-item">
-                    <a href="../account.html" class="nav-link">
+                    <a href="account.html" class="nav-link">
                         <i class="bi bi-person-vcard-fill"></i>
                         <span>Account</span>
                     </a>
@@ -51,7 +54,7 @@
 
                 <!-- Manage Residents -->
                 <li class="nav-item">
-                    <a href="../manage_residents/resident-info.html" class="nav-link">
+                    <a href="manage_residents/resident-info.html" class="nav-link">
                         <i class="bi bi-people"></i>
                         <span>Manage Residents</span>
                     </a>
@@ -65,16 +68,16 @@
                         <span>Document Issuance</span>
                     </a>
                     <ul class="collapse list-unstyled" id="servicesDropdown">
-                        <li><a href="../document_request/document-request-list.html" class="nav-link">Document Request</a>
+                        <li><a href="document_request/document-request-list.html" class="nav-link">Document Request</a>
                         </li>
-                        <li><a href="../document_request/document-template.html" class="nav-link">Document Template</a>
+                        <li><a href="document_request/document-template.html" class="nav-link">Document Template</a>
                         </li>
                     </ul>
                 </li>
 
                 <!-- Announcement -->
                 <li class="nav-item">
-                    <a href="../announcement_admin.html" class="nav-link">
+                    <a href="announcement_admin.html" class="nav-link">
                         <i class="bi bi-megaphone"></i>
                         <span>Announcement</span>
                     </a>
@@ -82,22 +85,22 @@
 
                 <!-- Manage Leaderboards -->
                 <li class="nav-item">
-                    <a href="#" class="nav-link active dropdown-toggle" data-bs-toggle="collapse"
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="collapse"
                         data-bs-target="#manageLB_Dropdown">
                         <i class="bi bi-trophy"></i>
                         <span>Manage Leaderboards</span>
                     </a>
                     <ul class="collapse list-unstyled" id="manageLB_Dropdown">
-                        <li><a href="view-leaderboard.html" class="nav-link active-item">View Leaderboard</a>
+                        <li><a href="manage_leaderboards/view-leaderboard.html" class="nav-link">View Leaderboard</a>
                         </li>
-                        <li><a href="achievement&badges.html" class="nav-link">Achievements &
+                        <li><a href="manage_leaderboards/achievement&badges.html" class="nav-link">Achievements &
                                 Badges</a></li>
                     </ul>
                 </li>
 
                 <!-- Credit Points Conversion -->
                 <li class="nav-item">
-                    <a href="../credit_and_redeemable_point_system/conversion-settings.html" class="nav-link">
+                    <a href="credit_and_redeemable_point_system/conversion-settings.html" class="nav-link">
                         <i class="bi bi-wallet"></i>
                         <span>Credit Points Conversion</span>
                     </a>
@@ -111,16 +114,15 @@
                         <span>Manage Rewards</span>
                     </a>
                     <ul class="collapse list-unstyled" id="reward_Dropdown">
-                        <li><a href="../reward_management/redemption-request.html" class="nav-link">Redemption
-                                Request</a>
+                        <li><a href="reward_management/redemption-request.html" class="nav-link">Redemption Request</a>
                         </li>
-                        <li><a href="../reward_management/rewards-incentives.html" class="nav-link">Incentives</a></li>
+                        <li><a href="reward_management/rewards-incentives.html" class="nav-link">Incentives</a></li>
                     </ul>
                 </li>
 
                 <!-- Volunteer Drive -->
                 <li class="nav-item">
-                    <a href="../volunteer_drive/attendance-evaluation.html" class="nav-link">
+                    <a href="volunteer_drive/attendance-evaluation.html" class="nav-link">
                         <i class="bi bi-balloon-heart"></i>
                         <span>Volunteer Drive</span>
                     </a>
@@ -128,7 +130,7 @@
 
                 <!-- Brgy Projects -->
                 <li class="nav-item">
-                    <a href="../brgy_project/projects.html" class="nav-link">
+                    <a href="brgy_project/projects.html" class="nav-link">
                         <i class="bi bi-building"></i>
                         <span>Brgy Project</span>
                     </a>
@@ -136,7 +138,7 @@
 
                 <!-- Manage Complaints -->
                 <li class="nav-item">
-                    <a href="../complaints.html" class="nav-link ">
+                    <a href="complaints.html" class="nav-link active">
                         <i class="bi bi-exclamation-triangle"></i>
                         <span>Manage Complaints</span>
                     </a>
@@ -151,42 +153,6 @@
                     <span>Settings</span>
                 </a>
             </div>
-            <!-- Sign Out Confirmation Modal -->
-            <div class="modal fade" id="signoutModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="signoutModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header bg-warning text-dark">
-                            <h5 class="modal-title" id="signoutModalLabel">
-                                <i class="bi bi-exclamation-triangle me-2"></i>
-                                Confirm Sign Out
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="text-center mb-3">
-                                <i class="bi bi-box-arrow-left text-warning" style="font-size: 3rem;"></i>
-                            </div>
-                            <div class="alert alert-warning d-flex align-items-center" role="alert">
-                                <i class="bi bi-info-circle-fill me-2"></i>
-                                <div>
-                                    <strong>Are you sure you want to sign out?</strong>
-                                </div>
-                            </div>
-                            <p class="text-center mb-0">You will be logged out of the Barangay Ligaya Management System and redirected to the login page.</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                <i class="bi bi-x-circle me-1"></i>
-                                Cancel
-                            </button>
-                            <button type="button" class="btn btn-warning" id="confirmSignoutBtn">
-                                <i class="bi bi-box-arrow-left me-1"></i>
-                                Sign Out
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
             <!-- Sign out -->
             <hr class="text-white">
@@ -200,13 +166,13 @@
     </div>
 
     <!-- Main Content -->
-    <div class="main-content ">
+    <div class="main-content">
         <!-- Mobile Header -->
         <div class="mobile-header bg-dark d-lg-none">
             <button class="hamburger-menu" id="hamburgerMenu" aria-label="Open sidebar menu" title="Open sidebar menu">
                 <i class="bi bi-list"></i>
             </button>
-            <h5 class="mb-0 flex-grow-1">Manage Leaderboard</h5>
+            <h5 class="mb-0 flex-grow-1">Manage Complaints</h5>
             <!-- Notification Dropdown -->
             <div class="dropdown">
                 <button class="btn btn-dark position-relative dropdown-toggle" type="button" id="notificationDropdown"
@@ -251,7 +217,7 @@
         <!-- Desktop Header -->
         <div class="content-header d-none d-lg-block">
             <div class="d-flex justify-content-between align-items-center bg-dark text-white p-3">
-                <h4 class="mb-0">Manage Leaderboard</h4>
+                <h4 class="mb-0">Manage Complaints</h4>
                 <!-- Notification Dropdown for Desktop -->
                 <div class="dropdown">
                     <button class="btn btn-dark position-relative dropdown-toggle" type="button"
@@ -295,99 +261,125 @@
         </div>
 
         <!-- content -->
-        <div class="container mx-2">
-            <div class="" id="leaderboard-section">
+            <div class="container">
                 <div
                     class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h3 class=" ">Leaderboard Management</h3>
-                    <div class="btn-toolbar mb-2 mb-md-0">
-                        <div class="btn-group me-2">
-                            <button type="button" class="btn  btn-outline-danger" data-bs-toggle="modal"
-                                data-bs-target="#resetLeaderboardModal"
-                                title="This will reset the leaderboard and convert all credit points into redeemable points.">
-                                <i class="bi bi-arrow-counterclockwise"></i> Reset Leaderboard
-                            </button>
-                        </div>
-                    </div>
+                    <h3 class=" ">Complaints List </h3>
                 </div>
 
                 <!-- Filters Row -->
-                <div class="row mb-4 filters-row ">
-                    <div class="col-md-3">
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="bi bi-search"></i></span>
-                            <input type="text" class="form-control" id="nameSearch" placeholder="Search by name">
+                <div class="d-flex flex-column flex-md-row gap-2 mb-4 filters-row">
+                    <!-- Search Bar -->
+                    <div class="card-body">
+                        <div class="row g-3 align-items-end">
+
+                            <!-- Search Bar -->
+                            <div class="col-md-4">
+                                <label class="form-label">Search</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                    <input type="text" class="form-control" id="searchInput"
+                                        placeholder="Search complaints...">
+                                </div>
+                            </div>
+
+                            <!-- Status Filter -->
+                            <div class="col-md-2">
+                                <label class="form-label">Status</label>
+                                <select class="form-select" id="statusFilter">
+                                    <option value="">All Statuses</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="in-progress">In Progress</option>
+                                    <option value="resolved">Resolved</option>
+                                    <option value="closed">Closed</option>
+                                </select>
+                            </div>
+
+                            <!-- Category Filter -->
+                            <div class="col-md-2">
+                                <label class="form-label">Category</label>
+                                <select class="form-select" id="categoryFilter">
+                                    <option value="">All Categories</option>
+                                    <option value="infrastructure">Infrastructure</option>
+                                    <option value="waste-management">Waste Management</option>
+                                    <option value="public-safety">Public Safety</option>
+                                    <option value="utilities">Utilities</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <!-- Date From -->
+                            <div class="col-md-2">
+                                <label class="form-label">From</label>
+                                <input type="date" class="form-control" id="dateFrom">
+                            </div>
+
+                            <!-- Date To -->
+                            <div class="col-md-2">
+                                <label class="form-label">To</label>
+                                <input type="date" class="form-control" id="dateTo">
+                            </div>
+
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <label for="sortOption" class="form-label visually-hidden">Sort Options</label>
-                        <select class="form-select" id="sortOption">
-                            <option value="rank">Sort by Rank</option>
-                            <option value="name">Sort by Name</option>
-                            <option value="points">Sort by Points (High to Low)</option>
-                            <option value="pointsAsc">Sort by Points (Low to High)</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <label for="timeFilter" class="visually-hidden">Time Filter</label>
-                        <select class="form-select" id="timeFilter">
-                            <option value="all">All Time</option>
-                            <option value="weekly">This Week</option>
-                            <option value="monthly">This Month</option>
-                            <option value="quarterly">This Quarter</option>
-                        </select>
-                    </div>
-                    <div class="col-md-3">
-                        <button class="btn btn-primary w-100" id="applyFilters">Apply Filters</button>
-                    </div>
+
                 </div>
 
-                <!-- Leaderboard Table -->
-                <div class="table-responsive">
-                    <table class="table table-striped table-hover table-lg align-middle">
-                        <thead>
-                            <tr>
-                                <th scope="col">Rank</th>
-                                <th scope="col">Resident</th>
-                                <th scope="col">Total Credit Points</th>
-                                <th scope="col">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="leaderboardBody">
-                            <td class="">1</td>
-                            <td>Resident Name </td>
-                            <td>1000 pts</td>
-                            <td>
-                                <button class="action-btn view-btn view-history-btn rounded-circle"
-                                    data-resident-id="${resident.id}" data-bs-toggle="tooltip" title="View XP History">
-                                    <i class="bi bi-clock-history"></i>
-                                </button>
-                                <button class="action-btn remove-btn remove-resident-btn rounded-circle"
-                                    data-resident-id="${resident.id}" data-bs-toggle="tooltip"
-                                    title="Remove from Leaderboard">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </td>
-                            <!-- Table content will be populated by JavaScript -->
+                <!-- Complaints List -->
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover align-middle mb-0">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Resident Name</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                    <th>Date Submitted</th>
+                                    <th>Assigned Official</th>
+                                    <th>Last Updated</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="complaintsTableBody">
+                                <!-- Dynamic content will be inserted here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+    </div>
 
-                        </tbody>
-                    </table>
+
+    <!-- Detailed View Modal -->
+    <div class="modal fade" id="detailModal" tabindex="-1">
+        <div class="modal-dialog modal-lg  modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> Complaint Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="complaintDetails">
+                        <!-- Dynamic content will be inserted here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
 
 
-
     <!-- Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
-    <script src="../../js/sidebar-script.js"></script>
 
-    <script src="../../js/manage-leaderboard/leaderboard.js"></script>
-    <script src="../../js/manage-leaderboard/badge-assignment.js"></script>
-    <script src="../../js/admin-signout.js"></script>
+    <script src="../js/sidebar-script.js"></script>
+    <script src="../js/logout-script.js"></script>
+    <script src="../js/admin-complaints-script.js"></script>
+
 </body>
-
 </html>

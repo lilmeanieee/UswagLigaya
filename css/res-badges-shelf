@@ -1,0 +1,207 @@
+body {
+    background: #e6f0f3;
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.shelf-container {
+    padding: 30px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.shelf-title {
+    text-align: center;
+    color: white;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 40px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Hide title when in iframe */
+body.in-iframe .shelf-title {
+    display: none;
+}
+
+body.in-iframe {
+    padding: 20px;
+}
+
+.shelf {
+    background: linear-gradient(to bottom, #8B4513 0%, #A0522D 50%, #8B4513 100%);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.shelf::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 8px;
+    background: linear-gradient(to right, #654321, #8B4513, #654321);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.shelf::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 12px;
+    background: linear-gradient(to right, #5D4037, #795548, #5D4037);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+.shelf-surface {
+    background: linear-gradient(to bottom, #DEB887 0%, #CD853F 100%);
+    padding: 30px 20px 40px;
+    position: relative;
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.shelf-label {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #2C3E50;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border: 2px solid #34495E;
+}
+
+.badges-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 25px;
+    justify-items: center;
+}
+
+.badge-item {
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.badge-item:hover {
+    transform: translateY(-10px) scale(1.1);
+}
+
+.badge-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 4px solid #FFD700;
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.3),
+        inset 0 2px 4px rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    object-fit: cover;
+    background: linear-gradient(135deg, #FFD700, #FFA500);
+}
+
+.badge-item:hover .badge-img {
+    border-color: #FF6B35;
+    box-shadow:
+        0 12px 30px rgba(255, 107, 53, 0.4),
+        inset 0 2px 4px rgba(255, 255, 255, 0.3);
+    transform: rotate(5deg);
+}
+
+.badge-text {
+    color: #2C3E50;
+    font-weight: 600;
+    font-size: 0.85rem;
+    margin-top: 12px;
+    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+    transition: color 0.3s ease;
+}
+
+.badge-item:hover .badge-text {
+    color: #E74C3C;
+}
+
+.badge-glow {
+    position: absolute;
+    top: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90px;
+    height: 90px;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.badge-item:hover .badge-glow {
+    opacity: 1;
+}
+
+.empty-slot {
+    width: 80px;
+    height: 80px;
+    border: 3px dashed #999;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 0.8rem;
+    opacity: 0.6;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.stats-bar {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stats-item {
+    text-align: center;
+}
+
+.stats-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #2C3E50;
+}
+
+.stats-label {
+    font-size: 0.85rem;
+    color: #7F8C8D;
+    margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+    .badges-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 20px;
+    }
+
+    .badge-img {
+        width: 65px;
+        height: 65px;
+    }
+
+    .shelf-title {
+        font-size: 2rem;
+    }
+}

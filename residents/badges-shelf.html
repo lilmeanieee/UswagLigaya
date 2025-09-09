@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Badges Collection</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../css/res-badges-shelf" rel="stylesheet">
+    
+</head>
+<body>
+    <div class="shelf-container">
+        <h1 class="shelf-title">🏆 My Badge Collection</h1>
+        
+        <!-- Stats Bar -->
+        <div class="stats-bar">
+            <div class="row">
+                <div class="col-4">
+                    <div class="stats-item">
+                        <div class="stats-number">12</div>
+                        <div class="stats-label">Total Badges</div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="stats-item">
+                        <div class="stats-number">3</div>
+                        <div class="stats-label">Recent</div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="stats-item">
+                        <div class="stats-number">85%</div>
+                        <div class="stats-label">Completed</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievement Badges Shelf -->
+        <div class="shelf">
+            <div class="shelf-label">🎖️ Achievement Badges</div>
+            <div class="shelf-surface">
+                <div class="badges-grid">
+                    <div class="badge-item">
+                        <div class="badge-glow"></div>
+                        <img src="../asset/img/hero-bg.jpg" alt="First Login Badge" class="badge-img">
+                        <p class="badge-text">First Login</p>
+                    </div>
+                    <div class="badge-item">
+                        <div class="badge-glow"></div>
+                        <img src="../asset/img/hero-bg.jpg" alt="Document Master Badge" class="badge-img">
+                        <p class="badge-text">Document Master</p>
+                    </div>
+                    <div class="badge-item">
+                        <div class="badge-glow"></div>
+                        <img src="../asset/img/hero-bg.jpg" alt="Community Helper Badge" class="badge-img">
+                        <p class="badge-text">Community Helper</p>
+                    </div>
+                    <div class="badge-item">
+                        <div class="badge-glow"></div>
+                        <img src="../asset/img/hero-bg.jpg" alt="Early Adopter Badge" class="badge-img">
+                        <p class="badge-text">Early Adopter</p>
+                    </div>
+                    <div class="empty-slot">
+                        <span>Coming Soon</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Activity Badges Shelf -->
+        <div class="shelf">
+            <div class="shelf-label">⭐ Activity Badges</div>
+            <div class="shelf-surface">
+                <div class="badges-grid">
+                    <div class="badge-item">
+                        <div class="badge-glow"></div>
+                        <img src="../asset/img/hero-bg.jpg" alt="Event Participant Badge" class="badge-img">
+                        <p class="badge-text">Event Participant</p>
+                    </div>
+                    <div class="badge-item">
+                        <div class="badge-glow"></div>
+                        <img src="../asset/img/hero-bg.jpg" alt="News Reader Badge" class="badge-img">
+                        <p class="badge-text">News Reader</p>
+                    </div>
+                    <div class="badge-item">
+                        <div class="badge-glow"></div>
+                        <img src="../asset/img/hero-bg.jpg" alt="Service User Badge" class="badge-img">
+                        <p class="badge-text">Service User</p>
+                    </div>
+                    <div class="empty-slot">
+                        <span>Locked</span>
+                    </div>
+                    <div class="empty-slot">
+                        <span>Locked</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Special Badges Shelf -->
+        <div class="shelf">
+            <div class="shelf-label">💎 Special Badges</div>
+            <div class="shelf-surface">
+                <div class="badges-grid">
+                    <div class="badge-item">
+                        <div class="badge-glow"></div>
+                        <img src="../asset/img/hero-bg.jpg" alt="VIP Member Badge" class="badge-img">
+                        <p class="badge-text">VIP Member</p>
+                    </div>
+                    <div class="badge-item">
+                        <div class="badge-glow"></div>
+                        <img src="../asset/img/hero-bg.jpg" alt="Beta Tester Badge" class="badge-img">
+                        <p class="badge-text">Beta Tester</p>
+                    </div>
+                    <div class="empty-slot">
+                        <span>Legendary</span>
+                    </div>
+                    <div class="empty-slot">
+                        <span>Ultra Rare</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if we're in an iframe and adjust layout
+            if (window.parent !== window) {
+                document.body.classList.add('in-iframe');
+            }
+            
+            // Add click interaction for badges
+            const badgeItems = document.querySelectorAll('.badge-item');
+            badgeItems.forEach(badge => {
+                badge.addEventListener('click', function() {
+                    const badgeName = this.querySelector('.badge-text').textContent;
+                    
+                    // Create a simple tooltip or notification
+                    const tooltip = document.createElement('div');
+                    tooltip.innerHTML = `<strong>${badgeName}</strong><br>You earned this badge!`;
+                    tooltip.style.cssText = `
+                        position: fixed;
+                        top: 50%;
+                        left: 50%;
+                        transform: translate(-50%, -50%);
+                        background: rgba(0,0,0,0.9);
+                        color: white;
+                        padding: 15px 25px;
+                        border-radius: 10px;
+                        font-size: 14px;
+                        text-align: center;
+                        z-index: 1000;
+                        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+                        border: 2px solid #FFD700;
+                    `;
+                    
+                    document.body.appendChild(tooltip);
+                    
+                    // Remove tooltip after 2 seconds
+                    setTimeout(() => {
+                        if (tooltip.parentNode) {
+                            tooltip.parentNode.removeChild(tooltip);
+                        }
+                    }, 2000);
+                    
+                    // Add a sparkle effect
+                    this.style.animation = 'sparkle 0.6s ease-in-out';
+                    setTimeout(() => {
+                        this.style.animation = '';
+                    }, 600);
+                });
+            });
+        });
+
+        // Add sparkle animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes sparkle {
+                0%, 100% { transform: translateY(-10px) scale(1.1); }
+                25% { transform: translateY(-15px) scale(1.2) rotate(5deg); }
+                50% { transform: translateY(-12px) scale(1.15) rotate(-3deg); }
+                75% { transform: translateY(-18px) scale(1.25) rotate(3deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>

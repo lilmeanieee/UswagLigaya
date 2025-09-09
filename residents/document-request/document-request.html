@@ -7,12 +7,16 @@
     <title>Document Request</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../../css/res-navbar.css">
     <link rel="stylesheet" href="../../css/res-profile-style.css">
+    <link rel="stylesheet" href="../css/res-notif-general.css">
+
 </head>
 
 <body>
@@ -26,7 +30,8 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-logo">
-                    <a class="navbar-brand" href="#">Resident Portal</a>
+                    <img src="../../asset/img/brgy_official_seal.png" alt="Barangay Ligaya official seal">
+                    <a class="me-auto navbar-brand " href="../../index.html">Ligaya</a>
                 </div>
             </div>
 
@@ -62,29 +67,66 @@
                 </div>
             </div>
 
-            <!-- Profile dropdown -->
+            <!-- Profile & notification dropdown -->
             <div class="d-flex align-items-center">
-                <div class="dropdown user-dropdown" id="userDropdown">
-                    <button class="btn dropdown-toggle user-icon-button" type="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">
-                        <img src="../../asset/img/default_acc_icon.png" alt="User" class="user-icon">
+                <!-- Notification Bell -->
+                <div class="nav-item dropdown " id="notificationIcon">
+                    <button class="btn btn-outline-secondary position-relative" type="button" data-bs-toggle="dropdown"
+                        id="notificationBell">
+                        <i class="fas fa-bell"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                            id="notificationCount">
+                            3
+                        </span>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-end notification-dropdown" id="notificationDropdown">
+                        <div class="dropdown-header d-flex justify-content-between align-items-center">
+                            <span>Notifications</span>
+                            <button class="btn btn-sm btn-link text-decoration-none" onclick="markAllAsRead()">
+                                Mark all as read
+                            </button>
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div id="notificationList">
+                            <!-- Notifications will be populated here -->
+                        </div>
+                        <div class="dropdown-divider"></div>
+                        <div class="dropdown-footer text-center">
+                            <a href="notification.html" class="text-decoration-none" id="seeAllNotifications">
+                                See All Notifications
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dropdown user-dropdown ms-2" id="userDropdown">
+                    <button class="btn p-0 border-0 bg-transparent position-relative" type="button"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <!-- Profile image -->
+                        <img src="../../asset/img/default_acc_icon.png" alt="User" class="user-icon-rounded">
+
+                        <!-- Dropdown arrow overlay -->
+                        <span class="dropdown-arrow-icon">
+                            <i class="bi bi-chevron-down"></i>
+                        </span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
                             <h6 class="dropdown-header user-name" id="userName">User Name</h6>
                         </li>
                         <li><a class="dropdown-item" href="../dashboard.html">Dashboard</a></li>
-                        <li><a class="dropdown-item" href="../convert-points.html">Convert Points</a></li> 
-                        <li><a class="dropdown-item" href="../document-request.html">Document Requests</a></li>
-                        <li><a class="dropdown-item" href="../complaints.html">Submit Complaints</a></li>
+                        <li><a class="dropdown-item" href="../convert-points.html">Convert Points</a></li>
+                        <li><a class="dropdown-item" href="../redeem-rewards.html">Redeem Rewards</a></li>
+                        <li><a class="dropdown-item" href="document-request.html">Document Requests</a></li>
+                        <li><a class="dropdown-item" href="../complaints.html../complaints.html">Submit Complaints</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="../settings.html">Settings</a></li>
+                        <li><a class="dropdown-item" href="settings.html">Settings</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        <li><a class="dropdown-item" href="../../index.html" id="logoutButton">Logout</a></li>
+                        <li><a class="dropdown-item" href="../index.html" id="logoutButton">Logout</a></li>
                     </ul>
                 </div>
             </div>

@@ -15,7 +15,7 @@
 
     <link rel="stylesheet" href="css/leaderboard-style.css">
     <link rel="stylesheet" href="css/public_navbar.css">
-
+    <link rel="stylesheet" href="css/res-notif-general.css">
 </head>
 
 <body>
@@ -96,7 +96,40 @@
                 <!-- Login button (shown when user is not logged in) -->
                 <a href="login.html" class="btn login-button" id="loginButton">Login</a>
 
-                <!-- User icon with dropdown (shown when user is logged in) -->
+                <!-- User icon and notification (shown when user is logged in) -->
+                <div class="d-flex align-items-center">
+                    <!-- Notification Bell -->
+                    <div class="nav-item dropdown me-2 " id="notificationIcon">
+                        <button class="btn btn-outline-secondary position-relative" type="button"
+                            data-bs-toggle="dropdown" id="notificationBell">
+                            <i class="fas fa-bell"></i>
+                            <span
+                                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                                id="notificationCount">
+                                3
+                            </span>
+                        </button>
+                        <div class="dropdown-menu dropdown-menu-end notification-dropdown" id="notificationDropdown">
+                            <div class="dropdown-header d-flex justify-content-between align-items-center">
+                                <span>Notifications</span>
+                                <button class="btn btn-sm btn-link text-decoration-none" onclick="markAllAsRead()">
+                                    Mark all as read
+                                </button>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <div id="notificationList">
+                                <!-- Notifications will be populated here -->
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <div class="dropdown-footer text-center">
+                                <a href="#" class="text-decoration-none" onclick="showAllNotifications()">
+                                    See All Notifications
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- User icon with dropdown -->
                 <div class="dropdown user-dropdown hidden" id="userDropdown">
                     <button class="btn dropdown-toggle user-icon-button" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false">
@@ -109,7 +142,7 @@
                         <li><a class="dropdown-item" href="residents/dashboard.html">Dashboard</a></li>
                         <li><a class="dropdown-item" href="residents/convert-points.html">Convert Points</a></li>
                         <li><a class="dropdown-item" href="residents/redeem-rewards.html">Redeem Rewards</a></li>
-                        <li><a class="dropdown-item" href="residents/document-request.html">Document Requests</a></li>
+                        <li><a class="dropdown-item" href="residents/document-request/document-request.html">Document Requests</a>
                         <li><a class="dropdown-item" href="">Submit Complaints</a></li>
 
                         <li><hr class="dropdown-divider"></li>
@@ -289,6 +322,8 @@
     <script src="js/navbar-login-script.js"></script>
     <script src="js/login-status-script.js"></script>
     <script src="js/logout-script.js"></script>
+    <script src="js/res-notification-script.js"></script>
+
 </body>
 
 </html>
