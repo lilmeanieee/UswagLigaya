@@ -15,7 +15,7 @@ $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 
 if (!$row) {
-    http_response_code(404);
+    http_response_code(404);    
     exit('Attachment not found');
 }
 

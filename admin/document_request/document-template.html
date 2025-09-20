@@ -311,16 +311,17 @@
                 </div>
             </div>
 
-            <!-- Filters Row -->
-            <div class="d-flex flex-column flex-md-row gap-2 mb-4 filters-row">
-                <!-- Search Bar -->
-                <div class="flex-grow-1 search-bar">
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-search"></i></span>
-                        <input type="text" class="form-control" id="docuSearch" placeholder="Search document type">
-                    </div>
-                </div>
-            </div>
+                            <!-- Filters Row -->
+                            <div class="d-flex flex-column flex-md-row gap-2 mb-4 filters-row">
+                                <!-- Search Bar -->
+                                <div class="flex-grow-1 search-bar">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                        <input type="text" class="form-control" id="templateSearch"
+                                            placeholder="Search document type">
+                                    </div>
+                                </div>
+                            </div>
 
 
             <div class="">
@@ -364,51 +365,41 @@
                             <textarea class="form-control" id="documentDescription" rows="3"></textarea>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="documentFee" class="form-label">Processing Fee (₱)</label>
-                            <input type="number" class="form-control" id="documentFee" min="0" step="1" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Required Fields</label>
-                            <div class="d-flex align-items-center mb-2">
-                                <div class="form-check me-3">
-                                    <input class="form-check-input" type="checkbox" id="editFullNameField" checked
-                                        disabled />
-                                    <label class="form-check-label" for="editFullNameField">Requester's Full
-                                        Name</label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="editPurposeRequestField" checked
-                                        disabled />
-                                    <label class="form-check-label" for="editPurposeRequestField">Purpose of
-                                        Request</label>
-                                </div>
-                            </div>
-                            <div id="editAdditionalFields">
-                            </div>
-                            <button type="button" class="btn btn-outline-primary btn-sm mt-2" id="editAddFieldBtn">
-                                <i class="bi bi-plus"></i> Add Custom Field
-                            </button>
-                        </div>
-                        <div class="mb-3">
-                            <div class="alert alert-info py-2" role="alert">
-                                <strong>Tip:</strong> Use placeholders (e.g., <code>$(field_name)</code>) in your
-                                document template to dynamically insert data from the document request.<br><br>
-                                <strong>Here's how to map the custom fields to placeholders:</strong><br>
-                                <ul>
-                                    <li>For any <strong>"Custom Field"</strong> you add, use the exact name you
-                                        provide as the placeholder:
-                                        e.g., if you add a custom field named "child_name", use
-                                        <code>$(child_name)</code>)
-                                    </li>
-                                    <li>For the <strong>current date</strong>, use the placeholder:
-                                        <code>$(current_date)</code> to automatically insert today's date
-                                    </li>
-                                </ul>
-                            </div>
-                            <label class="form-label">Upload Template (.doc/.docx)</label>
-                            <input type="file" class="form-control" id="addTemplateFile" accept=".docx">
-                        </div>
+                                        <div class="mb-3">
+                                            <label for="documentFee" class="form-label">Processing Fee (₱)</label>
+                                            <input type="number" class="form-control" id="documentFee" min="0" step="1"
+                                                required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Required Fields</label>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <div class="form-check me-3">
+                                                    <input class="form-check-input" type="checkbox" id="editFullNameField" checked disabled />
+                                                    <label class="form-check-label" for="editFullNameField">Requester's Full Name</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="editRequestedFor" checked disabled>
+                                                    <label class="form-check-label" for="editRequestedFor">Requested for</label>
+                                                </div>
+                                            </div>
+                                            <div id="editAdditionalFields">
+                                                </div>
+                                            <button type="button" class="btn btn-outline-primary btn-sm mt-2" id="editAddFieldBtn">
+                                                <i class="bi bi-plus"></i> Add Custom Field
+                                            </button>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="alert alert-info py-2" role="alert">
+                                                <strong>Tip:</strong> Use placeholders in your document template to dynamically insert data from the document request.<br><br>
+                                                <strong>Here's how to map the custom fields to placeholders:</strong><br>
+                                                <ul>
+                                                    <li>For any <strong>"Custom Field"</strong> you add, use its field key as the placeholder. The field key is generated from the field name by converting it to lowercase and replacing spaces and special characters with underscores (e.g., a field named "Child's Name" would have the placeholder `child_s_name`).</li>
+                                                    <li>For the <strong>current date</strong>, use the placeholder: `${current_date}` to automatically insert today's date.</li>
+                                                </ul>
+                                            </div>
+                                            <label class="form-label">Upload Template (.doc/.docx)</label>
+                                            <input type="file" class="form-control" id="addTemplateFile" accept=".docx">
+                                        </div>
 
                     </form>
                 </div>
@@ -421,69 +412,68 @@
         </div>
     </div>
 
-    <!-- Edit Document Modal -->
-    <div class="modal fade" id="editDocumentModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header bg-primary text-white">
-                    <h5 class="modal-title">Edit Document Type</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
-                        aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="editDocumentForm">
-                        <input type="hidden" id="editDocumentId">
-                        <div class="mb-3">
-                            <label for="editDocumentName" class="form-label">Document Name</label>
-                            <input type="text" class="form-control" id="editDocumentName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editDocumentDescription" class="form-label">Description</label>
-                            <textarea class="form-control" id="editDocumentDescription" rows="3"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label for="editDocumentFee" class="form-label">Processing Fee (₱)</label>
-                            <input type="number" class="form-control" id="editDocumentFee" min="0" step="1" required>
-                        </div>
-                        <div class="mb-3">
-                            <div class="mb-3">
-                                <label class="form-label">Required Fields</label>
-                                <div class="d-flex align-items-center mb-2">
-                                    <div class="form-check me-3">
-                                        <input class="form-check-input" type="checkbox" id="fullNameField" checked
-                                            disabled>
-                                        <label class="form-check-label" for="fullNameField">Recipient's Full
-                                            Name</label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" id="purposeRequestField" checked
-                                            disabled>
-                                        <label class="form-check-label" for="purposeRequestField">Purpose of
-                                            Request</label>
-                                    </div>
+                    <!-- Edit Document Modal -->
+                    <div class="modal fade" id="editDocumentModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header bg-primary text-white">
+                                    <h5 class="modal-title">Edit Document Type</h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
                                 </div>
-                                <div id="additionalFields">
+                                <div class="modal-body">
+                                    <form id="editDocumentForm">
+                                        <input type="hidden" id="editDocumentId">
+                                        <div class="mb-3">
+                                            <label for="editDocumentName" class="form-label">Document Name</label>
+                                            <input type="text" class="form-control" id="editDocumentName" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editDocumentDescription" class="form-label">Description</label>
+                                            <textarea class="form-control" id="editDocumentDescription"
+                                                rows="3"></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editDocumentFee" class="form-label">Processing Fee (₱)</label>
+                                            <input type="number" class="form-control" id="editDocumentFee" min="0"
+                                                step="1" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="mb-3">
+                                            <label class="form-label">Required Fields</label>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <div class="form-check me-3">
+                                                    <input class="form-check-input" type="checkbox" id="fullNameField" checked disabled>
+                                                    <label class="form-check-label" for="fullNameField">Recipient's Full Name</label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="RequestedFor" checked disabled>
+                                                    <label class="form-check-label" for="RequestedFor">Requested for</label>
+                                                </div>
+                                            </div>
+                                            <div id="additionalFields">
+                                                </div>
+                                            <button type="button" class="btn btn-outline-primary btn-sm mt-2" id="addFieldBtn">
+                                                <i class="bi bi-plus"></i> Add Custom Field
+                                            </button>
+                                        </div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Upload New Template (.doc/.docx)</label>
+                                            <p class="small text-muted mb-1">Current file: <span id="editFileHint">–</span></p>
+                                            <input type="file" class="form-control" id="editTemplateFile" accept=".doc,.docx">
+                                        </div>
+                                    </form>
                                 </div>
-                                <button type="button" class="btn btn-outline-primary btn-sm mt-2" id="addFieldBtn">
-                                    <i class="bi bi-plus"></i> Add Custom Field
-                                </button>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                    <button type="button" class="btn btn-primary" id="updateDocumentBtn">Update Document
+                                        Type</button>
+                                </div>
                             </div>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Uploaded Template (.doc/.docx)</label>
-                            <p class="small text-muted mb-1">Current file: <span id="editFileHint">–</span></p>
-                            <input type="file" class="form-control" id="editTemplateFile" accept=".doc,.docx">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="updateDocumentBtn">Update Document
-                        Type</button>
-                </div>
-            </div>
-        </div>
-    </div>
+                    </div>
 
     <!-- Delete Confirmation Modal -->
     <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-hidden="true">

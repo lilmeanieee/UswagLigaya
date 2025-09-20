@@ -7,48 +7,82 @@
     <title>Request a Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        .notice-box {
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 0.25rem;
+            color: #664d03;
+        }
+
+        .drop-area {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            position: relative;
+
+        }
+
+        .drop-area:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container reqDocu-container py-5">
-        <h2 class="mb-4 text-center iframe-header"> Request a Barangay Document</h2>
+    <div class="container py-5">
+        <div class="notice-box">
+            <h5 class="fw-bold"><i class="bi bi-exclamation-triangle-fill me-2"></i> Important Notice - Point Deduction System</h5>
+            <p class="small">Please be aware: Using the online document request feature will result in automatic point deductions from your barangay citizen scoring system. Points may be deducted for each request submitted. Consider visiting the barangay office in person if you prefer not to have points deducted from your account.</p>
+            <p class="small fst-italic">By proceeding with this online request, you acknowledge and accept the point deduction policy.</p>
+        </div>
+
+        <h2 class="mb-4 text-center">Document Request Form</h2>
 
         <form id="documentRequestForm" method="POST" enctype="multipart/form-data" class="card p-4 shadow-sm">
             <div class="mb-3">
-                <label for="documentType" class="form-label">Select Document</label>
+                <label for="documentType" class="form-label">Select Document *</label>
                 <select class="form-select" name="documentType" id="documentType" required>
                     <option value="" disabled selected>Choose a document type</option>
                 </select>
             </div>
 
-            <div id="customFieldsSection" class="border p-3 mb-4 rounded" style="display: none;">
-                <div class="mb-3">
-                    <p class="text-danger small">
-                        <i class="bi bi-info-circle-fill me-1"></i> The fields below will be directly inserted into your
-                        document. Please ensure accuracy to prevent rejections.
-                    </p>
-                    <div id="customFieldsContainer"></div>
-                </div>
+            <div id="customFieldsContainer" class="border p-3 mb-4 rounded" style="display: none;">
+                <p class="text-danger small"><i class="bi bi-info-circle-fill me-1"></i> The fields below will be directly inserted into your
+                        document. Please ensure accuracy to prevent rejections.</p>
             </div>
+
             <div class="mb-3">
                 <label for="purposeSelect" class="form-label">Purpose of Request *</label>
-                <select class="form-select" id="purposeSelect" required>
-                    <option value="" disabled selected>Choose purpose...</option>
-                    <option value="Request for self">I am requesting a document for myself</option>
-                    <option value="Family Member Assistance">Requesting for a family member</option>
-                    <option value="Neighbor Assistance">Helping my neighbor to request their document</option>
-                    <option value="Other">Other (please specify below)</option>
+                <select class="form-select" id="purposeSelect" name="purpose" required>
+                    <option value="" disabled selected>Select purpose</option>
+                    <option value="Self">For myself</option>
+                    <option value="Family Member">For a family member</option>
+                    <option value="Neighbor">For a neighbor</option>
                 </select>
             </div>
 
-            <div class="mb-3" id="otherPurposeContainer" style="display: none;">
-                <label for="otherPurposeText" class="form-label">Please Specify Purpose *</label>
-                <textarea class="form-control" id="otherPurposeText" rows="3"></textarea>
+            <div class="mb-3" id="supportingDocsContainer">
+                <label for="supportingDocs" class="form-label">Upload Supporting Documents <span class="text-danger">*</span></label>
+                <div class="drop-area" id="dropArea">
+                    <i class="bi bi-cloud-arrow-up-fill fs-2"></i>
+                    <p>Click to upload or drag and drop</p>
+                    <p class="small text-muted">PDF, JPG, PNG up to 1MB</p>
+                    <input type="file" name="supportingDocs[]" id="fileInput" multiple style="position:absolute; width:100%; height:100%; top:0; left:0; opacity:0; cursor:pointer;" />
+                </div>
+                <div id="fileList" class="mt-2 small text-muted"></div>
+                <button type="button" class="btn btn-link mt-2 p-0" data-bs-toggle="modal" data-bs-target="#validIdModal">
+                    <i class="bi bi-info-circle me-1"></i> See list of valid IDs
+                </button>
             </div>
 
             <div class="mb-3">
-                <label for="supportingDocs" class="form-label">Upload Supporting Documents (if needed)</label>
-                <input type="file" class="form-control" name="supportingDocs[]" id="supportingDocs" multiple />
+                <div class="g-recaptcha" data-sitekey="6Lc2EsArAAAAACSfIOk5TBxmIarDjKsProJUZTHi"></div>
             </div>
 
             <div class="text-center">
@@ -57,44 +91,38 @@
         </form>
     </div>
 
+    <div class="modal fade" id="validIdModal" tabindex="-1" aria-labelledby="validIdModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="validIdModalLabel">List of Valid IDs</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Please ensure you submit a clear copy of at least one of the following valid IDs:</p>
+                    <ul>
+                        <li>Passport</li>
+                        <li>Driver's License</li>
+                        <li>Social Security System (SSS) ID</li>
+                        <li>Government Service Insurance System (GSIS) ID</li>
+                        <li>Unified Multi-Purpose ID (UMID)</li>
+                        <li>Professional Regulation Commission (PRC) ID</li>
+                        <li>Philippine National Police (PNP) Firearm License</li>
+                        <li>Postal ID</li>
+                        <li>Voter's ID</li>
+                        <li>Integrated Bar of the Philippines (IBP) ID</li>
+                        <li>Senior Citizen's ID</li>
+                        <li>Persona with Disability (PWD) ID</li>
+                        <li>Other valid government-issued IDs</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script src="../../js/res-request-document.js"></script>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Check if we're in an iframe
-            if (window.parent !== window) {
-                document.body.classList.add('in-iframe');
-            }
-            
-            // Handle form submission
-            const form = document.getElementById('documentRequestForm');
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Your form submission logic here
-                // For example: collect form data, send to server, etc.
-                
-                // Simulate form processing
-                console.log('Form submitted successfully');
-                
-                // After successful submission, notify parent window to close modal
-                if (window.parent !== window) {
-                    window.parent.postMessage({
-                        type: 'formSubmitted',
-                        data: 'success'
-                    }, '*');
-                }
-                
-                // Optional: Reset form for next use
-                form.reset();
-            });
-        });
-    </script>
-
-
 </body>
 
 </html>

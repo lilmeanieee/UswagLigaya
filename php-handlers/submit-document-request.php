@@ -3,20 +3,37 @@ include 'connect.php';
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 header('Content-Type: application/json');
+session_start(); // Start the session at the beginning
 
 try {
-    // Get resident info
-    $residentId = $_POST['residentId'] ?? null;
-    $templateId = $_POST['documentType'] ?? null;
-    $purpose = $_POST['purpose'] ?? null;
-    $customFields = json_decode($_POST['custom_fields'] ?? '{}', true);
+// FIX: Get residentId from the secure session, NOT from POST data.
+$residentId = $_SESSION['resident_id'] ?? null;
+$templateId = $_POST['documentType'] ?? null;
+$purpose = $_POST['purpose'] ?? null;
+ $customFields = json_decode($_POST['custom_fields'] ?? '{}', true);
 
-    if (!$residentId || !$templateId || !$purpose) {
-        throw new Exception("Missing required fields.");
+if (!$residentId || !$templateId || !$purpose) {
+ throw new Exception("Missing required fields or user not logged in.");
+}
+
+    // reCAPTCHA v2 verification
+    if (isset($_POST['g-recaptcha-response'])) {
+        $captcha = $_POST['g-recaptcha-response'];
+        $secretKey = '6Lc2EsArAAAAAA0CtIHkNp6y_5tK7RgfRIlUBnov';
+        $ip = $_SERVER['REMOTE_ADDR'];
+
+        $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$secretKey&response=$captcha&remoteip=$ip");
+        $jsonResponse = json_decode($response, true);
+
+        if (!$jsonResponse['success']) {
+            throw new Exception("reCAPTCHA verification failed. Please try again.");
+        }
+    } else {
+        throw new Exception("reCAPTCHA not completed.");
     }
 
     // Get resident's full name
-    $query = $conn->prepare("SELECT first_name, middle_name, last_name, suffix FROM tbl_household_members WHERE user_id = ?");
+    $query = $conn->prepare("SELECT first_name, middle_name, last_name, suffix FROM tbl_household_members WHERE resident_id = ?");
     $query->bind_param("i", $residentId);
     $query->execute();
     $query->bind_result($firstName, $middleName, $lastName, $suffix);
@@ -35,10 +52,17 @@ try {
     if ($stmt->execute()) {
         $requestId = $conn->insert_id;
         $stmt->close();
+        
+        //added points deduction
+        $pointsToDeduct = 10;
+        $updatePointsStmt = $conn->prepare("UPDATE tbl_resident_participation_stats SET credit_points = credit_points - ? WHERE resident_id = ?");
+        $updatePointsStmt->bind_param("ii", $pointsToDeduct, $residentId);
+        $updatePointsStmt->execute();
+        $updatePointsStmt->close();
+        
     } else {
         throw new Exception("Failed to insert document request: " . $stmt->error);
-    }
-    
+    }    
 
     // Save custom field values
     if (!empty($customFields)) {
@@ -49,6 +73,7 @@ try {
         }
         $stmt->close();
     }
+
 
     // Handle file upload (save to BLOB)
     if (!empty($_FILES['supportingDocs']['name'][0])) {
