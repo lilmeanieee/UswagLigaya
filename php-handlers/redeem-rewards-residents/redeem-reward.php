@@ -37,24 +37,29 @@ try {
     // Start database transaction
     $pdo->beginTransaction();
     
-    // Step 1: Get resident's current points
+    // Step 1: Get resident's current points and details
     $stmt = $pdo->prepare("
-        SELECT redeemable_points 
-        FROM tbl_resident_participation_stats 
-        WHERE resident_id = ?
+        SELECT 
+            stats.redeemable_points,
+            res.first_name,
+            res.last_name,
+            res.resident_code as resident_number
+        FROM tbl_resident_participation_stats stats
+        INNER JOIN tbl_household_members res ON stats.resident_id = res.resident_id
+        WHERE stats.resident_id = ?
     ");
     $stmt->execute([$resident_id]);
-    $resident_stats = $stmt->fetch(PDO::FETCH_ASSOC);
+    $resident_data = $stmt->fetch(PDO::FETCH_ASSOC);
     
-    if (!$resident_stats) {
+    if (!$resident_data) {
         throw new Exception('Resident stats not found');
     }
     
-    $current_redeemable_points = (int)$resident_stats['redeemable_points'];
+    $current_redeemable_points = (int)$resident_data['redeemable_points'];
     
     // Step 2: Get reward details
     $stmt = $pdo->prepare("
-        SELECT reward_id, reward_name, reward_type, points_required, description
+        SELECT reward_id, reward_name, reward_type, points_required, description, image_url
         FROM tbl_rewards 
         WHERE reward_id = ? AND is_active = 1 AND is_archived = 0
     ");
@@ -146,6 +151,9 @@ try {
     ");
     $stmt->execute([$resident_id, $reward_id, $points_required, $is_equipped]);
     
+    // Get the ID of the inserted redemption record
+    $redemption_id = $pdo->lastInsertId();
+    
     // Step 9: If it's a frame or title and there was already one equipped, unequip the old one
     if (($reward_type == 'frame' || $reward_type == 'title') && $equipped_check['count'] > 0 && $is_equipped == 1) {
         $stmt = $pdo->prepare("
@@ -160,8 +168,32 @@ try {
         $stmt->execute([$resident_id, $reward_type, $reward_id]);
     }
     
+    // Generate receipt number
+    $receipt_number = 'RCP-' . date('Ymd') . '-' . str_pad($redemption_id, 6, '0', STR_PAD_LEFT);
+    
     // Commit transaction
     $pdo->commit();
+    
+    // Prepare receipt data
+    $receipt_data = [
+        'redemption_id' => $redemption_id,
+        'receipt_number' => $receipt_number,
+        'reward_id' => $reward_id,
+        'reward_name' => $reward_name,
+        'reward_type' => ucfirst($reward_type),
+        'description' => $reward['description'],
+        'points_used' => $points_required,
+        'points_required' => $points_required,
+        'redeemed_at' => date('Y-m-d H:i:s'),
+        'formatted_date' => date('F j, Y g:i A'),
+        'is_equipped' => $is_equipped == 1,
+        'auto_equipped' => $is_equipped == 1,
+        'resident_name' => trim($resident_data['first_name'] . ' ' . $resident_data['last_name']),
+        'resident_id' => $resident_data['resident_number'],
+        'previous_balance' => $current_redeemable_points,
+        'new_redeemable_points' => $new_redeemable_points,
+        'transaction_type' => 'REWARD_REDEMPTION'
+    ];
     
     // Return success response
     echo json_encode([
@@ -179,7 +211,9 @@ try {
         'reward_type' => $reward_type,
         'points_used' => $points_required,
         'new_redeemable_points' => $new_redeemable_points,
-        'is_equipped' => $is_equipped == 1
+        'is_equipped' => $is_equipped == 1,
+        'receipt_data' => $receipt_data,
+        'redemption_id' => $redemption_id
     ]);
     
 } catch (PDOException $e) {
